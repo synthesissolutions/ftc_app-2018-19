@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -91,8 +92,8 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="Concept: Vuforia Rover Nav", group ="Concept")
-@Disabled
+@TeleOp(name="Concept: Vuforia Webcam Rover Nav", group ="Concept")
+//@Disabled
 public class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
 
     /*
@@ -107,7 +108,7 @@ public class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    private static final String VUFORIA_KEY = "AXNGJw//////AAAAGYtqot53p0ULmjqVWBBEdR1T7XzT7DmorNidxCIAXp9/o1sLPS+rc57z9m4f/381DeFLCz2AdUiOMOHhnO4zkZXm5W8S/Z5+C6jrGp18HJOwoTyIL9JbDiPADw9pDFoU5LL79g79Crd17x4V9o/rvPO1TAWJ3MPqaUb3U+/uPBF0XvguKTtZpnTHtgvSRsxW3f1Y90JiTfAH3k2A5vUsX9qcf0fb+/xG1EFtvunElevmUB3CmVzfkb3AEJxq86SzVxIgDw7gz/U3BdpPafCAb6jozBC6u0t7H4EUkl1Ro08O15vLs9Eah4ZN15aJci7fkTzEZ7HkEGN3HNkMUEkKRtxsOYU/gD5QsDpqBBpmOESf";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
@@ -137,10 +138,12 @@ public class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY ;
-        parameters.cameraDirection   = CAMERA_CHOICE;
+        //parameters.cameraDirection   = CAMERA_CHOICE;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
