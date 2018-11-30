@@ -13,11 +13,11 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         offsetPhoneGyro();
         setHangTowerPosition(0);
         turnDegrees(-0.8, 15);
-        driveStraight(ONE_WHEEL_ROTATION, 0.3);
+        driveStraight(ONE_WHEEL_ROTATION + ONE_WHEEL_ROTATION/8, 0.3);
         turnDegrees(0.3,222);
 
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
-        hitMineralRed(false, false, true);
+        hitMineralRedDepot(true, false, false);
         sleep(6000);
     }
 }
