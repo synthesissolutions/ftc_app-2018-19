@@ -20,6 +20,7 @@ import java.util.List;
 import static com.qualcomm.robotcore.util.Range.scale;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -27,6 +28,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     private boolean targetVisible = false;
 
     VuforiaLocalizer vuforia;
+    VuforiaLocalizer vuforia2;
+    TFObjectDetector tfod;
 
     int cameraMonitorViewId;
 
@@ -89,6 +94,11 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     final int CAMERA_LEFT_DISPLACEMENT     = 108;     // eg: Camera is ON the robot's center line
 
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+
+    private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
+    private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
+    private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+
 
 
     //end of variable initilization
@@ -394,6 +404,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         Log.d("RHTP", "Starting Phone Gyro Angle: " + getGyroCurrentHeading());
 
         vuforiaInitWIP();
+        tfodInit();
 
         waitForStart();
 
@@ -530,14 +541,18 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          */
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        //VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters();
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY ;
         parameters.cameraDirection   = CAMERA_CHOICE;
 
+        //parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        //parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        //vuforia2 = ClassFactory.getInstance().createVuforia(parameters2);
 
         // Load the data sets that for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -701,8 +716,9 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sleep(2000);
         return ((double)(angle));
     }
-    public void hitMineralBlue(boolean left, boolean middle, boolean right) {
+    public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
+            double vuforiaData = vuforiaGetDataWIP();
             turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
             driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
         }
@@ -722,25 +738,73 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
         }
     }
-    public void hitMineralRed(boolean left, boolean middle, boolean right) {
+    public void hitMineralRedDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
-            turnDegrees(-0.2, 45 - vuforiaGetDataWIP() - 180);
+            turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
             driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
             driveStraight(4*ONE_WHEEL_ROTATION/5, 0.3);
-            turnDegrees(-0.2, 45 - vuforiaData - 180);
-            driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
+            turnDegrees(-0.2, 45 - vuforiaData);
+            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
         }
         else if (left && !right && !middle) {
-            double vuforiaData = vuforiaGetDataWIP() - 180;
+            double vuforiaData = vuforiaGetDataWIP();
             turnDegrees(0.2, 10);
             driveStraight(ONE_WHEEL_ROTATION, 0.3);
-            turnDegrees(0.2, 10);
+            turnDegrees(0.2, 20);
             driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
             turnDegrees(-0.2, 65 - vuforiaData);
             driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
         }
+    }
+    public void hitMineralRedCrater(boolean left, boolean middle, boolean right) {
+        if (right && !middle && !left) {
+            turnDegrees(-0.2, 105 - vuforiaGetDataWIP());
+            driveStraight(3*ONE_WHEEL_ROTATION/2, -0.3);
+        }
+        else if (middle && !right && !left) {
+            double vuforiaData = vuforiaGetDataWIP();
+            driveStraight(4*ONE_WHEEL_ROTATION/5, 0.3);
+            turnDegrees(-0.2, 105 - vuforiaData);
+            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+        }
+        else if (left && !right && !middle) {
+            double vuforiaData = vuforiaGetDataWIP();
+            turnDegrees(0.2, 10);
+            driveStraight(ONE_WHEEL_ROTATION, 0.3);
+            turnDegrees(0.2, 10);
+            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
+            turnDegrees(-0.2, 125 - vuforiaData);
+            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+        }
+    }
+    public void tfodInit() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+    public int tfodGet() {
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            Recognition recognition;
+            if (updatedRecognitions != null) {
+                recognition = updatedRecognitions.get(0);
+                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                    return 0;
+                } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                    return 1;
+                }
+            }
+        }
+        return -1;
+    }
+    public void shutdownTfod() {
+        tfod.shutdown();
     }
 }

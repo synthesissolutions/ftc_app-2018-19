@@ -70,11 +70,13 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      */
     private static final String VUFORIA_KEY = "AXNGJw//////AAAAGYtqot53p0ULmjqVWBBEdR1T7XzT7DmorNidxCIAXp9/o1sLPS+rc57z9m4f/381DeFLCz2AdUiOMOHhnO4zkZXm5W8S/Z5+C6jrGp18HJOwoTyIL9JbDiPADw9pDFoU5LL79g79Crd17x4V9o/rvPO1TAWJ3MPqaUb3U+/uPBF0XvguKTtZpnTHtgvSRsxW3f1Y90JiTfAH3k2A5vUsX9qcf0fb+/xG1EFtvunElevmUB3CmVzfkb3AEJxq86SzVxIgDw7gz/U3BdpPafCAb6jozBC6u0t7H4EUkl1Ro08O15vLs9Eah4ZN15aJci7fkTzEZ7HkEGN3HNkMUEkKRtxsOYU/gD5QsDpqBBpmOESf";
 
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
     private VuforiaLocalizer vuforia;
+    private VuforiaLocalizer vuforia2;
 
     /**
      * {@link #tfod} is the variable we will use to store our instance of the Tensor Flow Object
@@ -160,6 +162,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        vuforia2 = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
