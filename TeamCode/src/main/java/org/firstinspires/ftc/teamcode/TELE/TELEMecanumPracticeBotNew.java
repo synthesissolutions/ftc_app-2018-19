@@ -22,23 +22,32 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         double mecanumTurn = gamepad1.right_stick_x;
         double mecanumStrafe = gamepad1.left_stick_x;
 
-        boolean mecanumSlowStrafe = gamepad1.right_trigger>.7;
-        boolean mecanumSlowSpeed = gamepad1.right_trigger>.7;
-        boolean mecanumSlowTurn = gamepad1.left_trigger>.7;
+        boolean mecanumSlowStrafe = gamepad1.left_trigger>.7;
+        boolean mecanumSlowSpeed = gamepad1.left_trigger>.7;
+        boolean mecanumSlowTurn = gamepad1.right_trigger>.7;
 
-        //double hangTowerControl = gamepad2.right_stick_y;
         double hangTowerControl = 0.0;
         if (gamepad1.dpad_up) {
             hangTowerControl = 1.0;
         } else if (gamepad1.dpad_down) {
             hangTowerControl = -1.0;
         }
-        boolean hangTowerDown=gamepad2.b;
-        boolean hangTowerUp=gamepad2.a;
+        boolean hangTowerDown=gamepad1.b;
+        boolean hangTowerUp=gamepad1.a;
 
-        double deployTowerControl = gamepad2.left_stick_y;
+        //double deployTowerControl = gamepad2.left_stick_y;
+
+        boolean collectRotateIn = gamepad2.y;
+
+        boolean collectRotateOut = gamepad2.x;
 
         double collectSlideControl = gamepad2.right_stick_y;
+
+        double collectSpinSpeed = 0.5;
+        if (gamepad2.b)
+            collectSpinSpeed = 0.0;
+        if (gamepad1.a)
+            collectSpinSpeed = 1.0;
 
 
         //MAIN DRIVE
@@ -48,16 +57,21 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         robot.controlHangTower(hangTowerControl,hangTowerDown,hangTowerUp);
 
         // DEPLOY TOWER
-        robot.controlDeployTower(deployTowerControl);
+//        robot.controlDeployTower(deployTowerControl);
 
-        telemetry.addData("Deploy Tower", "Starting at %7d",
-                robot.towerPosition());
+//        telemetry.addData("Deploy Tower", "Starting at %7d",
+//                robot.hangTowerPosition());
 
+        // COLLECT ROTATE
+        robot.controlCollectRotate(collectRotateIn, collectRotateOut);
 
         // COLLECT SLIDE
         robot.controlCollectSlide(collectSlideControl);
 
-        //TELEMETRY
+        // COLECT SPIN
+        robot.controlCollectSpin(collectSpinSpeed);
+
+        // TELEMETRY
         robot.displayErrors(telemetry);
     }
 

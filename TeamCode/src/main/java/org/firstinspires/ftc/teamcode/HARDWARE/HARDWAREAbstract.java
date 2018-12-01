@@ -59,9 +59,22 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
+
+
     DcMotor motorHangTower;
+
     DcMotor motorDeployTower;
+    Servo servoDeployPour;
+    Servo servoDeployGateLeft;
+    Servo servoDeployGateRight;
+
+
     DcMotor motorCollectSlide;
+    DcMotor motorCollectRotate;
+    Servo servoCollectSpin1;
+    Servo servoCollectSpin2;
+
+
 
     int hangTowerTargetPosition = 0;
     int hangTowerTimer=0;
@@ -71,6 +84,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     int collectSlideTargetPosition = 0;
     int collectSlideTimer=0;
+
+    int collectRotateTargetPosition = 0;
+    int collectRotateTimer=0;
 
     ElapsedTime matchTimer = new ElapsedTime();
 
@@ -149,6 +165,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         motorDeployTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorDeployTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        servoDeployPour = hardwareMap.servo.get("servoDeployPour");
+        servoDeployGateLeft = hardwareMap.servo.get("servoDeployGateLeft");
+        servoDeployGateRight = hardwareMap.servo.get("servoDeployGateRight");
+
+
         motorDeployTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorDeployTower.setPower(1);
     }
@@ -160,8 +181,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
+
         motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorCollectSlide.setPower(0.5);
+
+        motorCollectRotate.setPower(0.);
     }
     //END OF INITIALIZATION METHODS
 
@@ -430,6 +455,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
 
     public void controlDeployTower(double vc) {
+        //todo make this 2 button max/min instead of variable control
         if (Math.abs(vc) > 0.1) {
             deployTowerTargetPosition += vc * 12 ;
         }
@@ -448,6 +474,44 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         else
         {
             addErrors("MOTOR DEPLOY TOWER IS NULL");
+        }
+    }
+
+    public void controlCollectRotate(boolean i, boolean o)
+    {
+        if (o)
+        {
+            collectRotateTargetPosition = 1210/3;
+        }
+
+        if (i)
+        {
+            collectRotateTargetPosition = 0;
+        }
+
+
+        if (collectRotateTimer>12)
+        {
+            setCollectRotatePosition(collectRotateTargetPosition);
+            collectRotateTimer=0;
+        }
+        collectRotateTimer++;
+    }
+
+    public void controlCollectSpin(double p)
+    {
+        servoCollectSpin1.setPosition(p);
+        servoCollectSpin2.setPosition(Math.abs(p-1));
+    }
+
+    public void setCollectRotatePosition(int v)
+    {
+        if (motorCollectRotate != null) {
+            motorCollectRotate.setTargetPosition(v);
+        }
+        else
+        {
+            addErrors("MOTOR COLLECT ROTATE IS NULL");
         }
     }
 
@@ -472,7 +536,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             addErrors("MOTOR COLLECT SLIDE IS NULL");
         }
     }
-    public int towerPosition() {
+
+    public int hangTowerPosition() {
         return motorHangTower.getCurrentPosition();
+    }
+
+    public int collectSlidePosition() {
+        return motorCollectSlide.getCurrentPosition();
     }
 }
