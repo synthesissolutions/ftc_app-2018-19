@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{
         startAutoOp();
+        if (opModeIsActive()) {
+            tfodActivate();
+        }
         //shutdownTfod();
         //double angle = 0;
         setHangTowerPosition(-20222);
@@ -16,8 +19,8 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         setHangTowerPosition(0);
         turnDegrees(-0.8, 15);
         driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-        turnDegrees(0.3, 100);
-        sleep(3000);
+        turnDegrees(0.3, 111);
+        sleep(500);
         int x = tfodGet();
         while (x == -1) {
             x = tfodGet();
@@ -25,13 +28,15 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         }
         int y = -1;
         if (x != 0) {
-            turnDegrees(0.3, 15);
-            sleep(3000);
-            y = tfodGet();
-            turnDegrees(-0.3, 115);
+            turnDegrees(0.3, 30);
+            while (y == -1) {
+                sleep(500);
+                y = tfodGet();
+            }
+            turnDegrees(-0.3, 141);
         }
         else {
-            turnDegrees(-0.3, 100);
+            turnDegrees(-0.3, 90);
         }
         int z = -1;
         if (x != 0 && y != 0) {
@@ -44,7 +49,7 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
             z = 2;
         }
         driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-        turnDegrees(0.3, 222);
+        turnDegrees(0.3, 190);
 
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
