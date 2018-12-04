@@ -539,8 +539,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
          */
-        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        //cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
         //VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters();
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -556,6 +556,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         // Load the data sets that for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
+        /*
         VuforiaTrackables targetsRoverRuckus = this.vuforia.loadTrackablesFromAsset("RoverRuckus");
         VuforiaTrackable blueRover = targetsRoverRuckus.get(0);
         blueRover.setName("Blue-Rover");
@@ -566,8 +567,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         VuforiaTrackable backSpace = targetsRoverRuckus.get(3);
         backSpace.setName("Back-Space");
 
-        // For convenience, gather together all the trackable objects in one easily-iterable collection */
+
+        // For convenience, gather together all the trackable objects in one easily-iterable collection
         allTrackables.addAll(targetsRoverRuckus);
+*/
 
         /**
          * In order for localization to work, we need to tell the system where each target is on the field, and
@@ -594,10 +597,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          * - First we rotate it 90 around the field's X axis to flip it upright.
          * - Then, we translate it along the Y axis to the blue perimeter wall.
          */
-        OpenGLMatrix blueRoverLocationOnField = OpenGLMatrix
-                .translation(0, mmFTCFieldWidth, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0));
-        blueRover.setLocation(blueRoverLocationOnField);
+//        OpenGLMatrix blueRoverLocationOnField = OpenGLMatrix
+//                .translation(0, mmFTCFieldWidth, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0));
+//        blueRover.setLocation(blueRoverLocationOnField);
 
         /**
          * To place the RedFootprint target in the middle of the red perimeter wall:
@@ -606,10 +609,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          *   and facing inwards to the center of the field.
          * - Then, we translate it along the negative Y axis to the red perimeter wall.
          */
-        OpenGLMatrix redFootprintLocationOnField = OpenGLMatrix
-                .translation(0, -mmFTCFieldWidth, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180));
-        redFootprint.setLocation(redFootprintLocationOnField);
+//        OpenGLMatrix redFootprintLocationOnField = OpenGLMatrix
+//                .translation(0, -mmFTCFieldWidth, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180));
+//        redFootprint.setLocation(redFootprintLocationOnField);
 
         /**
          * To place the FrontCraters target in the middle of the front perimeter wall:
@@ -618,10 +621,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          *   and facing inwards to the center of the field.
          * - Then, we translate it along the negative X axis to the front perimeter wall.
          */
-        OpenGLMatrix frontCratersLocationOnField = OpenGLMatrix
-                .translation(-mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90));
-        frontCraters.setLocation(frontCratersLocationOnField);
+//        OpenGLMatrix frontCratersLocationOnField = OpenGLMatrix
+//                .translation(-mmFTCFieldWidth, 0, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90));
+//        frontCraters.setLocation(frontCratersLocationOnField);
 
         /**
          * To place the BackSpace target in the middle of the back perimeter wall:
@@ -630,10 +633,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          *   and facing inwards to the center of the field.
          * - Then, we translate it along the X axis to the back perimeter wall.
          */
-        OpenGLMatrix backSpaceLocationOnField = OpenGLMatrix
-                .translation(mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90));
-        backSpace.setLocation(backSpaceLocationOnField);
+//        OpenGLMatrix backSpaceLocationOnField = OpenGLMatrix
+//                .translation(mmFTCFieldWidth, 0, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90));
+//        backSpace.setLocation(backSpaceLocationOnField);
 
         /**
          * Create a transformation matrix describing where the phone is on the robot.
@@ -658,19 +661,19 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
          * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
          */
 
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
-                        CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
+//        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
+//                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
+//                        CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
 
         /**  Let all the trackable listeners know where the phone is.  */
-        for (VuforiaTrackable trackable : allTrackables)
-        {
-            ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        }
-
-        /** Start tracking the data sets we care about. */
-        targetsRoverRuckus.activate();
+//        for (VuforiaTrackable trackable : allTrackables)
+//        {
+//            ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+//        }
+//
+//        /** Start tracking the data sets we care about. */
+//        targetsRoverRuckus.activate();
     }
 
     public double vuforiaGetDataWIP(){
@@ -788,18 +791,38 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
     public int tfodGet() {
+        /*
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             Recognition recognition;
-            if (updatedRecognitions != null) {
+            if (updatedRecognitions != null && updatedRecognitions.size() != 0) {
                 recognition = updatedRecognitions.get(0);
                 if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                     return 0;
                 } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
                     return 1;
                 }
+            }
+        }*/
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                if (updatedRecognitions.size() == 1) {
+
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            return 0;
+                        } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                            return 1;
+                        }
+                    }
+                }
+                telemetry.update();
             }
         }
         return -1;

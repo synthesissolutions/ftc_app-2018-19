@@ -17,10 +17,16 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         turnDegrees(-0.8, 15);
         driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
         turnDegrees(0.3, 100);
+        sleep(3000);
         int x = tfodGet();
+        while (x == -1) {
+            x = tfodGet();
+            sleep(500);
+        }
         int y = -1;
         if (x != 0) {
             turnDegrees(0.3, 15);
+            sleep(3000);
             y = tfodGet();
             turnDegrees(-0.3, 115);
         }
