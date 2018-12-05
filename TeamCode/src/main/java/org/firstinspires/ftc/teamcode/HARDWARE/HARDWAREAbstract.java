@@ -82,11 +82,15 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     int deployTowerTargetPosition = 0;
     int deployTowerTimer=0;
 
+    int deployGateLeftToggleTimer = 0;
+    int deployGateRightToggleTimer = 0;
+
+    boolean deployGateAutoclosed = false;
+
     int collectSlideTargetPosition = 0;
     int collectSlideTimer=0;
 
-    int collectRotateTargetPosition = 0;
-    int collectRotateTimer=0;
+
 
     ElapsedTime matchTimer = new ElapsedTime();
 
@@ -161,32 +165,45 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void initializeDeploy()
     {
         motorDeployTower = hardwareMap.dcMotor.get("motorDeployTower");
-        motorDeployTower.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorDeployTower.setDirection(DcMotorSimple.Direction.FORWARD);
         motorDeployTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorDeployTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        motorDeployTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorDeployTower.setPower(0.6);
 
         servoDeployPour = hardwareMap.servo.get("servoDeployPour");
         servoDeployGateLeft = hardwareMap.servo.get("servoDeployGateLeft");
         servoDeployGateRight = hardwareMap.servo.get("servoDeployGateRight");
 
-
-        motorDeployTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorDeployTower.setPower(1);
+        servoDeployPour.setPosition(0.15);
+        servoDeployGateLeft.setPosition(0.55);
+        servoDeployGateRight.setPosition(0.0);
     }
 
     public void initializeCollect()
     {
         motorCollectSlide = hardwareMap.dcMotor.get("motorCollectSlide");
-        motorCollectSlide.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorCollectSlide.setDirection(DcMotorSimple.Direction.REVERSE);
         motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
 
         motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorCollectSlide.setPower(0.5);
 
-        motorCollectRotate.setPower(0.);
+
+
+        motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
+        motorCollectRotate.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorCollectRotate.setPower(0.0);
+
+        servoCollectSpin1 = hardwareMap.servo.get("servoCollectSpin1");
+        servoCollectSpin2 = hardwareMap.servo.get("servoCollectSpin2");
+        servoCollectSpin1.setPosition(0.5);
+        servoCollectSpin2.setPosition(0.5);
+
     }
     //END OF INITIALIZATION METHODS
 
@@ -394,7 +411,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowStrafe(boolean active, double strafe)
     {
         if (active) {
-            strafe=strafe/2.0;
+            strafe=strafe/1.5;
         }
         return strafe;
     }
@@ -426,7 +443,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void controlHangTower(double vc, boolean d, boolean u)
     {
         if (Math.abs(vc) > 0.1) {
-            hangTowerTargetPosition += vc * 6 ;
+            hangTowerTargetPosition -= vc * 8;
         }
 
         if (d) {
@@ -434,7 +451,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
         if (u) {
 
-            hangTowerTargetPosition = -20000; //test this first
+            hangTowerTargetPosition = -10800; //test this first
         }
 
         if (hangTowerTimer>12) {
@@ -455,9 +472,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
 
     public void controlDeployTower(double vc) {
-        //todo make this 2 button max/min instead of variable control
         if (Math.abs(vc) > 0.1) {
-            deployTowerTargetPosition += vc * 12 ;
+            deployTowerTargetPosition += vc*6;
         }
 
         if (deployTowerTimer>12) {
@@ -477,37 +493,82 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
     }
 
+    public void controlDeployDumper (double d, boolean l, boolean r, boolean b)
+    {
+
+        double gateROpen = 0;
+        double gateRClosed = .55;
+        double gateLOpen = .55;
+        double gateLClosed = .0;
+
+        double unpoured = 0.15;
+        double poured = .5;
+
+        servoDeployPour.setPosition(unpoured + (poured-unpoured)*d);
+
+        if (d == 0)
+        {
+            servoDeployGateRight.setPosition(gateROpen);
+            servoDeployGateLeft.setPosition(gateLOpen);
+            deployGateLeftToggleTimer = 0;
+            deployGateRightToggleTimer = 0;
+            deployGateAutoclosed = false;
+        }
+
+        if (d != 0 && deployGateAutoclosed == false)
+        {
+            servoDeployGateRight.setPosition(gateRClosed);
+            servoDeployGateLeft.setPosition(gateLClosed);
+            deployGateLeftToggleTimer = 0;
+            deployGateRightToggleTimer = 0;
+            deployGateAutoclosed = true;
+        }
+
+        if (b)
+        {
+            servoDeployGateRight.setPosition(gateROpen);
+            servoDeployGateLeft.setPosition(gateLOpen);
+            deployGateLeftToggleTimer = 0;
+            deployGateRightToggleTimer = 0;
+        }
+
+        if (l && deployGateLeftToggleTimer > 70)
+        {
+            if (servoDeployGateLeft.getPosition() == gateLOpen)
+                servoDeployGateLeft.setPosition(gateLClosed);
+            else
+                servoDeployGateLeft.setPosition(gateLOpen);
+            deployGateLeftToggleTimer = 0;
+        }
+        deployGateLeftToggleTimer++;
+
+        if (r && deployGateRightToggleTimer > 70)
+        {
+            if (servoDeployGateRight.getPosition() == gateROpen)
+                servoDeployGateRight.setPosition(gateRClosed);
+            else
+                servoDeployGateRight.setPosition(gateROpen);
+            deployGateRightToggleTimer = 0;
+        }
+        deployGateRightToggleTimer++;
+    }
+
     public void controlCollectRotate(boolean i, boolean o)
     {
-        if (o)
-        {
-            collectRotateTargetPosition = 1210/3;
-        }
-
-        if (i)
-        {
-            collectRotateTargetPosition = 0;
-        }
-
-
-        if (collectRotateTimer>12)
-        {
-            setCollectRotatePosition(collectRotateTargetPosition);
-            collectRotateTimer=0;
-        }
-        collectRotateTimer++;
-    }
-
-    public void controlCollectSpin(double p)
-    {
-        servoCollectSpin1.setPosition(p);
-        servoCollectSpin2.setPosition(Math.abs(p-1));
-    }
-
-    public void setCollectRotatePosition(int v)
-    {
         if (motorCollectRotate != null) {
-            motorCollectRotate.setTargetPosition(v);
+            if (o)
+            {
+                motorCollectRotate.setPower(0.5);
+            }
+            else
+            {
+                motorCollectRotate.setPower(0);
+            }
+
+            if (i)
+            {
+                motorCollectRotate.setPower(-0.8);
+            }
         }
         else
         {
@@ -515,11 +576,38 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
     }
 
+    public void controlCollectSpin(double p)
+    {
+        if (servoCollectSpin1 != null || servoCollectSpin2 != null) {
+            servoCollectSpin1.setPosition(p);
+            servoCollectSpin2.setPosition(Math.abs(p - 1.0));
+        }
+        else
+        {
+            addErrors("SERVO COLLECT SPIN 1 OR 2 ARE NULL");
+        }
+    }
+
     public void controlCollectSlide(double vc) {
+        int temp = 0;
+
+        temp = collectSlideTargetPosition;
+
         if (Math.abs(vc) > 0.1) {
             collectSlideTargetPosition += vc * 6 ;
         }
 
+        if (temp < collectSlideTargetPosition)
+        {
+            motorCollectSlide.setPower(0.2);
+        }
+        if (temp-3 > collectSlideTargetPosition)
+        {
+            motorCollectSlide.setPower(0.5);
+        }
+
+        if (collectSlideTargetPosition > 0)
+            collectSlideTargetPosition = 0;
         if (collectSlideTimer>12) {
             setCollectSlidePosition(collectSlideTargetPosition);
             collectSlideTimer=0;

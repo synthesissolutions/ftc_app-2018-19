@@ -9,10 +9,14 @@ import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREPracticeBot;
 public class TELEMecanumPracticeBotNew extends OpMode  {
 
     HARDWAREPracticeBot robot = new HARDWAREPracticeBot();
+    int heldSpinTimer = 0;
 
     @Override
     public void init() {
         robot.initializePracticeBot(hardwareMap);
+
+        // TELEMETRY
+        robot.displayErrors(telemetry);
     }
 
     @Override
@@ -27,15 +31,20 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         boolean mecanumSlowTurn = gamepad1.right_trigger>.7;
 
         double hangTowerControl = 0.0;
-        if (gamepad1.dpad_up) {
+        if (gamepad1.right_bumper || gamepad1.dpad_up) {
             hangTowerControl = 1.0;
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad1.left_bumper || gamepad1.dpad_down) {
             hangTowerControl = -1.0;
         }
         boolean hangTowerDown=gamepad1.b;
         boolean hangTowerUp=gamepad1.a;
 
-        //double deployTowerControl = gamepad2.left_stick_y;
+        double deployTowerControl = gamepad2.left_stick_y;
+
+        double deployDumpSensetive = Math.max(gamepad2.left_trigger,gamepad2.right_trigger);
+        boolean deployGateLeft = gamepad2.right_bumper;
+        boolean deployGateRight = gamepad2.left_bumper;
+        boolean deployGateOpenAll = (gamepad2.right_trigger > 0.1);
 
         boolean collectRotateIn = gamepad2.y;
 
@@ -44,11 +53,20 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         double collectSlideControl = gamepad2.right_stick_y;
 
         double collectSpinSpeed = 0.5;
-        if (gamepad2.b)
-            collectSpinSpeed = 0.0;
-        if (gamepad1.a)
-            collectSpinSpeed = 1.0;
+        if (gamepad2.b || gamepad2.a)
+        {
+            if (heldSpinTimer < 5)
+                heldSpinTimer++;
+        }
+        else
+        {
+            heldSpinTimer=0;
+        }
 
+        if (gamepad2.b)
+            collectSpinSpeed = 0.5-0.1*heldSpinTimer;
+        if (gamepad2.a)
+            collectSpinSpeed = 0.5+0.1*heldSpinTimer;
 
         //MAIN DRIVE
         robot.controlMecanumWheels(mecanumSpeed,mecanumTurn,mecanumStrafe,mecanumSlowStrafe,mecanumSlowSpeed,mecanumSlowTurn);
@@ -57,10 +75,10 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         robot.controlHangTower(hangTowerControl,hangTowerDown,hangTowerUp);
 
         // DEPLOY TOWER
-//        robot.controlDeployTower(deployTowerControl);
+        robot.controlDeployTower(deployTowerControl);
 
-//        telemetry.addData("Deploy Tower", "Starting at %7d",
-//                robot.hangTowerPosition());
+        // DEPLOY DUMPER
+        robot.controlDeployDumper(deployDumpSensetive,deployGateLeft,deployGateRight,deployGateOpenAll);
 
         // COLLECT ROTATE
         robot.controlCollectRotate(collectRotateIn, collectRotateOut);
