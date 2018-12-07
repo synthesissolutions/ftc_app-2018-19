@@ -54,6 +54,13 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
 
     final public static double MECANUM_MAX_SPEED = 1.0;
+    final public static double SERVO_DEPLOY_GATE_RIGHT_OPEN = 0.58;
+    final public static double SERVO_DEPLOY_GATE_RIGHT_CLOSED = 0.16;
+    final public static double SERVO_DEPLOY_GATE_LEFT_OPEN = 0.17;
+    final public static double SERVO_DEPLOY_GATE_LEFT_CLOSED = 0.63;
+
+    final public static double SERVO_DEPLOY_POUR_UNPOURED = 0.2;
+    final public static double SERVO_DEPLOY_POUR_POURED = .65;
 
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;
@@ -177,9 +184,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoDeployGateLeft = hardwareMap.servo.get("servoDeployGateLeft");
         servoDeployGateRight = hardwareMap.servo.get("servoDeployGateRight");
 
-        servoDeployPour.setPosition(0.15);
-        servoDeployGateLeft.setPosition(0.55);
-        servoDeployGateRight.setPosition(0.0);
+        servoDeployPour.setPosition(SERVO_DEPLOY_POUR_UNPOURED);
+        servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_CLOSED);
+        servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_CLOSED);
     }
 
     public void initializeCollect()
@@ -495,21 +502,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     public void controlDeployDumper (double d, boolean l, boolean r, boolean b)
     {
-
-        double gateROpen = 0;
-        double gateRClosed = .55;
-        double gateLOpen = .55;
-        double gateLClosed = .0;
-
-        double unpoured = 0.15;
-        double poured = .5;
-
-        servoDeployPour.setPosition(unpoured + (poured-unpoured)*d);
+        servoDeployPour.setPosition(SERVO_DEPLOY_POUR_UNPOURED + (SERVO_DEPLOY_POUR_POURED - SERVO_DEPLOY_POUR_UNPOURED) * d);
 
         if (d == 0)
         {
-            servoDeployGateRight.setPosition(gateROpen);
-            servoDeployGateLeft.setPosition(gateLOpen);
+            servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_OPEN);
+            servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_OPEN);
             deployGateLeftToggleTimer = 0;
             deployGateRightToggleTimer = 0;
             deployGateAutoclosed = false;
@@ -517,8 +515,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
         if (d != 0 && deployGateAutoclosed == false)
         {
-            servoDeployGateRight.setPosition(gateRClosed);
-            servoDeployGateLeft.setPosition(gateLClosed);
+            servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_CLOSED);
+            servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_CLOSED);
             deployGateLeftToggleTimer = 0;
             deployGateRightToggleTimer = 0;
             deployGateAutoclosed = true;
@@ -526,28 +524,28 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
         if (b)
         {
-            servoDeployGateRight.setPosition(gateROpen);
-            servoDeployGateLeft.setPosition(gateLOpen);
+            servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_OPEN);
+            servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_OPEN);
             deployGateLeftToggleTimer = 0;
             deployGateRightToggleTimer = 0;
         }
 
         if (l && deployGateLeftToggleTimer > 70)
         {
-            if (servoDeployGateLeft.getPosition() == gateLOpen)
-                servoDeployGateLeft.setPosition(gateLClosed);
+            if (servoDeployGateLeft.getPosition() == SERVO_DEPLOY_GATE_LEFT_OPEN)
+                servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_CLOSED);
             else
-                servoDeployGateLeft.setPosition(gateLOpen);
+                servoDeployGateLeft.setPosition(SERVO_DEPLOY_GATE_LEFT_OPEN);
             deployGateLeftToggleTimer = 0;
         }
         deployGateLeftToggleTimer++;
 
         if (r && deployGateRightToggleTimer > 70)
         {
-            if (servoDeployGateRight.getPosition() == gateROpen)
-                servoDeployGateRight.setPosition(gateRClosed);
+            if (servoDeployGateRight.getPosition() == SERVO_DEPLOY_GATE_RIGHT_OPEN)
+                servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_CLOSED);
             else
-                servoDeployGateRight.setPosition(gateROpen);
+                servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_OPEN);
             deployGateRightToggleTimer = 0;
         }
         deployGateRightToggleTimer++;
