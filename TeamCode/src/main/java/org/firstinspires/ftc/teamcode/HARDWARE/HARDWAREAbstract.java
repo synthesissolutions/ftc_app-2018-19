@@ -422,7 +422,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowSpeed(boolean active, double speed)
     {
         if (active) {
-            speed=speed/3.0;
+            speed=speed/2;
+            speed=speed/2;
         }
         return speed;
     }

@@ -24,7 +24,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         //BUTTONS
         double mecanumSpeed = -gamepad1.left_stick_y;
         double mecanumTurn = gamepad1.right_stick_x;
-        double mecanumStrafe = gamepad1.left_stick_x;
+        double mecanumStrafe = -gamepad1.left_stick_x;
 
         boolean mecanumSlowStrafe = gamepad1.left_trigger>.7;
         boolean mecanumSlowSpeed = gamepad1.left_trigger>.7;

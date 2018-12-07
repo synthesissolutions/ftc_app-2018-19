@@ -10,6 +10,7 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 //import com.vuforia.CameraDevice;
@@ -54,6 +55,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
     DcMotor motorHangTower;
+    Servo servoMarkerDelivery;
+
 
     int encoderAtStart =0;
     double turn;
@@ -283,6 +286,15 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
 
     protected void initializeServos() {//initialization of servo positions
+        servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
+        servoMarkerDelivery.setPosition(0.0);
+    }
+
+    public void setMarkerDeliveryPosition(double v)
+    {
+        if (servoMarkerDelivery != null) {
+            servoMarkerDelivery.setPosition(v);
+        }
     }
 
     public void initializePhoneGyro() {
@@ -722,14 +734,14 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
             driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-            turnDegrees(0.5, 85 - vuforiaGetDataWIP());
+            turnDegrees(-0.5, (180 - (85 - vuforiaGetDataWIP())));
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
             driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
             driveStraight(2*ONE_WHEEL_ROTATION/3, 0.3);
-            turnDegrees(0.5, 85 - vuforiaData);
+            turnDegrees(-0.5, 180 - (85 - vuforiaData));
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (left && !right && !middle) {
@@ -739,9 +751,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             driveStraight(ONE_WHEEL_ROTATION, 0.3);
             turnDegrees(0.5, 30);
             driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(0.5, 65 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, 0.5);
+            turnDegrees(0.5, 180 - (65 - vuforiaData));
+            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.5);
+            turnDegrees(0.4, 30);
+            driveStraight(ONE_WHEEL_ROTATION, 0.5);
         }
+        setMarkerDeliveryPosition(0.6);
     }
     public void hitMineralRedDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
