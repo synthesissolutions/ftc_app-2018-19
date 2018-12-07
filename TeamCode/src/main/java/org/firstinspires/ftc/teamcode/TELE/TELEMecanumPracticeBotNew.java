@@ -89,6 +89,9 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         // COLECT SPIN
         robot.controlCollectSpin(collectSpinSpeed);
 
+        // MARKER DELIVERY
+        robot.setMarkerDeliveryPosition(0.1);
+
         // TELEMETRY
         robot.displayErrors(telemetry);
     }

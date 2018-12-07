@@ -81,7 +81,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     Servo servoCollectSpin1;
     Servo servoCollectSpin2;
 
-
+    Servo servoMarkerDelivery;
 
     int hangTowerTargetPosition = 0;
     int hangTowerTimer=0;
@@ -212,6 +212,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoCollectSpin2.setPosition(0.5);
 
     }
+
+    public void initializeMarkerDelivery()
+    {
+        servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
+        servoMarkerDelivery.setPosition(0.0);
+    }
     //END OF INITIALIZATION METHODS
 
     public void initializePracticeBot(HardwareMap hwMap){
@@ -244,6 +250,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             initializePhoneGyro();
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING PHONE GYRO");
+        }
+
+        try {
+            initializeMarkerDelivery();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MARKER DELIVERY");
         }
     }
 
@@ -629,5 +641,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     public int collectSlidePosition() {
         return motorCollectSlide.getCurrentPosition();
+    }
+
+    public void setMarkerDeliveryPosition(double v)
+    {
+        if (servoMarkerDelivery != null) {
+            servoMarkerDelivery.setPosition(v);
+        }
+        else
+        {
+            addErrors("SERVO MARKER DELIVERY IS NULL");
+        }
     }
 }
