@@ -327,14 +327,14 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         offsetPhoneGyro();
 
         double minSpeed=maxSpeed/3;
-        if (Math.abs(minSpeed) < .15)
+        if (Math.abs(minSpeed) < .3)
         {
-            minSpeed = .15 * (Math.abs(minSpeed)/minSpeed);
+            minSpeed = .3 * (Math.abs(minSpeed)/minSpeed);
         }
 
-        if (Math.abs(maxSpeed) < .15)
+        if (Math.abs(maxSpeed) < .3)
         {
-            maxSpeed = .15 * (Math.abs(maxSpeed/maxSpeed));
+            maxSpeed = .3 * (Math.abs(maxSpeed/maxSpeed));
         }
 
         double currentSpeed=maxSpeed;
@@ -721,23 +721,26 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
-            driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
+            driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+            turnDegrees(0.5, 85 - vuforiaGetDataWIP());
+            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(4*ONE_WHEEL_ROTATION/5, 0.3);
-            turnDegrees(-0.2, 45 - vuforiaData);
-            driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
+            driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+            driveStraight(2*ONE_WHEEL_ROTATION/3, 0.3);
+            turnDegrees(0.5, 85 - vuforiaData);
+            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.2, 10);
+            driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+            turnDegrees(0.5, 10);
             driveStraight(ONE_WHEEL_ROTATION, 0.3);
-            turnDegrees(0.2, 10);
+            turnDegrees(0.5, 30);
             driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(-0.2, 65 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+            turnDegrees(0.5, 65 - vuforiaData);
+            driveStraight(3*ONE_WHEEL_ROTATION, 0.5);
         }
     }
     public void hitMineralRedDepot(boolean left, boolean middle, boolean right) {
