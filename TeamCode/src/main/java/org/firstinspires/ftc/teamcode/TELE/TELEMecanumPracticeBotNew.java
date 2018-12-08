@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREPracticeBot;
 
-@TeleOp(name="Mecanum Teleop PracticeBot New", group="TELE")
+@TeleOp(name="Jalepeno Teleop", group="TELE")
 public class TELEMecanumPracticeBotNew extends OpMode  {
 
     HARDWAREPracticeBot robot = new HARDWAREPracticeBot();

@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.WIP;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -93,6 +94,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @TeleOp(name="WIP Vuforia Drive", group ="Concept")
+@Disabled
 public class WIPVuforiaDrive extends LinearOpMode {
 
     /*

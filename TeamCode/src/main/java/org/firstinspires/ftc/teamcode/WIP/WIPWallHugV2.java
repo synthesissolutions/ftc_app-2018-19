@@ -28,6 +28,7 @@ package org.firstinspires.ftc.teamcode.WIP;/* Copyright (c) 2017 FIRST. All righ
  */
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -46,7 +47,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * @see <a href="http://modernroboticsinc.com/range-sensor">MR Range Sensor</a>
  */
 @TeleOp(name = "Wall Hug v2", group = "Sensor")
-//@Disabled   // comment out or remove this line to enable this opmode
+@Disabled   // comment out or remove this line to enable this opmode
 public class WIPWallHugV2 extends LinearOpMode {
 
     ModernRoboticsI2cRangeSensor rangeSensor1;

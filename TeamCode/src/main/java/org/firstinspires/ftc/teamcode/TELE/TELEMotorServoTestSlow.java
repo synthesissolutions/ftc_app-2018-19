@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TELE;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="TELE Motor Servo Slow Test", group="TELE")
-
+@Disabled
 public class TELEMotorServoTestSlow extends OpMode {
 
 	DcMotor motor1;

@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name = "AUTO Testing New Turn Method", group = "AUTO")
-
+@Disabled
 public class AUTOTestingNewTurnMethod extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{
         startAutoOp();

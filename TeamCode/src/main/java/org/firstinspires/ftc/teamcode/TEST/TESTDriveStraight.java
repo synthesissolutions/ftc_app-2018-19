@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.TEST;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.AUTO.AUTOMecanumAbstractPracticeBot;
 
 
 @Autonomous(name = "Drive Straight Test", group = "AUTO")
-
+@Disabled
 
 public class TESTDriveStraight extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{

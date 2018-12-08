@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.PreviousYear.AUTOMecanumAbstractCayenne;
 
 
 @Autonomous(name="AUTO Test", group="AUTO")
-
+@Disabled
 public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
     @Override
     public void runOpMode() throws InterruptedException {
