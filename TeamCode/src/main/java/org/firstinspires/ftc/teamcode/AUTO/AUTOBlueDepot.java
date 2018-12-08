@@ -12,35 +12,34 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         }
         //shutdownTfod();
         //double angle = 0;
-        setHangTowerPosition(-11111);
-        sleep(6666);
+        setHangTowerPosition(-11222);
+        sleep(6000);
         driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
         sleep(1000);
-        offsetPhoneGyro();
-        //setHangTowerPosition(0);
-        turnDegrees(-0.8, 15);
+//        setHangTowerPosition(0);
+        turnDegrees(-0.5, 27);
         sleep(1000);
-        driveStraight(1525, -0.5);
+        driveStraight(1220, -0.5);
         sleep(1000);
-        turnDegrees(-0.5, 90);
+        turnDegrees(-0.5, 80);
         sleep(500);
-        /*int x = tfodGet();
+        int x = tfodGet();
         while (x == -1) {
             x = tfodGet();
             sleep(500);
         }
         int y = -1;
-        if (x != 0) {*/
+        if (x != 0) {
             turnDegrees(0.5, 30);
-            /*while (y == -1) {
+            while (y == -1) {
                 sleep(500);
                 y = tfodGet();
-            }*/
-            turnDegrees(0.5, 45);
-      /*  }
-        else {*/
-//            turnDegrees(0.3, 80);
-        /*}
+            }
+            turnDegrees(0.5, 60);
+        }
+        else {
+            turnDegrees(0.5, 90);
+        }
         int z = -1;
         if (x != 0 && y != 0) {
             z = 0;
@@ -50,10 +49,11 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         }
         if (x != 0 && y == 0) {
             z = 2;
-        }*/
-        driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+        }
+        //driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+        //turnDegrees(0.5, 5);
         //turnDegrees(-0.3, 190);
-        int z =0;
+        //int z = 2;
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
             hitMineralBlueDepot(true, false, false);

@@ -244,7 +244,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount)) {
 
-            telemetry.addData("encoders:", motorFrontLeft.getCurrentPosition());
+            telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
             telemetry.update();
             /*if (!checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount-1000))
             {
@@ -261,7 +261,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                         *(distanceLeft(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount)/1000)
                         -.1*speed/Math.abs(speed));
             }*/
-        }
+        }/*
+        while (opModeIsActive() && checkDistance(motorFrontRight.getCurrentPosition(), encoderAtStart, moveAmount)) {
+
+            telemetry.addData("Right encoders:", motorFrontRight.getCurrentPosition());
+            telemetry.update();
+        }*/
         stopMotors();
     }
     protected void driveStraightOrTime(int moveamount, double speed, double starttime, double stoptime) {
@@ -336,7 +341,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     }
 
     public void turnDegrees(double maxSpeed, double degrees) {
-        offsetPhoneGyro();
 
         double minSpeed=maxSpeed/3;
         if (Math.abs(minSpeed) < .3)
@@ -733,51 +737,55 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-            turnDegrees(-0.5, (180 - (85 - vuforiaGetDataWIP())));
+           // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+            turnDegrees(0.5, 140 + vuforiaGetDataWIP());
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-            driveStraight(2*ONE_WHEEL_ROTATION/3, 0.3);
-            turnDegrees(-0.5, 180 - (85 - vuforiaData));
-            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
+           // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+            driveStraight(ONE_WHEEL_ROTATION, 0.3);
+            turnDegrees(0.5, 140 + vuforiaData);
+            driveStraight(3000, 0.5);
+            turnDegrees(15, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(0.5, 10);
-            driveStraight(ONE_WHEEL_ROTATION, 0.3);
-            turnDegrees(0.5, 30);
-            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(0.5, 180 - (65 - vuforiaData));
-            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.5);
-            turnDegrees(0.4, 30);
-            driveStraight(ONE_WHEEL_ROTATION, 0.5);
+            turnDegrees(-0.5,10);
+           // driveStraight(2820, 0.3);
+            turnDegrees(0.5, 170 - (65 - vuforiaData));
+            driveStraight(1530, 0.5);
+            turnDegrees(0.5, 90);
+            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         setMarkerDeliveryPosition(0.6);
     }
     public void hitMineralRedDepot(boolean left, boolean middle, boolean right) {
+
         if (right && !middle && !left) {
-            turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
-            driveStraight(5*ONE_WHEEL_ROTATION/2, -0.3);
+            double vuforiaData = vuforiaGetDataWIP();
+            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+            turnDegrees(0.5, 140 + vuforiaGetDataWIP());
+            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(4*ONE_WHEEL_ROTATION/5, 0.3);
-            turnDegrees(-0.2, 45 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+            driveStraight(ONE_WHEEL_ROTATION, 0.3);
+            turnDegrees(0.5, 140 + vuforiaData);
+            driveStraight(3000, 0.5);
+            turnDegrees(15, 0.5);
         }
         else if (left && !right && !middle) {
-            double vuforiaData = vuforiaGetDataWIP();
-            turnDegrees(0.2, 10);
-            driveStraight(ONE_WHEEL_ROTATION, 0.3);
-            turnDegrees(0.2, 20);
-            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(-0.2, 65 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+            double vuforiaData =vuforiaGetDataWIP();
+            turnDegrees(-0.5,10);
+            // driveStraight(2820, 0.3);
+            turnDegrees(0.5, 170 - (65 - vuforiaData));
+            driveStraight(1530, 0.5);
+            turnDegrees(0.5, 90);
+            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
+        setMarkerDeliveryPosition(0.6);
     }
     public void hitMineralRedCrater(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
