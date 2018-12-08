@@ -467,11 +467,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
 
         if (d) {
-            hangTowerTargetPosition = 0;
+            hangTowerTargetPosition = 10800;
         }
         if (u) {
 
-            hangTowerTargetPosition = -10800; //test this first
+            hangTowerTargetPosition = 0; //test this first
         }
 
         if (hangTowerTimer>12) {

@@ -92,7 +92,7 @@ import java.util.List;
  */
 
 @TeleOp(name="Concept: Vuforia Rover Nav", group ="Concept")
-@Disabled
+
 public class TESTVuforiaNav extends LinearOpMode {
 
     /*

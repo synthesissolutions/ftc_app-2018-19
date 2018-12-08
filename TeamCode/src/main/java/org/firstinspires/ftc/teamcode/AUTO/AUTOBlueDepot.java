@@ -18,27 +18,52 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         sleep(1000);
 //        setHangTowerPosition(0);
         turnDegrees(-0.5, 25);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+
         sleep(1000);
         driveStraight(1120, -0.5);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
         sleep(1000);
         turnDegrees(-0.5, 80);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
         sleep(500);
         int x = tfodGet();
-        while (x == -1) {
+        while (x == -1 && opModeIsActive()) {
             x = tfodGet();
             sleep(500);
         }
         int y = -1;
-        if (x != 0) {
+        if (x != 0 && opModeIsActive()) {
             turnDegrees(0.5, 30);
-            while (y == -1) {
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            while (y == -1 && opModeIsActive()) {
                 sleep(500);
                 y = tfodGet();
             }
             turnDegrees(0.5, 60);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         else {
             turnDegrees(0.5, 90);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         int z = -1;
         if (x != 0 && y != 0) {
