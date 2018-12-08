@@ -737,6 +737,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
+            driveStraight(50, 0.5);
            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
             turnDegrees(0.5, 140 + vuforiaGetDataWIP());
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
@@ -746,13 +747,13 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
             driveStraight(ONE_WHEEL_ROTATION, 0.3);
             turnDegrees(0.5, 140 + vuforiaData);
-            driveStraight(3000, 0.5);
+            driveStraight(3200, 0.5);
             turnDegrees(15, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
             turnDegrees(-0.5,10);
-           // driveStraight(2820, 0.3);
+           driveStraight(2820, 0.3);
             turnDegrees(0.5, 170 - (65 - vuforiaData));
             driveStraight(1530, 0.5);
             turnDegrees(0.5, 90);
@@ -778,9 +779,9 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(-0.5,10);
-            // driveStraight(2820, 0.3);
-            turnDegrees(0.5, 170 - (65 - vuforiaData));
+            turnDegrees(0.5,10);
+            driveStraight(2820, 0.3);
+            turnDegrees(0.5, 90 - (65 - vuforiaData));
             driveStraight(1530, 0.5);
             turnDegrees(0.5, 90);
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);

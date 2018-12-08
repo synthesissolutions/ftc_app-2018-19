@@ -17,9 +17,9 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
         sleep(1000);
 //        setHangTowerPosition(0);
-        turnDegrees(-0.5, 27);
+        turnDegrees(-0.5, 25);
         sleep(1000);
-        driveStraight(1220, -0.5);
+        driveStraight(1120, -0.5);
         sleep(1000);
         turnDegrees(-0.5, 80);
         sleep(500);

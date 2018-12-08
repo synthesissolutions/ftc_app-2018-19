@@ -16,7 +16,7 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         sleep(1000);
         turnDegrees(-0.5, 27);
         sleep(1000);
-        driveStraight(1220, -0.5);
+        driveStraight(1200, -0.5);
         sleep(1000);
         turnDegrees(-0.5, 80);
         sleep(500);
