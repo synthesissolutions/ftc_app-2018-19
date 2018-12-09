@@ -355,10 +355,25 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         double currentSpeed=maxSpeed;
 
-        degrees = degrees - ((degrees * .1) * (degrees/97));
+        double x = degrees * 0.1;
+        double y = degrees / 97.0;
+        double z = x * y;
+        telemetry.addData("degrees", degrees);
+        telemetry.addData("degrees * 0.1", x);
+        telemetry.addData("degrees / 97.0", y);
+        telemetry.addData("x * y", z);
+        telemetry.update();
+        sleep(6666);
+        degrees = degrees - ((degrees * 0.1) * (degrees/97.0));
         float startingHeading = getGyroCurrentHeading();
         double degreesTurned = Math.abs(startingHeading - getGyroCurrentHeading());
-
+        telemetry.addData("degrees: ", degrees);
+        telemetry.addData("starting Heading: ", startingHeading);
+        telemetry.addData("degrees Turned", degreesTurned);
+        telemetry.addData("getgyrocurrentheading: ", getGyroCurrentHeading());
+        telemetry.addData("gyrocurrentheading", gyroCurrentHeading);
+        telemetry.update();
+        sleep(10000);
         motorFrontLeft.setPower(-currentSpeed);
         motorBackLeft.setPower(-currentSpeed);
         motorFrontRight.setPower(currentSpeed);
@@ -388,6 +403,18 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
 
         stopMotors();
+        telemetry.addData("NEW degrees: ", degrees);
+//        telemetry.addData("starting Heading: ", startingHeading);
+        telemetry.addData("NEW degrees Turned", degreesTurned);
+        telemetry.addData("getgyrocurrentheading: ", getGyroCurrentHeading());
+        telemetry.addData("gyrocurrentheading", gyroCurrentHeading);
+        telemetry.update();
+        sleep(10000);
+    }
+    public void getGyroReading() {
+        telemetry.addData("current gyro: ", getGyroCurrentHeading());
+        telemetry.update();
+        //sleep(5000);
     }
 
     protected void startAutoOp() throws InterruptedException {
@@ -737,13 +764,14 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
+            sleep(5000);
             driveStraight(150, -0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-            turnDegrees(0.5, 50 + vuforiaGetDataWIP());
+            turnDegrees(0.5, 130 + vuforiaGetDataWIP());
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -756,23 +784,19 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
+            sleep(5000);
            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-            driveStraight(1100, 0.3);
+            driveStraight(1220, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 50 + vuforiaData);
+            turnDegrees(0.5, 135 + vuforiaData);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            driveStraight(3300, 0.5);
-            if (!opModeIsActive()) {
-                stopMotors();
-                return;
-            }
-            turnDegrees(15, 0.5);
+            driveStraight(3500, 0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -780,17 +804,18 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.5,10);
-            if (!opModeIsActive()) {
-                stopMotors();
-                return;
-            }
+            sleep(5000);
+//            /**/turnDegrees(0.5,10);
+//            if (!opModeIsActive()) {
+//                stopMotors();
+//                return;
+//            }
            driveStraight(2820, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 90 - (65 - vuforiaData));
+            turnDegrees(0.5, 180 - (45 - vuforiaData));
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -800,12 +825,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 90);
+            turnDegrees(0.5, 30);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
+            driveStraight(700, 0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -817,26 +842,26 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-//            turnDegrees(0.5, 140 + vuforiaGetDataWIP());
-            turnDegrees(0.5, 111);
+            sleep(5000);
+            driveStraight(150, -0.3);
+//            turnDegrees(0.5, vuforiaGetDataWIP() - 45);
+            turnDegrees(0.5, 90);
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+            sleep(5000);
             driveStraight(1120, 0.3);
-//            turnDegrees(0.5, vuforiaData-50);
-            turnDegrees(0.5, 100);
+            turnDegrees(0.5, 95);
             driveStraight(3300, 0.5);
-            turnDegrees(15, 0.5);
+            turnDegrees(0.5, 15);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
+            sleep(5000);
             turnDegrees(0.5,10);
             driveStraight(2820, 0.3);
-//            turnDegrees(0.5, 90 - (65 - vuforiaData));
-            turnDegrees(0.5, 90);
+            turnDegrees(0.5, 95);
             driveStraight(1530, 0.5);
             turnDegrees(0.5, 90);
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
