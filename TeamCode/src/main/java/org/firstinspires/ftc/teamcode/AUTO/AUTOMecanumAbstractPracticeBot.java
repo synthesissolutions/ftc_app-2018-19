@@ -355,25 +355,11 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         double currentSpeed=maxSpeed;
 
-        double x = degrees * 0.1;
-        double y = degrees / 97.0;
-        double z = x * y;
-        telemetry.addData("degrees", degrees);
-        telemetry.addData("degrees * 0.1", x);
-        telemetry.addData("degrees / 97.0", y);
-        telemetry.addData("x * y", z);
-        telemetry.update();
-        sleep(6666);
+
         degrees = degrees - ((degrees * 0.1) * (degrees/97.0));
         float startingHeading = getGyroCurrentHeading();
         double degreesTurned = Math.abs(startingHeading - getGyroCurrentHeading());
-        telemetry.addData("degrees: ", degrees);
-        telemetry.addData("starting Heading: ", startingHeading);
-        telemetry.addData("degrees Turned", degreesTurned);
-        telemetry.addData("getgyrocurrentheading: ", getGyroCurrentHeading());
-        telemetry.addData("gyrocurrentheading", gyroCurrentHeading);
-        telemetry.update();
-        sleep(10000);
+
         motorFrontLeft.setPower(-currentSpeed);
         motorBackLeft.setPower(-currentSpeed);
         motorFrontRight.setPower(currentSpeed);
@@ -403,13 +389,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
 
         stopMotors();
-        telemetry.addData("NEW degrees: ", degrees);
-//        telemetry.addData("starting Heading: ", startingHeading);
-        telemetry.addData("NEW degrees Turned", degreesTurned);
-        telemetry.addData("getgyrocurrentheading: ", getGyroCurrentHeading());
-        telemetry.addData("gyrocurrentheading", gyroCurrentHeading);
-        telemetry.update();
-        sleep(10000);
+
     }
     public void getGyroReading() {
         telemetry.addData("current gyro: ", getGyroCurrentHeading());
@@ -764,7 +744,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            sleep(5000);
             driveStraight(150, -0.5);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -784,7 +763,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            sleep(5000);
            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
             driveStraight(1220, 0.3);
             if (!opModeIsActive()) {
@@ -804,7 +782,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            sleep(5000);
 //            /**/turnDegrees(0.5,10);
 //            if (!opModeIsActive()) {
 //                stopMotors();
@@ -842,26 +819,24 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            sleep(5000);
-            driveStraight(150, -0.3);
-//            turnDegrees(0.5, vuforiaGetDataWIP() - 45);
-            turnDegrees(0.5, 90);
+            driveStraight(250, -0.3);
+            turnDegrees(0.5, 140 - (180 - vuforiaData));
+//            turnDegrees(0.5, 90);
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            sleep(5000);
             driveStraight(1120, 0.3);
-            turnDegrees(0.5, 95);
+            turnDegrees(0.5, 140 - (180 - vuforiaData));
+//            turnDegrees(0.5, 95);
             driveStraight(3300, 0.5);
             turnDegrees(0.5, 15);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            sleep(5000);
             turnDegrees(0.5,10);
             driveStraight(2820, 0.3);
-            turnDegrees(0.5, 95);
+            turnDegrees(0.5, 180 - (45 - (180 - vuforiaData)));
             driveStraight(1530, 0.5);
             turnDegrees(0.5, 90);
             driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
