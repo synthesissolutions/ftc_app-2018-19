@@ -10,32 +10,89 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         if (opModeIsActive()) {
             tfodActivate();
         }
+        //shutdownTfod();
+        //double angle = 0;
         setHangTowerPosition(-11222);
-        sleep(6000);
-        driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-        sleep(1000);
-        turnDegrees(-0.5, 27);
-        sleep(1000);
-        driveStraight(1220, -0.5);
-        sleep(1000);
-        turnDegrees(-0.5, 80);
+        sleep(5555);
+        driveStraight(610, 0.3);
+        setHangTowerPosition(0);
+        sleep(750);
+        setHangTowerPosition(0);
+        turnDegrees(-0.5, 40);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+
+        sleep(750);
+        driveStraight(850, -0.5);
+        setHangTowerPosition(-11222);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        sleep(750);
+        turnDegrees(-0.5, 79);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        /*
         sleep(500);
+        driveStraight(150, 0.25);
+        sleep(100);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }*/
         int x = tfodGet();
-        while (x == -1) {
+        while (x == -1 && opModeIsActive()) {
             x = tfodGet();
             sleep(500);
         }
+        /*
+        driveStraight(150, -0.25);
+        sleep(100);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }*/
         int y = -1;
-        if (x != 0) {
+        if (x != 0 && opModeIsActive()) {
             turnDegrees(0.5, 30);
-            while (y == -1) {
+            sleep(100);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            driveStraight(275, 0.25);
+            sleep(100);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            while (y == -1 && opModeIsActive()) {
                 sleep(500);
                 y = tfodGet();
             }
-            turnDegrees(0.5, 60);
+            driveStraight(275, -0.25);
+            sleep(100);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            turnDegrees(0.5, 58);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         else {
             turnDegrees(0.5, 90);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         int z = -1;
         if (x != 0 && y != 0) {
@@ -47,7 +104,11 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         if (x != 0 && y == 0) {
             z = 2;
         }
-
+        //driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
+        //turnDegrees(0.5, 5);
+        //turnDegrees(-0.3, 190);
+        //int z = 2;
+        //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
             hitMineralRedCrater(true, false, false);
         }

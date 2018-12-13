@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.AUTO;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+@Autonomous(name = "AUTO Blue Crater Start", group = "AUTO")
+public class AutoBlueCrater extends AUTOMecanumAbstractPracticeBot{
 
-
-@Autonomous(name = "AUTO Red Depot Start", group = "AUTO")
-
-public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         startAutoOp();
         if (opModeIsActive()) {
             tfodActivate();
@@ -18,14 +17,14 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         setHangTowerPosition(0);
         sleep(750);
         setHangTowerPosition(0);
-        turnDegrees(-0.5, 33);
+        turnDegrees(-0.5, 40);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
 
         sleep(750);
-        driveStraight(1090, -0.5);
+        driveStraight(850, -0.5);
         setHangTowerPosition(-11222);
         if (!opModeIsActive()) {
             stopMotors();
@@ -110,13 +109,13 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         //int z = 2;
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
-            hitMineralRedDepot(true, false, false);
+            hitMineralBlueCrater(true, false, false);
         }
         else if (z == 1) {
-            hitMineralRedDepot(false, true, false);
+            hitMineralBlueCrater(false, true, false);
         }
         else {
-            hitMineralRedDepot(false, false, true);
+            hitMineralBlueCrater(false, false, true);
         }
         sleep(6000);
     }

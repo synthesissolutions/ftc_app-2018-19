@@ -59,7 +59,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     final public static double SERVO_DEPLOY_GATE_LEFT_OPEN = 0.17;
     final public static double SERVO_DEPLOY_GATE_LEFT_CLOSED = 0.63;
 
-    final public static double SERVO_DEPLOY_POUR_UNPOURED = 0.2;
+    final public static double SERVO_DEPLOY_POUR_UNPOURED = 0.25;
+    final public static double SERVO_DEPLOY_POUR_PRE_DOWN = 0.3;
     final public static double SERVO_DEPLOY_POUR_POURED = .65;
 
     DcMotor motorFrontLeft;
@@ -467,7 +468,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
 
         if (d) {
-            hangTowerTargetPosition = 10800;
+            hangTowerTargetPosition = 11200;
         }
         if (u) {
 
@@ -496,6 +497,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             deployTowerTargetPosition += vc*6;
         }
 
+        if (deployTowerTargetPosition > 0) deployTowerTargetPosition = 0;
+
         if (deployTowerTimer>12) {
             setDeployTowerPosition(deployTowerTargetPosition);
             deployTowerTimer=0;
@@ -515,8 +518,17 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     public void controlDeployDumper (double d, boolean l, boolean r, boolean b)
     {
-        servoDeployPour.setPosition(SERVO_DEPLOY_POUR_UNPOURED + (SERVO_DEPLOY_POUR_POURED - SERVO_DEPLOY_POUR_UNPOURED) * d);
-
+        if (deployTowerPosition() < -1000) {
+            servoDeployPour.setPosition(SERVO_DEPLOY_POUR_UNPOURED + (SERVO_DEPLOY_POUR_POURED - SERVO_DEPLOY_POUR_UNPOURED) * d);
+        }
+        else if (deployTowerPosition() > -100)
+        {
+            servoDeployPour.setPosition(SERVO_DEPLOY_POUR_UNPOURED);
+        }
+        else
+        {
+            servoDeployPour.setPosition(SERVO_DEPLOY_POUR_PRE_DOWN);
+        }
         if (d == 0)
         {
             servoDeployGateRight.setPosition(SERVO_DEPLOY_GATE_RIGHT_OPEN);
@@ -562,6 +574,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             deployGateRightToggleTimer = 0;
         }
         deployGateRightToggleTimer++;
+
     }
 
     public void controlCollectRotate(boolean i, boolean o)
@@ -605,19 +618,20 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         temp = collectSlideTargetPosition;
 
         if (Math.abs(vc) > 0.1) {
-            collectSlideTargetPosition += vc * 6 ;
+            collectSlideTargetPosition += vc * -6 ;
         }
 
-        if (temp < collectSlideTargetPosition)
+        if (temp > collectSlideTargetPosition)
         {
-            motorCollectSlide.setPower(0.2);
-        }
-        if (temp-3 > collectSlideTargetPosition)
-        {
-            motorCollectSlide.setPower(0.5);
+            motorCollectSlide.setPower(0.3);
         }
 
-        if (collectSlideTargetPosition > 0)
+        if (temp+3 < collectSlideTargetPosition)
+        {
+            motorCollectSlide.setPower(-0.3);
+        }
+
+        if (collectSlideTargetPosition < 0)
             collectSlideTargetPosition = 0;
         if (collectSlideTimer>12) {
             setCollectSlidePosition(collectSlideTargetPosition);
@@ -643,6 +657,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public int collectSlidePosition() {
         return motorCollectSlide.getCurrentPosition();
     }
+
+    public int deployTowerPosition() { return  motorDeployTower.getCurrentPosition();}
 
     public void setMarkerDeliveryPosition(double v)
     {

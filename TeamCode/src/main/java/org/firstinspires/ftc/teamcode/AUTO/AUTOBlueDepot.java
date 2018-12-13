@@ -14,32 +14,46 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         //double angle = 0;
         setHangTowerPosition(-11222);
         sleep(5555);
-        driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
+        driveStraight(610, 0.3);
+        setHangTowerPosition(0);
         sleep(750);
-//        setHangTowerPosition(0);
-        turnDegrees(-0.5, 25);
+        setHangTowerPosition(0);
+        turnDegrees(-0.5, 33);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
 
         sleep(750);
-        driveStraight(1120, -0.5);
+        driveStraight(1090, -0.5);
+        setHangTowerPosition(-11222);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
         sleep(750);
-        turnDegrees(-0.5, 80);
+        turnDegrees(-0.5, 79);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
         sleep(500);
+        driveStraight(150, 0.25);
+        sleep(100);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
         int x = tfodGet();
         while (x == -1 && opModeIsActive()) {
             x = tfodGet();
             sleep(500);
+        }
+        driveStraight(150, -0.25);
+        sleep(100);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
         }
         int y = -1;
         if (x != 0 && opModeIsActive()) {
@@ -49,7 +63,7 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
                 stopMotors();
                 return;
             }
-            driveStraight(150, 0.25);
+            driveStraight(275, 0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -59,13 +73,13 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
                 sleep(500);
                 y = tfodGet();
             }
-            driveStraight(150, -0.25);
+            driveStraight(275, -0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 60);
+            turnDegrees(0.5, 58);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;

@@ -750,12 +750,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 return;
             }
            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-            turnDegrees(0.5, 130 + vuforiaGetDataWIP());
+            turnDegrees(0.5, 40 + vuforiaGetDataWIP());
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            driveStraight(3*ONE_WHEEL_ROTATION, 0.5);
+            driveStraight(3660, 0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -764,17 +764,27 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-            driveStraight(1220, 0.3);
+            driveStraight(1300, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 135 + vuforiaData);
+            turnDegrees(0.5, 53 + vuforiaData);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            driveStraight(3500, 0.5);
+            driveStraight(2000, 0.5);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            turnDegrees(0.5, 10);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            driveStraight(1400, 0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -787,12 +797,13 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 //                stopMotors();
 //                return;
 //            }
-           driveStraight(2820, 0.3);
+            turnDegrees(0.5, 7);
+            driveStraight(2580, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 180 - (45 - vuforiaData));
+            turnDegrees(0.5, 90 - (45 - vuforiaData));
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -802,12 +813,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 30);
+            turnDegrees(0.5, 45);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            driveStraight(700, 0.5);
+            driveStraight(2000, 0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -819,49 +830,75 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            driveStraight(250, -0.3);
-            turnDegrees(0.5, 140 - (180 - vuforiaData));
+            driveStraight(500, -0.3);
+            turnDegrees(0.5, (225 + vuforiaData));
 //            turnDegrees(0.5, 90);
-            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
+            driveStraight(3000, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(1120, 0.3);
-            turnDegrees(0.5, 140 - (180 - vuforiaData));
+            driveStraight(800, 0.3);
+            turnDegrees(0.5, 245 + vuforiaData);
 //            turnDegrees(0.5, 95);
-            driveStraight(3300, 0.5);
-            turnDegrees(0.5, 15);
+            driveStraight(3420, 0.5);
+            turnDegrees(0.5, 20);
+            driveStraight(420, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
             turnDegrees(0.5,10);
-            driveStraight(2820, 0.3);
-            turnDegrees(0.5, 180 - (45 - (180 - vuforiaData)));
-            driveStraight(1530, 0.5);
-            turnDegrees(0.5, 90);
-            driveStraight(5*ONE_WHEEL_ROTATION/2, 0.5);
+            driveStraight(2300, 0.3);
+            turnDegrees(0.5, 210 + vuforiaData);
+            driveStraight(1200, 0.5);
+            turnDegrees(0.5, 60);
+            driveStraight(2222, 0.5);
         }
         setMarkerDeliveryPosition(0.6);
     }
     public void hitMineralRedCrater(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
-            turnDegrees(-0.2, 105 - vuforiaGetDataWIP());
-            driveStraight(3*ONE_WHEEL_ROTATION/2, -0.3);
+            double vuforiaData = vuforiaGetDataWIP();
+            driveStraight(500, -0.3);
+            turnDegrees(0.5, (245 - vuforiaData));
+//            turnDegrees(0.5, 90);
+            driveStraight(1000, 0.5);
         }
         else if (middle && !right && !left) {
-            double vuforiaData = vuforiaGetDataWIP();
-            driveStraight(4*ONE_WHEEL_ROTATION/5, 0.3);
-            turnDegrees(-0.2, 105 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+            double vuforiaData =vuforiaGetDataWIP();
+            driveStraight(800, 0.3);
+            turnDegrees(0.5, 270 - vuforiaData);
+//            turnDegrees(0.5, 95);
+            driveStraight(1500, 0.5);
         }
         else if (left && !right && !middle) {
+            double vuforiaData =vuforiaGetDataWIP();
+            turnDegrees(0.5,15);
+            driveStraight(2150, 0.3);
+            turnDegrees(0.5, 225 - vuforiaData);
+            driveStraight(1500, 0.5);
+        }
+    }
+    public void hitMineralBlueCrater(boolean left, boolean middle, boolean right) {
+        if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            turnDegrees(0.2, 10);
-            driveStraight(ONE_WHEEL_ROTATION, 0.3);
-            turnDegrees(0.2, 10);
-            driveStraight(3*ONE_WHEEL_ROTATION/2, 0.3);
-            turnDegrees(-0.2, 125 - vuforiaData);
-            driveStraight(3*ONE_WHEEL_ROTATION, -0.3);
+            driveStraight(500, -0.3);
+            turnDegrees(0.5, (65 - vuforiaData));
+//            turnDegrees(0.5, 90);
+            driveStraight(1000, 0.5);
+        }
+        else if (middle && !right && !left) {
+            double vuforiaData =vuforiaGetDataWIP();
+            driveStraight(800, 0.3);
+            turnDegrees(0.5, 90 - vuforiaData);
+//            turnDegrees(0.5, 95);
+            driveStraight(1500, 0.5);
+        }
+        else if (left && !right && !middle) {
+            double vuforiaData =vuforiaGetDataWIP();
+            turnDegrees(0.5,15);
+            driveStraight(2150, 0.3);
+            turnDegrees(0.5, 45 - vuforiaData);
+            driveStraight(1500, 0.5);
         }
     }
     public void tfodInit() {
