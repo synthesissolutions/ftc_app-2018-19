@@ -618,20 +618,10 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         temp = collectSlideTargetPosition;
 
         if (Math.abs(vc) > 0.1) {
-            collectSlideTargetPosition += vc * -6 ;
+            collectSlideTargetPosition += vc * 6 ;
         }
 
-        if (temp > collectSlideTargetPosition)
-        {
-            motorCollectSlide.setPower(0.3);
-        }
-
-        if (temp+3 < collectSlideTargetPosition)
-        {
-            motorCollectSlide.setPower(-0.3);
-        }
-
-        if (collectSlideTargetPosition < 0)
+        if (collectSlideTargetPosition > 0)
             collectSlideTargetPosition = 0;
         if (collectSlideTimer>12) {
             setCollectSlidePosition(collectSlideTargetPosition);
