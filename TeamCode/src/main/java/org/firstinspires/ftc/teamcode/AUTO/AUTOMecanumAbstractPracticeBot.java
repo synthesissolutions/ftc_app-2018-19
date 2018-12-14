@@ -56,6 +56,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     DcMotor motorBackLeft;
     DcMotor motorHangTower;
     Servo servoMarkerDelivery;
+    Servo cameraWiper;
 
 
     int encoderAtStart =0;
@@ -293,8 +294,16 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     protected void initializeServos() {//initialization of servo positions
         servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
         servoMarkerDelivery.setPosition(0.0);
+        cameraWiper = hardwareMap.servo.get("cameraWiper");
+        cameraWiper.setPosition(0.0);
     }
+    public void wipeCamera() {
 
+            cameraWiper.setPosition(0.49);
+            sleep(1000);
+            cameraWiper.setPosition(0.0);
+
+    }
     public void setMarkerDeliveryPosition(double v)
     {
         if (servoMarkerDelivery != null) {
@@ -860,7 +869,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             double vuforiaData = vuforiaGetDataWIP();
             driveStraight(500, -0.3);
             turnDegrees(0.5, (240 - vuforiaData));
-//            turnDegrees(0.5, 90);
             driveStraight(1000, 0.5);
         }
         else if (middle && !right && !left) {
@@ -868,7 +876,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             turnDegrees(0.3, 25);
             driveStraight(900, 0.3);
             turnDegrees(0.5, 238 - vuforiaData);
-//            turnDegrees(0.5, 95);
             driveStraight(1500, 0.5);
         }
         else if (left && !right && !middle) {
@@ -876,7 +883,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             turnDegrees(0.3, 25);
 //            turnDegrees(0.5,15);
             driveStraight(2150, 0.3);
-            turnDegrees(0.5, 200 - vuforiaData);
+            turnDegrees(0.5, 215 - vuforiaData);
             driveStraight(800, 0.5);
         }
     }
@@ -907,6 +914,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.80;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
