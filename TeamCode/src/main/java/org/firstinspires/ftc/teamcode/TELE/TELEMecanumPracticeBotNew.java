@@ -39,6 +39,8 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         boolean hangTowerDown=gamepad1.b;
         boolean hangTowerUp=gamepad1.a;
 
+        boolean markerDeliveryDrop = gamepad1.start;
+
         double deployTowerControl = gamepad2.left_stick_y;
 
         double deployDumpSensetive = Math.max(gamepad2.left_trigger,gamepad2.right_trigger);
@@ -90,10 +92,13 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         robot.controlCollectSpin(collectSpinSpeed);
 
         // MARKER DELIVERY
-        robot.setMarkerDeliveryPosition(0.1);
+        robot.controlMarkerDelivery(markerDeliveryDrop);
 
         // TELEMETRY
-        robot.displayErrors(telemetry);
+        //robot.displayErrors(telemetry);
+        telemetry.addData("TOWER POS:", robot.deployTowerPosition());
+        telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
+        telemetry.update();
     }
 
     @Override

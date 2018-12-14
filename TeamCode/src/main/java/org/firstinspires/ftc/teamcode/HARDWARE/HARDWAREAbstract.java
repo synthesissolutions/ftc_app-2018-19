@@ -179,7 +179,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
 
         motorDeployTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorDeployTower.setPower(0.6);
+        motorDeployTower.setPower(1);
 
         servoDeployPour = hardwareMap.servo.get("servoDeployPour");
         servoDeployGateLeft = hardwareMap.servo.get("servoDeployGateLeft");
@@ -258,6 +258,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING MARKER DELIVERY");
         }
+    }
+
+    public void controlMarkerDelivery(boolean j)
+    {
+        if (j)
+        {
+            setMarkerDeliveryPosition(0.6);
+        }
+        else setMarkerDeliveryPosition(0.1);
+
     }
 
     public double getGyroPos0360()
@@ -423,8 +433,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowSpeed(boolean active, double speed)
     {
         if (active) {
-            speed=speed/2;
-            speed=speed/2;
+            speed=speed/1.4;
+            speed=speed/1.4;
         }
         return speed;
     }
@@ -432,7 +442,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowStrafe(boolean active, double strafe)
     {
         if (active) {
-            strafe=strafe/1.5;
+            strafe=strafe/1.4;
         }
         return strafe;
     }
@@ -441,7 +451,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     {
         if (active)
         {
-            turn=turn/1.50;
+            turn=turn/1.20;
         }
         return turn;
     }
@@ -493,11 +503,15 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
 
     public void controlDeployTower(double vc) {
-        if (Math.abs(vc) > 0.1) {
-            deployTowerTargetPosition += vc*6;
+        if (vc > 0.9) {
+            motorDeployTower.setPower(0.6);
+            deployTowerTargetPosition =0;
         }
-
-        if (deployTowerTargetPosition > 0) deployTowerTargetPosition = 0;
+        if (vc < -0.9)
+        {
+            motorDeployTower.setPower(1);
+            deployTowerTargetPosition = -2420;
+        }
 
         if (deployTowerTimer>12) {
             setDeployTowerPosition(deployTowerTargetPosition);
@@ -613,16 +627,14 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
 
     public void controlCollectSlide(double vc) {
-        int temp = 0;
-
-        temp = collectSlideTargetPosition;
-
         if (Math.abs(vc) > 0.1) {
-            collectSlideTargetPosition += vc * 6 ;
+            collectSlideTargetPosition += vc * 10 ;
         }
 
         if (collectSlideTargetPosition > 0)
             collectSlideTargetPosition = 0;
+        if (collectSlideTargetPosition < -1200)
+            collectSlideTargetPosition = -1200;
         if (collectSlideTimer>12) {
             setCollectSlidePosition(collectSlideTargetPosition);
             collectSlideTimer=0;

@@ -859,23 +859,25 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
             driveStraight(500, -0.3);
-            turnDegrees(0.5, (245 - vuforiaData));
+            turnDegrees(0.5, (240 - vuforiaData));
 //            turnDegrees(0.5, 90);
             driveStraight(1000, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(800, 0.3);
-            turnDegrees(0.5, 270 - vuforiaData);
+            turnDegrees(0.3, 25);
+            driveStraight(900, 0.3);
+            turnDegrees(0.5, 238 - vuforiaData);
 //            turnDegrees(0.5, 95);
             driveStraight(1500, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.5,15);
+            turnDegrees(0.3, 25);
+//            turnDegrees(0.5,15);
             driveStraight(2150, 0.3);
-            turnDegrees(0.5, 225 - vuforiaData);
-            driveStraight(1500, 0.5);
+            turnDegrees(0.5, 200 - vuforiaData);
+            driveStraight(800, 0.5);
         }
     }
     public void hitMineralBlueCrater(boolean left, boolean middle, boolean right) {
@@ -944,6 +946,36 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             }
         }
         return -1;
+    }
+    public int tfodGetMultiple() {
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        if (updatedRecognitions != null) {
+            telemetry.addData("# Object Detected", updatedRecognitions.size());
+            if (updatedRecognitions.size() == 3) {
+                int goldMineralX = -1;
+                int silverMineral1X = -1;
+                int silverMineral2X = -1;
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                        goldMineralX = (int) recognition.getLeft();
+                    } else if (silverMineral1X == -1) {
+                        silverMineral1X = (int) recognition.getLeft();
+                    } else {
+                        silverMineral2X = (int) recognition.getLeft();
+                    }
+                }
+                if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                    if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                        return 0;
+                    } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                        return 2;
+                    } else {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 2;
     }
     public void shutdownTfod() {
         tfod.shutdown();

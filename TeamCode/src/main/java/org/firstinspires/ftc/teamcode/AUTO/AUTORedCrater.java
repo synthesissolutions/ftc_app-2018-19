@@ -32,31 +32,23 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             return;
         }
         sleep(750);
-        turnDegrees(-0.5, 79);
+        turnDegrees(0.5, 40);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        driveStraight(3700, 0.4);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
         /*
-        sleep(500);
-        driveStraight(150, 0.25);
-        sleep(100);
-        if (!opModeIsActive()) {
-            stopMotors();
-            return;
-        }*/
         int x = tfodGet();
         while (x == -1 && opModeIsActive()) {
             x = tfodGet();
             sleep(500);
         }
-        /*
-        driveStraight(150, -0.25);
-        sleep(100);
-        if (!opModeIsActive()) {
-            stopMotors();
-            return;
-        }*/
+
         int y = -1;
         if (x != 0 && opModeIsActive()) {
             turnDegrees(0.5, 30);
@@ -104,11 +96,33 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         if (x != 0 && y == 0) {
             z = 2;
         }
-        //driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-        //turnDegrees(0.5, 5);
-        //turnDegrees(-0.3, 190);
-        //int z = 2;
-        //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
+        */
+        turnDegrees(-0.3, 19);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        int z = -1;
+        sleep(666);
+        while (z == -1) {
+            z = tfodGetMultiple();
+            sleep(666);
+        }
+        turnDegrees(0.3, 16);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        driveStraight(3700, -0.5);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
+        turnDegrees(-0.3, 25);
+        if (!opModeIsActive()) {
+            stopMotors();
+            return;
+        }
         if (z == 0) {
             hitMineralRedCrater(true, false, false);
         }
@@ -121,3 +135,4 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         sleep(6000);
     }
 }
+
