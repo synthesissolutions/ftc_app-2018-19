@@ -56,6 +56,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     DcMotor motorBackLeft;
     DcMotor motorHangTower;
     Servo servoMarkerDelivery;
+    Servo cameraWiper;
 
 
     int encoderAtStart =0;
@@ -293,8 +294,16 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     protected void initializeServos() {//initialization of servo positions
         servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
         servoMarkerDelivery.setPosition(0.0);
+        cameraWiper = hardwareMap.servo.get("cameraWiper");
+        cameraWiper.setPosition(0.0);
     }
+    public void wipeCamera() {
 
+            cameraWiper.setPosition(0.49);
+            sleep(1000);
+            cameraWiper.setPosition(0.0);
+
+    }
     public void setMarkerDeliveryPosition(double v)
     {
         if (servoMarkerDelivery != null) {
@@ -859,23 +868,23 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
             driveStraight(500, -0.3);
-            turnDegrees(0.5, (245 - vuforiaData));
-//            turnDegrees(0.5, 90);
+            turnDegrees(0.5, (240 - vuforiaData));
             driveStraight(1000, 0.5);
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(800, 0.3);
-            turnDegrees(0.5, 270 - vuforiaData);
-//            turnDegrees(0.5, 95);
+            turnDegrees(0.3, 25);
+            driveStraight(900, 0.3);
+            turnDegrees(0.5, 238 - vuforiaData);
             driveStraight(1500, 0.5);
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.5,15);
+            turnDegrees(0.3, 25);
+//            turnDegrees(0.5,15);
             driveStraight(2150, 0.3);
-            turnDegrees(0.5, 225 - vuforiaData);
-            driveStraight(1500, 0.5);
+            turnDegrees(0.5, 215 - vuforiaData);
+            driveStraight(800, 0.5);
         }
     }
     public void hitMineralBlueCrater(boolean left, boolean middle, boolean right) {
@@ -905,6 +914,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.80;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
@@ -944,6 +954,36 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             }
         }
         return -1;
+    }
+    public int tfodGetMultiple() {
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        if (updatedRecognitions != null) {
+            telemetry.addData("# Object Detected", updatedRecognitions.size());
+            if (updatedRecognitions.size() == 3) {
+                int goldMineralX = -1;
+                int silverMineral1X = -1;
+                int silverMineral2X = -1;
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                        goldMineralX = (int) recognition.getLeft();
+                    } else if (silverMineral1X == -1) {
+                        silverMineral1X = (int) recognition.getLeft();
+                    } else {
+                        silverMineral2X = (int) recognition.getLeft();
+                    }
+                }
+                if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                    if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                        return 0;
+                    } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                        return 2;
+                    } else {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 2;
     }
     public void shutdownTfod() {
         tfod.shutdown();

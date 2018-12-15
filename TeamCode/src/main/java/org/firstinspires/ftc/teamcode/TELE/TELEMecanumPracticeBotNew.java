@@ -39,7 +39,9 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         boolean hangTowerDown=gamepad1.b;
         boolean hangTowerUp=gamepad1.a;
 
-        double deployTowerControl = gamepad2.right_stick_y;
+        boolean markerDeliveryDrop = gamepad1.start;
+
+        double deployTowerControl = gamepad2.left_stick_y;
 
         double deployDumpSensetive = Math.max(gamepad2.left_trigger,gamepad2.right_trigger);
         boolean deployGateLeft = gamepad2.right_bumper;
@@ -50,7 +52,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
 
         boolean collectRotateOut = gamepad2.x;
 
-        double collectSlideControl = gamepad2.left_stick_y;
+        double collectSlideControl = gamepad2.right_stick_y;
 
         double collectSpinSpeed = 0.5;
         if (gamepad2.b || gamepad2.a)
@@ -72,8 +74,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         robot.controlMecanumWheels(mecanumSpeed,mecanumTurn,mecanumStrafe,mecanumSlowStrafe,mecanumSlowSpeed,mecanumSlowTurn);
 
         //HANG TOWER
-        //robot.controlHangTower(hangTowerControl,hangTowerDown,hangTowerUp);
-        robot.controlHangTowerSimple(hangTowerControl);
+        robot.controlHangTower(hangTowerControl,hangTowerDown,hangTowerUp);
 
         // DEPLOY TOWER
         robot.controlDeployTower(deployTowerControl);
@@ -85,17 +86,19 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         robot.controlCollectRotate(collectRotateIn, collectRotateOut);
 
         // COLLECT SLIDE
-//        robot.controlCollectSlide(collectSlideControl);
-        robot.controlCollectSlideSimple(collectSlideControl);
+        robot.controlCollectSlide(collectSlideControl);
 
         // COLECT SPIN
         robot.controlCollectSpin(collectSpinSpeed);
 
         // MARKER DELIVERY
-        robot.setMarkerDeliveryPosition(0.1);
+        robot.controlMarkerDelivery(markerDeliveryDrop);
 
         // TELEMETRY
-        robot.displayErrors(telemetry);
+        //robot.displayErrors(telemetry);
+        telemetry.addData("TOWER POS:", robot.deployTowerPosition());
+        telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
+        telemetry.update();
     }
 
     @Override
