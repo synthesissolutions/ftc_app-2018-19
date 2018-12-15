@@ -161,12 +161,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void initializeHang()
     {
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
-        motorHangTower.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorHangTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorHangTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        motorHangTower.setDirection(DcMotorSimple.Direction.REVERSE);
+//        motorHangTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorHangTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorHangTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorHangTower.setPower(1.0);
+//        motorHangTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        motorHangTower.setPower(1.0);
 
     }
 
@@ -194,12 +194,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     {
         motorCollectSlide = hardwareMap.dcMotor.get("motorCollectSlide");
         motorCollectSlide.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
-        motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorCollectSlide.setPower(0.5);
+//        motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        motorCollectSlide.setPower(0.5);
 
 
 
@@ -461,6 +460,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         holonomic(speed, turn, strafe, MECANUM_MAX_SPEED);
     }
 
+    public void controlHangTowerSimple(double speed) {
+        motorHangTower.setPower(speed);
+    }
     public void controlHangTower(double vc, boolean d, boolean u)
     {
         if (Math.abs(vc) > 0.1) {
@@ -610,6 +612,13 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         {
             addErrors("SERVO COLLECT SPIN 1 OR 2 ARE NULL");
         }
+    }
+
+    public void controlCollectSlideSimple(double power) {
+        if (power > 0.0) {
+            power = power * 0.75 ;
+        }
+        motorCollectSlide.setPower(power);
     }
 
     public void controlCollectSlide(double vc) {
