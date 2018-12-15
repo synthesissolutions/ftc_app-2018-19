@@ -25,7 +25,7 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         }
 
         sleep(750);
-        driveStraight(1090, -0.5);
+        driveStraight(1000, -0.5);
         setHangTowerPosition(-11222);
         if (!opModeIsActive()) {
             stopMotors();
@@ -65,7 +65,7 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
                 stopMotors();
                 return;
             }
-            driveStraight(275, 0.25);
+            driveStraight(400, 0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -75,7 +75,7 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
                 sleep(500);
                 y = tfodGet();
             }
-            driveStraight(275, -0.25);
+            driveStraight(400, -0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -110,13 +110,13 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         //int z = 2;
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
-            hitMineralBlueDepot(true, false, false);
+            hitMineralRedDepot(true, false, false);
         }
         else if (z == 1) {
-            hitMineralBlueDepot(false, true, false);
+            hitMineralRedDepot(false, true, false);
         }
         else {
-            hitMineralBlueDepot(false, false, true);
+            hitMineralRedDepot(false, false, true);
         }
         sleep(6000);
     }

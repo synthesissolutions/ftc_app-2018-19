@@ -10,6 +10,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         if (opModeIsActive()) {
             tfodActivate();
         }
+
         //shutdownTfod();
         //double angle = 0;
         setHangTowerPosition(-11222);
@@ -38,7 +39,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             stopMotors();
             return;
         }
-        driveStraight(3800, 0.4);
+        driveStraight(3850, 0.4);
 /*
         int x = tfodGet();
         while (x == -1 && opModeIsActive()) {
@@ -94,7 +95,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             z = 2;
         }
 */
-        turnDegrees(-0.3, 24);
+        turnDegrees(-0.3, 19.5);
         if (!opModeIsActive()) {
             stopMotors();
             return;
@@ -108,12 +109,12 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             z = tfodGetMultiple();
             sleep(666);
         }
-        turnDegrees(0.3, 21);
+        turnDegrees(0.3, 16.5);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
-        driveStraight(3800, -0.5);
+        driveStraight(3850, -0.5);
         if (!opModeIsActive()) {
             stopMotors();
             return;
