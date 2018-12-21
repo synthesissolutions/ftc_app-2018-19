@@ -39,7 +39,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         boolean hangTowerDown=gamepad1.b;
         boolean hangTowerUp=gamepad1.a;
 
-        boolean markerDeliveryDrop = gamepad1.start;
+        boolean markerDeliveryDrop = gamepad1.start || gamepad2.start;
 
         double deployTowerControl = gamepad2.right_stick_y;
 

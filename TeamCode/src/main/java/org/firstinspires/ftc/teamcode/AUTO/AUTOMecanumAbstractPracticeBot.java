@@ -55,6 +55,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
     DcMotor motorHangTower;
+    DcMotor motorCollectRotate;
     Servo servoMarkerDelivery;
     Servo cameraWiper;
 
@@ -302,6 +303,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             cameraWiper.setPosition(0.49);
             sleep(1000);
             cameraWiper.setPosition(0.0);
+            sleep(500);
 
     }
     public void setMarkerDeliveryPosition(double v)
@@ -414,6 +416,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
+        motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
         Log.d("RHTP","initializing");
         initializeColor();
         Log.d("RHTP","initialized colors");
@@ -708,9 +711,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     }
 
     public double vuforiaGetDataWIP(){
-        float angle = 0;
+        float angle = -135f;
         boolean angleFound = false;
-        while(opModeIsActive() && !angleFound) {
+        double startingTime = eTime.seconds();
+        while(opModeIsActive() && !angleFound && eTime.seconds() - startingTime <= 3) {
             targetVisible = false;
             float temp = 0;
             for (VuforiaTrackable trackable : allTrackables) {
@@ -753,13 +757,13 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     public void hitMineralBlueDepot(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
-            driveStraight(150, -0.5);
+            driveStraight(400, -0.5);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
            // driveStraight(ONE_WHEEL_ROTATION/2, -0.3);
-            turnDegrees(0.5, 40 + vuforiaGetDataWIP());
+            turnDegrees(0.5, 45 + vuforiaGetDataWIP());
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -773,12 +777,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
            // driveStraight(ONE_WHEEL_ROTATION/2, 0.3);
-            driveStraight(1300, 0.3);
+            driveStraight(1100, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 53 + vuforiaData);
+            turnDegrees(0.5, 67 + vuforiaData);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -788,7 +792,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 10);
+            turnDegrees(0.5, 15);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -806,7 +810,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 //                stopMotors();
 //                return;
 //            }
-            turnDegrees(0.5, 7);
+            turnDegrees(0.5, 15);
             driveStraight(2580, 0.3);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -941,7 +945,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.3, 25);
+            turnDegrees(0.3, 23);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -964,7 +968,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.3, 25);
+            turnDegrees(0.3, 23);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
@@ -986,28 +990,73 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 return;
             }
         }
+
     }
     public void hitMineralBlueCrater(boolean left, boolean middle, boolean right) {
         if (right && !middle && !left) {
             double vuforiaData = vuforiaGetDataWIP();
             driveStraight(500, -0.3);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
             turnDegrees(0.5, (65 - vuforiaData));
-//            turnDegrees(0.5, 90);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
             driveStraight(1000, 0.5);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         else if (middle && !right && !left) {
             double vuforiaData =vuforiaGetDataWIP();
-            driveStraight(800, 0.3);
-            turnDegrees(0.5, 90 - vuforiaData);
-//            turnDegrees(0.5, 95);
-            driveStraight(1500, 0.5);
+            turnDegrees(0.3, 23);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            driveStraight(900, 0.3);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            turnDegrees(0.5, 53 - vuforiaData);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            driveStraight(1000, 0.5);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
         else if (left && !right && !middle) {
             double vuforiaData =vuforiaGetDataWIP();
-            turnDegrees(0.5,15);
+            turnDegrees(0.3, 23);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+//            turnDegrees(0.5,15);
             driveStraight(2150, 0.3);
-            turnDegrees(0.5, 45 - vuforiaData);
-            driveStraight(1500, 0.5);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            turnDegrees(0.5, 35 - vuforiaData);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
+            driveStraight(800, 0.5);
+            if (!opModeIsActive()) {
+                stopMotors();
+                return;
+            }
         }
     }
     public void tfodInit() {
@@ -1053,7 +1102,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 telemetry.update();
             }
         }
-        return -1;
+        return 0;
     }
     public int tfodGetMultiple() {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
