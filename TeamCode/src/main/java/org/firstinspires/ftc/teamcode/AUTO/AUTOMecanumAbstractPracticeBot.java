@@ -466,18 +466,33 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         //variables should not start with capital letter
         double Magnitude = Math.abs(Speed) + Math.abs(Turn) + Math.abs(Strafe);
         Magnitude = (Magnitude > 1) ? Magnitude : 1; //Set scaling to keep -1,+1 range
-
-        motorFrontLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) - scaleInput(Strafe - 0.005)),
-                -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
-        if (motorBackLeft != null) {
-            motorBackLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) + scaleInput(Strafe - 0.015)),
+        if (Strafe > 0) {
+            motorFrontLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) - scaleInput(Strafe)),
                     -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
-        }
-        motorFrontRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) + scaleInput(Strafe - 0.005)),
-                -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
-        if (motorBackRight != null) {
-            motorBackRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) - scaleInput(Strafe - 0.015)),
+            if (motorBackLeft != null) {
+                motorBackLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) + scaleInput(Strafe + 0.05)),
+                        -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
+            }
+            motorFrontRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) + scaleInput(Strafe)),
                     -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
+            if (motorBackRight != null) {
+                motorBackRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) - scaleInput(Strafe)),
+                        -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
+            }
+        }
+        else {
+            motorFrontLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) - scaleInput(Strafe)),
+                    -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
+            if (motorBackLeft != null) {
+                motorBackLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) + scaleInput(Strafe - 0.05)),
+                        -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
+            }
+            motorFrontRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) + scaleInput(Strafe)),
+                    -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
+            if (motorBackRight != null) {
+                motorBackRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) - scaleInput(Strafe)),
+                        -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
+            }
         }
     }
 
