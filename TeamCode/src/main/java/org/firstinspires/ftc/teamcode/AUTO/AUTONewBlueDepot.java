@@ -17,5 +17,12 @@ public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
         sleep(1000);
         holonomic(0, 0, -0.8, MECANUM_MAX_SPEED);
         sleep(1000);
+        stopMotors();
+        if(getGyroCurrentHeading() < 0) {
+            turnDegrees(0.4, getGyroCurrentHeading());
+        }
+        else {
+            turnDegrees(-0.4, getGyroCurrentHeading());
+        }
     }
 }
