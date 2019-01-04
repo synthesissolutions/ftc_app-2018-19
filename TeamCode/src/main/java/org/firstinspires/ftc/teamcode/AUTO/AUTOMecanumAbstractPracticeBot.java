@@ -464,16 +464,16 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         double Magnitude = Math.abs(Speed) + Math.abs(Turn) + Math.abs(Strafe);
         Magnitude = (Magnitude > 1) ? Magnitude : 1; //Set scaling to keep -1,+1 range
 
-        motorFrontLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) - scaleInput(Strafe)),
+        motorFrontLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) - scaleInput(Strafe - 0.005)),
                 -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
         if (motorBackLeft != null) {
-            motorBackLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) + scaleInput(Strafe)),
+            motorBackLeft.setPower(-scale((scaleInput(Speed) + scaleInput(Turn) + scaleInput(Strafe - 0.015)),
                     -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED));
         }
-        motorFrontRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) + scaleInput(Strafe)),
+        motorFrontRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) + scaleInput(Strafe - 0.005)),
                 -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
         if (motorBackRight != null) {
-            motorBackRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) - scaleInput(Strafe)),
+            motorBackRight.setPower(-(scale((scaleInput(Speed) - scaleInput(Turn) - scaleInput(Strafe - 0.015)),
                     -Magnitude, +Magnitude, -MAX_SPEED, +MAX_SPEED)));
         }
     }
