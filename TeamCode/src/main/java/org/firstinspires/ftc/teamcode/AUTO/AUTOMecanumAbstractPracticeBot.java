@@ -206,13 +206,15 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     {
 
         encoderAtStart = motorFrontLeft.getCurrentPosition();
-        /*motorBackLeft.setPower(-speed);
+        motorBackLeft.setPower(-speed);
         motorBackRight.setPower(speed);
         motorFrontRight.setPower(-speed);
-        motorFrontLeft.setPower(speed);*/
+        motorFrontLeft.setPower(speed);
         inStrafe=false;
         while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveamount)) {
-            turn =0;
+            telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
+            telemetry.update();
+/*            turn =0;
             if (!inStrafe) {
                 offsetPhoneGyro();
                 startOfStrafeHeading = getGyroPos0360();
@@ -231,7 +233,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 telemetry.addData("turn", turn);
                 telemetry.update();
             }
-            holonomic(0, turn,speed,1);
+            holonomic(0, turn,speed,1);*/
         }
         stopMotors();
     }
