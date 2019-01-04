@@ -15,7 +15,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         //double angle = 0;
         setHangTowerPosition(-11222);
         sleep(5555);
-        driveStraight(650, 0.3);
+        driveStraight(600, 0.3);
         setHangTowerPosition(0);
         sleep(750);
         setHangTowerPosition(0);
@@ -39,7 +39,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             stopMotors();
             return;
         }
-        driveStraight(3850, 0.4);
+        driveStraight(3700, 0.4);
 /*
         int x = tfodGet();
         while (x == -1 && opModeIsActive()) {
@@ -95,7 +95,7 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             z = 2;
         }
 */
-        turnDegrees(-0.3, 19.5);
+        turnDegrees(-0.3, 19);
         if (!opModeIsActive()) {
             stopMotors();
             return;
@@ -104,22 +104,22 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         int z = -1;
         sleep(1000);
         wipeCamera();
-        sleep(2500);
+        sleep(2000);
         while (z == -1) {
             z = tfodGetMultiple();
             sleep(666);
         }
-        turnDegrees(0.3, 16.5);
+        turnDegrees(0.3, 16);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
-        driveStraight(3850, -0.5);
+        driveStraight(3700, -0.5);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
-        turnDegrees(-0.3, 25);
+        turnDegrees(-0.3, 23);
         if (!opModeIsActive()) {
             stopMotors();
             return;
@@ -133,6 +133,9 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
         else {
             hitMineralRedCrater(false, false, true);
         }
+        motorCollectRotate.setPower(-1);
+        sleep(500);
+        motorCollectRotate.setPower(0);
         sleep(6000);
     }
 }

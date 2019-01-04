@@ -14,7 +14,7 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         //double angle = 0;
         setHangTowerPosition(-11222);
         sleep(5555);
-        driveStraight(610, 0.3);
+        driveStraight(700, 0.3);
         setHangTowerPosition(0);
         sleep(750);
         setHangTowerPosition(0);
@@ -45,11 +45,11 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
             stopMotors();
             return;
         }*/
-        int x = tfodGet();
-        while (x == -1 && opModeIsActive()) {
-            x = tfodGet();
-            sleep(500);
-        }
+        wipeCamera();
+        int x = -1;
+        sleep(1000);
+        x = tfodGet();
+
         /*
         driveStraight(150, -0.25);
         sleep(100);
@@ -57,9 +57,10 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
             stopMotors();
             return;
         }*/
+
         int y = -1;
         if (x != 0 && opModeIsActive()) {
-            turnDegrees(0.5, 30);
+            turnDegrees(0.5, 32);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
@@ -71,17 +72,16 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
                 stopMotors();
                 return;
             }
-            while (y == -1 && opModeIsActive()) {
-                sleep(500);
-                y = tfodGet();
-            }
+            wipeCamera();
+            sleep(1000);
+            y = tfodGet();
             driveStraight(400, -0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            turnDegrees(0.5, 58);
+            turnDegrees(0.5, 55);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;

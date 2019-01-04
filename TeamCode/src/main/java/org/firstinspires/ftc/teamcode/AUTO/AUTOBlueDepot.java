@@ -19,14 +19,14 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         setHangTowerPosition(0);
         sleep(750);
         setHangTowerPosition(0);
-        turnDegrees(-0.5, 33);
+        turnDegrees(-0.5, 40);
         if (!opModeIsActive()) {
             stopMotors();
             return;
         }
 
         sleep(750);
-        driveStraight(1090, -0.5);
+        driveStraightOrTime(800, -0.5, eTime.seconds(), eTime.seconds()+2);
         setHangTowerPosition(-11222);
         if (!opModeIsActive()) {
             stopMotors();
@@ -39,23 +39,12 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
             return;
         }
         sleep(500);
-        driveStraight(150, 0.25);
-        sleep(100);
-        if (!opModeIsActive()) {
-            stopMotors();
-            return;
-        }
+
+        wipeCamera();
+        sleep(1000);
         int x = tfodGet();
-        while (x == -1 && opModeIsActive()) {
-            x = tfodGet();
-            sleep(500);
-        }
-        driveStraight(150, -0.25);
-        sleep(100);
-        if (!opModeIsActive()) {
-            stopMotors();
-            return;
-        }
+
+
         int y = -1;
         if (x != 0 && opModeIsActive()) {
             turnDegrees(0.5, 30);
@@ -64,17 +53,16 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
                 stopMotors();
                 return;
             }
-            driveStraight(275, 0.25);
+            driveStraight(200, 0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();
                 return;
             }
-            while (y == -1 && opModeIsActive()) {
-                sleep(500);
-                y = tfodGet();
-            }
-            driveStraight(275, -0.25);
+            wipeCamera();
+            sleep(1000);
+            y = tfodGet();
+            driveStraight(200, -0.25);
             sleep(100);
             if (!opModeIsActive()) {
                 stopMotors();

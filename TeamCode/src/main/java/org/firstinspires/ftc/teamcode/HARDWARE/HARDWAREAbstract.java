@@ -68,7 +68,6 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
 
-
     DcMotor motorHangTower;
 
     DcMotor motorDeployTower;
