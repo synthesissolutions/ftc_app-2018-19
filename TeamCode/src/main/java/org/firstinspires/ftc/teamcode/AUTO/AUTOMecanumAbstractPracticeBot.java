@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -58,6 +59,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     DcMotor motorCollectRotate;
     Servo servoMarkerDelivery;
     Servo cameraWiper;
+    Servo servoMineralArm;
+    Servo servoMineralRotate;
+    ColorSensor sensorColor;
+
 
 
     int encoderAtStart =0;
@@ -141,6 +146,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sensorColorSample.setI2cAddress(I2cAddr.create8bit(0x44));
 
         sensorColorSample.enableLed(true);*/
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
+
     }
 
     protected void initializeTouch() throws InterruptedException {
@@ -273,6 +280,23 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }*/
         stopMotors();
     }
+    protected double driveStraightAndColor(int moveAmount, double speed) {
+        encoderAtStart = motorFrontLeft.getCurrentPosition();
+        motorBackLeft.setPower(-speed);
+        motorBackRight.setPower(-speed);
+        motorFrontRight.setPower(-speed);
+        motorFrontLeft.setPower(-speed);
+
+        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow()) {
+
+            telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
+            telemetry.update();
+
+        }
+        stopMotors();
+        return (motorFrontLeft.getCurrentPosition() - encoderAtStart);
+    }
+
     protected void driveStraightOrTime(int moveamount, double speed, double starttime, double stoptime) {
         encoderAtStart = motorFrontLeft.getCurrentPosition();
         motorBackLeft.setPower(-speed);
@@ -299,6 +323,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerDelivery.setPosition(0.0);
         cameraWiper = hardwareMap.servo.get("cameraWiper");
         cameraWiper.setPosition(0.0);
+        servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
+        servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
+        servoMineralArm.setPosition(0.5);
+        servoMineralRotate.setPosition(1.0);
     }
     public void wipeCamera() {
 
@@ -1151,10 +1179,25 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         return 2;
     }
-    public void shutdownTfod() {
-        tfod.shutdown();
+    public boolean isColorYellow() {
+        if (sensorColor.red() >= 55 && sensorColor.green() >= 45 && sensorColor.blue() < 45 && (sensorColor.red() > sensorColor.green()) && (sensorColor.red() > sensorColor.blue()) && (sensorColor.green() > sensorColor.blue())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public void detectMineral() {
+        while (sensorColor.red() > 100 && sensorColor.green() > 100 && sensorColor.blue() > 100) {
+            driveStraight(200, -0.4);
+        }
+        if (sensorColor.red() >= 50 && sensorColor.green() >= 40 && sensorColor.blue() < 40) {
+            servoMineralRotate.setPosition(0.0);
+            driveStraight(420, -0.4);
+        }
+
     }
     public void tfodActivate() {
-        tfod.activate();
+        //this does nothing but i'm too lazy to remove it from the other programs so we keep it for now
     }
 }

@@ -55,8 +55,8 @@ public class TESTMineralDetection extends LinearOpMode {
 
     ColorSensor sensorColor;
 
-    Servo servoMineralArm;
-    Servo servoMineralRotate;
+    //Servo servoMineralArm;
+    //Servo servoMineralRotate;
 
     double  SERVO_MINERAL_ARM_START_POS = 0.5;
     double  SERVO_MINERAL_ARM_DEPLOY_POS = 0.08;
@@ -68,20 +68,20 @@ public class TESTMineralDetection extends LinearOpMode {
 
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
 
-        servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
-        servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
-
-        servoMineralArm.setPosition(SERVO_MINERAL_ARM_START_POS);
-        servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_START_POS);
+//        servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
+//        servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
+//
+//        servoMineralArm.setPosition(SERVO_MINERAL_ARM_START_POS);
+//        servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_START_POS);
 
         waitForStart();
 
-        servoMineralArm.setPosition(SERVO_MINERAL_ARM_DEPLOY_POS);
+//        servoMineralArm.setPosition(SERVO_MINERAL_ARM_DEPLOY_POS);
 
         double startTime = time;
-        double endTime = time + 15.0;
+        double endTime = time + 100.0;
 
-        while (time < endTime && !isYellowBlock()) {
+        while (time < endTime) {// && !isYellowBlock()) {
             telemetry.addData("Time  ", time);
             telemetry.addData("Red  ", sensorColor.red());
             telemetry.addData("Green", sensorColor.green());
@@ -91,15 +91,22 @@ public class TESTMineralDetection extends LinearOpMode {
             telemetry.update();
         }
 
-        if (isYellowBlock()) {
-            servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_DEPLOY_POS);
-        } else {
+        while (time < endTime && isYellowBlock()) {
+            //servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_DEPLOY_POS);
+            telemetry.addData("Time  ", time);
+            telemetry.addData("Red  ", sensorColor.red());
+            telemetry.addData("Green", sensorColor.green());
+            telemetry.addData("Blue ", sensorColor.blue());
             telemetry.addData("Is Yellow Block?", isYellowBlock());
             telemetry.addData("Is White Ball?", isWhiteBall());
             telemetry.update();
-        }
+        } /*else {
+            telemetry.addData("Is Yellow Block?", isYellowBlock());
+            telemetry.addData("Is White Ball?", isWhiteBall());
+            telemetry.update();
+        }*/
 
-        sleep(3000);
+        //sleep(3000);
 
     }
 
