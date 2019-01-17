@@ -62,6 +62,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     Servo servoMineralArm;
     Servo servoMineralRotate;
     ColorSensor sensorColor;
+    ColorSensor sensorColor2;
+    ColorSensor sensorColor3;
 
 
 
@@ -147,6 +149,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         sensorColorSample.enableLed(true);*/
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
+        sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color2");
+        sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
 
     }
 
@@ -287,10 +291,15 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(-speed);
 
-        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow()) {
+        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow() && !isColorYellow2()) {
 
             telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
             telemetry.update();
+            telemetry.addData("R", sensorColor.red());
+            telemetry.addData("G", sensorColor.green());
+            telemetry.addData("B", sensorColor.blue());
+            telemetry.update();
+
 
         }
         stopMotors();
@@ -319,14 +328,14 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
 
     protected void initializeServos() {//initialization of servo positions
-        servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
-        servoMarkerDelivery.setPosition(0.0);
+        //servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
+        //servoMarkerDelivery.setPosition(0.0);
         cameraWiper = hardwareMap.servo.get("cameraWiper");
         cameraWiper.setPosition(0.0);
         servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
         servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
-        servoMineralArm.setPosition(0.5);
-        servoMineralRotate.setPosition(1.0);
+        servoMineralArm.setPosition(0.1);
+        servoMineralRotate.setPosition(0.0);
     }
     public void wipeCamera() {
 
@@ -467,8 +476,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         telemetry.update();
         Log.d("RHTP", "Starting Phone Gyro Angle: " + getGyroCurrentHeading());
 
-        vuforiaInitWIP();
-        tfodInit();
+//        vuforiaInitWIP();
+//        tfodInit();
 
         waitForStart();
 
@@ -1187,6 +1196,20 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             return false;
         }
     }
+    public boolean isColorYellow2() {
+        if (sensorColor2.red() >= 55 && sensorColor2.green() >= 45 && sensorColor2.blue() < 45 && (sensorColor2.red() > sensorColor2.green()) && (sensorColor2.red() > sensorColor2.blue()) && (sensorColor2.green() > sensorColor2.blue())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean isColorYellow3() {
+        if (sensorColor3.red() >= 55 && sensorColor3.green() >= 45 && sensorColor3.blue() < 45 && (sensorColor3.red() > sensorColor3.green()) && (sensorColor3.red() > sensorColor3.blue()) && (sensorColor3.green() > sensorColor3.blue())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public void detectMineral() {
         while (sensorColor.red() > 100 && sensorColor.green() > 100 && sensorColor.blue() > 100) {
             driveStraight(200, -0.4);
@@ -1199,5 +1222,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     }
     public void tfodActivate() {
         //this does nothing but i'm too lazy to remove it from the other programs so we keep it for now
+    }
+    public void deployMineralArm() {
+        servoMineralArm.setPosition(0.4);
     }
 }
