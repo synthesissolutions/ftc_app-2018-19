@@ -23,18 +23,21 @@ public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
         telemetry.update();
         sleep(3000);
         */
-        /*
+
         if(getGyroCurrentHeading() < 0) {
             turnDegrees(0.4, getGyroCurrentHeading());
         }
         else {
             turnDegrees(-0.4, getGyroCurrentHeading());
-        }*/
+        }
         sleep(1000);
         driveStraight(1220, 0.4);
+        turnDegrees(0.5, 179);
         stopMotors();
+        sleep(1000);
         deployMineralArm();
-        driveStraightAndColor(3000, -0.4);
+        sleep(1000);
+        driveStraightAndColor(3000, 0.4);
         servoMineralRotate.setPosition(1.0);
         turnDegrees(0.35, 90);
         driveStraight(2440, 0.4);
