@@ -334,8 +334,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         cameraWiper.setPosition(0.0);
         servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
         servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
-        servoMineralArm.setPosition(0.1);
-        servoMineralRotate.setPosition(0.5);
+        servoMineralArm.setPosition(0.8);
+        servoMineralRotate.setPosition(0.0);
     }
     public void wipeCamera() {
 
@@ -1224,6 +1224,11 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         //this does nothing but i'm too lazy to remove it from the other programs so we keep it for now
     }
     public void deployMineralArm() {
-        servoMineralArm.setPosition(0.6);
+        servoMineralArm.setPosition(0.3);
+        servoMineralRotate.setPosition(0.5);
+    }
+    public void retractMineralArm() {
+        servoMineralArm.setPosition(0.8);
+        servoMineralRotate.setPosition(0.0);
     }
 }

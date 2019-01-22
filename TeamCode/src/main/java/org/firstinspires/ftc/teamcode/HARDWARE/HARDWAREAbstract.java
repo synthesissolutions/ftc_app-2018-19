@@ -70,6 +70,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     final public static double SERVO_COLLECT_DELIVERY_GATE_CLOSED = 1.0;
     final public static double SERVO_COLLECT_DELIVERY_GATE_OPEN = 0.5;
 
+    final public static double SERVO_MINERAL_ARM_UP = 0.8;
+    final public static double SERVO_MINERAL_ROTATE_IN = 0.0;
 
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;
@@ -82,8 +84,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     Servo servoMarkerDelivery;
 
-    Servo servoSamplingAngle;
-    Servo servoSamplingRotate;
+    Servo servoMineralArm;
+    Servo servoMineralRotate;
 
     //KOMODO
     DcMotor motorDeployTower;
@@ -222,6 +224,14 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
         servoMarkerDelivery.setPosition(SERVO_MARKER_DELIVERY_UP_INIT);
     }
+
+    public void initializeMineral()
+    {
+        servoMineralArm = hardwareMap.servo.get("servo_mineral_arm"); //todo FIX THE CONFIG. DAVID'S NAMES ARE TERRIBLE. WE USE CAMEL CASE, NOT UNDERSCORES
+        servoMineralRotate = hardwareMap.servo.get("servo_mineral_rotate");
+        servoMineralArm.setPosition(SERVO_MINERAL_ARM_UP);
+        servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_IN);
+    }
     //END OF INITIALIZATION METHODS
 
     public void initializeJalepeño(HardwareMap hwMap){
@@ -268,6 +278,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             addErrors("ERROR INITIALIZING PHONE GYRO");
         }
 
+        try {
+            initializeMineral();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MINERAL");
+        }
     }
 
     public void initializeKomodo(HardwareMap hwMap){
