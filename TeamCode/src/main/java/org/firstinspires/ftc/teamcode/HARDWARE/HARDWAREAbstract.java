@@ -71,7 +71,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     final public static double SERVO_COLLECT_DELIVERY_GATE_OPEN = 0.5;
 
     final public static double SERVO_MINERAL_ARM_UP = 0.8;
-    final public static double SERVO_MINERAL_ROTATE_IN = 0.0;
+    final public static double SERVO_MINERAL_ROTATE_IN = 0.1;
 
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;
