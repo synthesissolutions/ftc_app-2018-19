@@ -13,7 +13,7 @@ public class TELEKomodo extends OpMode  {
 
     @Override
     public void init() {
-        robot.initializeJalepeño(hardwareMap);
+        robot.initializeKomodo(hardwareMap);
 
         // TELEMETRY
         robot.displayErrors(telemetry);
@@ -50,13 +50,13 @@ public class TELEKomodo extends OpMode  {
 
         robot.controlCollectionDeliverySpin(collectionDeliverySpinOut, collectionDeliverySpinIn);
 
-        robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
+         robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
 
         // TELEMETRY
         //robot.displayErrors(telemetry);
-        telemetry.addData("TOWER POS:", robot.deployTowerPosition());
-        telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
-        telemetry.update();
+        //telemetry.addData("TOWER POS:", robot.deployTowerPosition());
+        //telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
+        //telemetry.update();
     }
 
     @Override

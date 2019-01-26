@@ -10,7 +10,7 @@ public class AUTONewRedDepot extends AUTOMecanumAbstractPracticeBot{
         sleep(5555);
         driveStraight(500, 0.3);
         sleep(1000);
-        drive0(1400, -0.8);
+        drive0(1500, -0.8);
         stopMotors();
        /* if(getGyroCurrentHeading() < 0) {
             turnDegrees(0.4, getGyroCurrentHeading());
@@ -19,7 +19,7 @@ public class AUTONewRedDepot extends AUTOMecanumAbstractPracticeBot{
             turnDegrees(-0.4, getGyroCurrentHeading());
         }*/
         sleep(500);
-        driveStraight(300, 0.4);
+        driveStraight(500, 0.4);
         sleep(500);
         deployMineralArm();
         sleep(2500);
@@ -29,22 +29,28 @@ public class AUTONewRedDepot extends AUTOMecanumAbstractPracticeBot{
         sleep(500);
         servoMineralRotate.setPosition(1.0);
         sleep(1000);
-        driveStraight(1000, 0.5);
-        retractMineralArm();
-        driveStraight(275, 0.5);
+        driveStraight(500, 0.5);
         if (moveAmount < 1600) {
-            driveStraight(125, 0.5);
-            turnDegrees(-0.35, 78);
+            driveStraight(500, 0.5);
+            turnDegrees(-0.35, 95);
+            sleep(500);
+            retractMineralArm();
         } else if (moveAmount < 2500) {
-            driveStraight(400, -0.5);
+            sleep(500);
+            drive0(100, -0.8);
             turnDegrees(-0.35, 111);
+            sleep(500);
+            retractMineralArm();
         } else if (moveAmount < 3900) {
             sleep(100);
-            driveStraight(500, -0.5);
+            driveStraight(400, -0.5);
             drive0(300, -0.8);
-            turnDegrees(-0.35, 130);
+            sleep(500);
+            retractMineralArm();
+            turnDegrees(-0.35, 150);
+            driveStraight(300, -0.5);
         } else {
-            turnDegrees(-0.35, 130);
+            turnDegrees(-0.35, 150);
         }
         driveStraight(2700, -0.5);
         sleep(500);

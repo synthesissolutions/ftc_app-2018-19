@@ -210,8 +210,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     }
 
-    public void initializeCollectionDelivery () {
+    public void  initializeCollectionDelivery () {
         motorCollectionDeliveryAngle = hardwareMap.dcMotor.get("motorCollectionDeliveryAngle");
+        motorCollectionDeliveryAngle.setDirection(DcMotorSimple.Direction.REVERSE);
         motorCollectionDeliverySlide = hardwareMap.dcMotor.get("motorCollectionDeliverySlide");
         motorCollectionDeliverySpin = hardwareMap.dcMotor.get("motorCollectionDeliverySpin");
 

@@ -30,17 +30,20 @@ public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
         sleep(500);
         servoMineralRotate.setPosition(1.0);
         sleep(1000);
-        driveStraight(1000, 0.5);
-        retractMineralArm();
-        driveStraight(275, 0.5);
+        driveStraight(750, 0.5);
+        //sleep(666);
+        //retractMineralArm();
+        sleep(500);
+        //driveStraight(250, 0.5);
         if (moveAmount < 1600) {
-            driveStraight(125, 0.5);
+            driveStraight(400, 0.5);
             turnDegrees(-0.35, 78);
         }
         else if (moveAmount < 2500) {
             turnDegrees(-0.35, 111);
         }
         else if (moveAmount < 3900){
+            drive0(300, -0.8);
             sleep(100);
             driveStraight(666, -0.5);
             turnDegrees(-0.35, 145);
@@ -48,6 +51,8 @@ public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
         else {
             turnDegrees(-0.35, 145);
         }
+        sleep(500);
+        retractMineralArm();
         driveStraight(2700, -0.5);
         sleep(500);
         setMarkerDeliveryPosition(0.6);
