@@ -215,6 +215,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         motorCollectionDeliveryAngle.setDirection(DcMotorSimple.Direction.REVERSE);
         motorCollectionDeliverySlide = hardwareMap.dcMotor.get("motorCollectionDeliverySlide");
         motorCollectionDeliverySpin = hardwareMap.dcMotor.get("motorCollectionDeliverySpin");
+        motorCollectionDeliverySlide.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorCollectionDeliverySpin.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
         servoCollectionDeliveryGate = hardwareMap.servo.get("servoCollectionDeliveryGate");
         servoCollectionDeliveryGate.setPosition(SERVO_COLLECT_DELIVERY_GATE_CLOSED);
@@ -658,7 +661,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         if (motorCollectionDeliverySpin != null) {
             if (so)
             {
-                motorCollectionDeliverySpin.setPower(1);
+                motorCollectionDeliverySpin.setPower(0.6);
             }
             else
             {
@@ -667,7 +670,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
             if (si)
             {
-                motorCollectionDeliverySpin.setPower(-1);
+                motorCollectionDeliverySpin.setPower(-0.6);
             }
         }
         else

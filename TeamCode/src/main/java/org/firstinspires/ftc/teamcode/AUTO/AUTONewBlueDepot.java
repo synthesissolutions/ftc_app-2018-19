@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "AUTO NEWNEWNEW Blue Depot Start", group = "AUTO")
 
-
+@Disabled
 public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
     public void runOpMode() throws InterruptedException {
         startAutoOp();
@@ -39,7 +40,7 @@ public class AUTONewBlueDepot extends AUTOMecanumAbstractPracticeBot{
             driveStraight(400, 0.5);
             turnDegrees(-0.35, 78);
         }
-        else if (moveAmount < 2500) {
+        else if (moveAmount < 2800) {
             turnDegrees(-0.35, 111);
         }
         else if (moveAmount < 3900){

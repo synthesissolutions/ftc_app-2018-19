@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "AUTO NEWNEWNEW Blue Crater Start", group = "AUTO")
-
-public class AutoNewBlueCrater extends AUTOMecanumAbstractPracticeBot{
+@Autonomous(name = "AUTO Full Auto", group = "AUTO")
+public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
         setHangTowerPosition(-11222);
@@ -28,36 +27,26 @@ public class AutoNewBlueCrater extends AUTOMecanumAbstractPracticeBot{
         moveAmount = (this.motorFrontLeft.getCurrentPosition() - moveAmount);
         sleep(500);
         servoMineralRotate.setPosition(1.0);
-        sleep(1000);
+        sleep(666);
         driveStraight(550, 0.5);
+        retractMineralArm();
+        driveStraight(3000, 0.5);
+        turnDegrees(0.4, 100);
 
-        //driveStraight(275, 0.5);
         if (moveAmount < 1600) {
-            driveStraight(150, 0.5);
-            driveStraight(125, 0.5);
-            retractMineralArm();
-            turnDegrees(-0.35, 100);
-            driveStraight(1000, -0.5);
+            deployMineralArm();
+            turnDegrees(0.4, 111);
+            driveStraight(1000, 0.5);
         } else if (moveAmount < 2800) {
-            //driveStraight(400, -0.5);
-            driveStraight(150, -0.5);
-            sleep(500);
-            turnDegrees(-0.35, 111);
-            retractMineralArm();
-            driveStraight(1220, -0.5);
+            driveStraight(2700, 0.5);
+            turnDegrees(0.4, 111);
+            driveStraight(1000, 0.5);
         } else if (moveAmount < 3900) {
-            driveStraight(150, 0.5);
-            sleep(100);
-            driveStraight(666, -0.5);
-            drive0(300, -0.8);
-            retractMineralArm();
-            turnDegrees(-0.35, 120);
-            driveStraight(1900, -0.5);
+            driveStraight(3600, 0.5);
+            turnDegrees(0.4, 111);
+            driveStraight(1000, 0.5);
         } else {
-            turnDegrees(-0.35, 130);
-            retractMineralArm();
-            driveStraight(1700, -0.5);
-        }
 
+        }
     }
 }

@@ -35,7 +35,7 @@ public class AUTONewRedCrater extends AUTOMecanumAbstractPracticeBot{
             retractMineralArm();
             turnDegrees(-0.35, 110);
             driveStraight(1000, -0.5);
-        } else if (moveAmount < 2500) {
+        } else if (moveAmount < 2800) {
             //driveStraight(200, -0.5);
             sleep(500);
             turnDegrees(-0.35, 117);

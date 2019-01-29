@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "AUTO NEWNEWNEW Red Depot Start", group = "AUTO")
+@Autonomous(name = "AUTO NEWNEWNEW ALL Depot Start", group = "AUTO")
 
 public class AUTONewRedDepot extends AUTOMecanumAbstractPracticeBot{
     public void runOpMode() throws InterruptedException {
@@ -35,11 +35,11 @@ public class AUTONewRedDepot extends AUTOMecanumAbstractPracticeBot{
             turnDegrees(-0.35, 95);
             sleep(500);
             retractMineralArm();
-        } else if (moveAmount < 2500) {
+        } else if (moveAmount < 2800) {
             sleep(500);
-            drive0(100, -0.8);
             turnDegrees(-0.35, 111);
             sleep(500);
+            drive0(300, -0.8);
             retractMineralArm();
         } else if (moveAmount < 3900) {
             sleep(100);
