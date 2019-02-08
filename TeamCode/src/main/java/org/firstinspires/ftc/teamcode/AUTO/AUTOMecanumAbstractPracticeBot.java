@@ -291,7 +291,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(-speed);
 
-        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow() && !isColorYellow2()) {
+        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
 
             telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
             telemetry.update();
@@ -1189,25 +1189,32 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         }
         return 2;
     }
-    public boolean isColorYellow() {
-        if (sensorColor.red() >= 55 && sensorColor.green() >= 45 && sensorColor.blue() < 45 && (sensorColor.red() > sensorColor.green()) && (sensorColor.red() > sensorColor.blue()) && (sensorColor.green() > sensorColor.blue())) {
+
+    /*BLOCK FLAT PLANE:
+        R: 390-410
+        G: 280-300
+        B: 135-147
+
+        BLOCK CROSS PLANE:
+        R: 200-223
+        G: 125-140
+        B: 65-70
+
+        BALL:
+        R: 1956-2134
+        G: 2427-2600
+        B: 2203-2315
+
+        all of these values are with the mineral just sitting motionless under a sensor */
+
+    public boolean isColorYellow(ColorSensor sC) {
+        int red = sC.red();
+        int blue = sC.blue();
+        int green = sC.green();
+        if (red >= 150 && red <= 500 && green >= 80 && green <= 390 && blue >= 40 && blue <= 80 && red > green && green > blue) {
             return true;
         }
         else {
-            return false;
-        }
-    }
-    public boolean isColorYellow2() {
-        if (sensorColor2.red() >= 55 && sensorColor2.green() >= 45 && sensorColor2.blue() < 45 && (sensorColor2.red() > sensorColor2.green()) && (sensorColor2.red() > sensorColor2.blue()) && (sensorColor2.green() > sensorColor2.blue())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public boolean isColorYellow3() {
-        if (sensorColor3.red() >= 55 && sensorColor3.green() >= 45 && sensorColor3.blue() < 45 && (sensorColor3.red() > sensorColor3.green()) && (sensorColor3.red() > sensorColor3.blue()) && (sensorColor3.green() > sensorColor3.blue())) {
-            return true;
-        } else {
             return false;
         }
     }
