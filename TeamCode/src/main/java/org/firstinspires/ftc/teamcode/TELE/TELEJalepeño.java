@@ -100,6 +100,7 @@ public class TELEJalepeño extends OpMode  {
         //robot.displayErrors(telemetry);
         telemetry.addData("TOWER POS:", robot.deployTowerPosition());
         telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
+        telemetry.addData("HANG TOWER POS: ", robot.hangTowerPosition());
         telemetry.update();
     }
 

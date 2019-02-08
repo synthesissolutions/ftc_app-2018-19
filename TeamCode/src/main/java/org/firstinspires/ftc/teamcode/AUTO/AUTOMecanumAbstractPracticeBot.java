@@ -456,6 +456,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
         motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
+        setHangTowerPosition(1300);
         Log.d("RHTP","initializing");
         initializeColor();
         Log.d("RHTP","initialized colors");

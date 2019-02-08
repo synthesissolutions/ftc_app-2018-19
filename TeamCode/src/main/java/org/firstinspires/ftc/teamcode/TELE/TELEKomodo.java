@@ -50,7 +50,7 @@ public class TELEKomodo extends OpMode  {
 
         robot.controlCollectionDeliverySpin(collectionDeliverySpinOut, collectionDeliverySpinIn);
 
-         robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
+        robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
 
         // TELEMETRY
         //robot.displayErrors(telemetry);
