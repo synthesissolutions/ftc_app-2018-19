@@ -151,6 +151,9 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                 sleep(300);
                 stopMotors();
             }
+
+            Log.i("isColorYellow", "Encoder units per reading: " + encoder / reading);
+            Log.i("isColorYellow", "Milliseconds per reading: " + (endTime - startTime) / reading);
             while (opModeIsActive() && gamepad1.a == false) {
                 /*
                 telemetry.addData("Highest Red: ", highestValRed);
