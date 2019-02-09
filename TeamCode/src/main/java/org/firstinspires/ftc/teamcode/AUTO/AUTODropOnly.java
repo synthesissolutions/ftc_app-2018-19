@@ -12,7 +12,7 @@ public class AUTODropOnly extends AUTOMecanumAbstractPracticeBot {
         }
         //shutdownTfod();
         //double angle = 0;
-        setHangTowerPosition(-8200);
+        setHangTowerPosition(-7500);
         sleep(6000);
         sleep(1000);
         }

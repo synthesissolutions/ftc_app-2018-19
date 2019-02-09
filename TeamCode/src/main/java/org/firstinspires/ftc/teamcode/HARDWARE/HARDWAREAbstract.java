@@ -301,6 +301,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING COLLECTION DELIVERY");
         }
+        try {
+            initializeHang();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING HANG");
+        }
     }
 
         public void controlMarkerDelivery(boolean j) {

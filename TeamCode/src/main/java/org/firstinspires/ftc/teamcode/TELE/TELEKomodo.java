@@ -30,6 +30,14 @@ public class TELEKomodo extends OpMode  {
         boolean mecanumSlowSpeed = gamepad1.left_trigger>.7;
         boolean mecanumSlowTurn = gamepad1.right_trigger>.7;
 
+        double hangTowerControl = 0.0;
+        if (gamepad1.right_bumper || gamepad1.dpad_up) {
+            hangTowerControl = 1.0;
+        } else if (gamepad1.left_bumper || gamepad1.dpad_down) {
+            hangTowerControl = -1.0;
+        }
+
+
         double collectionDeliveryAnglePower = gamepad2.left_stick_y;
 
         double collectionDeliverySlidePower = gamepad2.right_stick_y;
@@ -52,11 +60,16 @@ public class TELEKomodo extends OpMode  {
 
         robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
 
+        robot.controlHangTower(hangTowerControl);
+
         // TELEMETRY
         //robot.displayErrors(telemetry);
         //telemetry.addData("TOWER POS:", robot.deployTowerPosition());
         //telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
         //telemetry.update();
+        robot.displayErrors(telemetry);
+        telemetry.addData("Hang Tower Pos: ", robot.hangTowerPosition());
+        telemetry.update();
     }
 
     @Override

@@ -455,13 +455,13 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
-        motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
-        setHangTowerPosition(1300);
+        //motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
+        //setHangTowerPosition(1300);
         Log.d("RHTP","initializing");
         initializeColor();
         Log.d("RHTP","initialized colors");
 
-        initializeServos();
+        //initializeServos();
         Log.d("RHTP","initialized servos");
 
         initializeTouch();
@@ -1211,6 +1211,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         int red = sC.red();
         int blue = sC.blue();
         int green = sC.green();
+
         if (red >= 150 && red <= 500 && green >= 80 && green <= 390 && blue >= 40 && blue <= 80 && red > green && green > blue) {
             return true;
         }

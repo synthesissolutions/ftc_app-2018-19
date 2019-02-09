@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -29,28 +31,111 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        double speed = 0.8;
+        boolean logValues = true;
+        int highestValRed =0;
+        int greenAtHighestRed =0;
+        int blueAtHighestRed =0;
+
+        int highestValGreen =0;
+        int redAtHighestGreen =0;
+        int blueAtHighestGreen =0;
+
+        int highestValBlue =0;
+        int redAtHighestBlue =0;
+        int greenAtHighestBlue =0;
+
         waitForStart();
 
-        double speed = 1;
+        while (opModeIsActive()) {
+            while (opModeIsActive() && gamepad1.start == false)
+            {
+                if (gamepad1.a) speed -= 0.00005;
+                if (gamepad1.b) speed += 0.00005;
+                if (gamepad1.x) logValues = true;
+                if (gamepad1.y) logValues = false;
+                telemetry.addData("speed: ", speed);
+                telemetry.addData("Log Values? ", logValues);
+                telemetry.addData("Press Start to run test.", "");
+                telemetry.update();
+            }
+            if (logValues)
+            {
+                motorBackLeft.setPower(-speed);
+                motorBackRight.setPower(speed);
+                motorFrontRight.setPower(speed);
+                motorFrontLeft.setPower(-speed);
+                while (opModeIsActive() && gamepad1.b == false){// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+                    int red1 = sensorColor.red();
+                    int green1 = sensorColor.green();
+                    int blue1 = sensorColor.blue();
+                    int red2 = sensorColor2.red();
+                    int green2 = sensorColor2.green();
+                    int blue2 = sensorColor2.blue();
+                    int red3 = sensorColor3.red();
+                    int green3 = sensorColor3.green();
+                    int blue3 = sensorColor3.blue();
 
-        motorBackLeft.setPower(-speed);
-        motorBackRight.setPower(speed);
-        motorFrontRight.setPower(speed);
-        motorFrontLeft.setPower(-speed);
+                    Log.i("isColorYellow", "Encoder: " + motorBackLeft.getCurrentPosition());
+                    Log.i("isColorYellow", "Red1: " + red1 + " Green1: " + green1 + " Blue1: " + blue1);
+                    Log.i("isColorYellow", "Red2: " + red2 + " Green2: " + green2 + " Blue2: " + blue2);
+                    Log.i("isColorYellow", "Red3: " + red3 + " Green3: " + green3 + " Blue3: " + blue3);
 
-        while (opModeIsActive() && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
-
-            telemetry.addData("R", sensorColor2.red());
-            telemetry.addData("G", sensorColor2.green());
-            telemetry.addData("B", sensorColor2.blue());
-            telemetry.update();
+                    /*
+                    if (sensorColor.red() > highestValRed) {
+                        highestValRed = sensorColor.red();
+                        greenAtHighestRed = sensorColor.green();
+                        blueAtHighestRed = sensorColor.blue();
+                    }
+                    if (sensorColor.green() > highestValGreen) {
+                        highestValGreen = sensorColor.green();
+                        redAtHighestGreen = sensorColor.red();
+                        blueAtHighestGreen = sensorColor.blue();
+                    }
+                    if (sensorColor.blue() > highestValBlue)
+                    {
+                        highestValBlue = sensorColor.blue();
+                        redAtHighestBlue = sensorColor.red();
+                        greenAtHighestBlue = sensorColor.green();
+                    }
+                    */
+                }
+                motorBackLeft.setPower(speed/2 * (speed / Math.abs(speed)));
+                motorBackRight.setPower(speed/2 * -(speed / Math.abs(speed)));
+                motorFrontRight.setPower(speed/2 * -(speed / Math.abs(speed)));
+                motorFrontLeft.setPower(speed/2 * (speed / Math.abs(speed)));
+                sleep(300);
+                stopMotors();
+            }
+            else
+            {
+                motorBackLeft.setPower(-speed);
+                motorBackRight.setPower(speed);
+                motorFrontRight.setPower(speed);
+                motorFrontLeft.setPower(-speed);
+                while (opModeIsActive() && gamepad1.b == false && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+                }
+                motorBackLeft.setPower(speed/2 * (speed / Math.abs(speed)));
+                motorBackRight.setPower(speed/2 * -(speed / Math.abs(speed)));
+                motorFrontRight.setPower(speed/2 * -(speed / Math.abs(speed)));
+                motorFrontLeft.setPower(speed/2 * (speed / Math.abs(speed)));
+                sleep(300);
+                stopMotors();
+            }
+            while (opModeIsActive() && gamepad1.a == false) {
+                telemetry.addData("Highest Red: ", highestValRed);
+                telemetry.addData("Green @ Highest Red: ", greenAtHighestRed);
+                telemetry.addData("Blue @ Highest Red: ", blueAtHighestRed);
+                telemetry.addLine();
+                telemetry.addData("Highest Green: ", highestValGreen);
+                telemetry.addData("Red @ Highest Green: ", redAtHighestGreen);
+                telemetry.addData("Blue @ Highest Green: ", blueAtHighestGreen);
+                telemetry.addLine();
+                telemetry.addData("Highest Blue: ", highestValBlue);
+                telemetry.addData("Red @ Highest Blue: ", redAtHighestBlue);
+                telemetry.addData("Green @ Highest Blue: ",greenAtHighestBlue);
+                telemetry.update();
+            }
         }
-
-        motorBackLeft.setPower(0.6*(speed/Math.abs(speed)));
-        motorBackRight.setPower(0.6*-(speed/Math.abs(speed)));
-        motorFrontRight.setPower(0.6*-(speed/Math.abs(speed)));
-        motorFrontLeft.setPower(0.6*(speed/Math.abs(speed)));
-        sleep(300);
-        stopMotors();
     }
 }
