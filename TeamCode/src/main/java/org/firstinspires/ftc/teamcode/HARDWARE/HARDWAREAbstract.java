@@ -6,17 +6,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,40 +59,58 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     final public static double SERVO_DEPLOY_POUR_PRE_DOWN = 0.3;
     final public static double SERVO_DEPLOY_POUR_POURED = .65;
 
+    final double SERVO_MARKER_DELIVERY_DOWN = 0.6;
+    final double SERVO_MARKER_DELIVERY_UP_TELE = 0.1;
+    final double SERVO_MARKER_DELIVERY_UP_INIT = 0;
+
+    final double SLOW_STRAFE_FACTOR = 1.4;
+    final double SLOW_TURN_FACTOR = 1.20;
+    final double SLOW_SPEED_FACTOR = 1.4;
+
+    final public static double SERVO_COLLECT_DELIVERY_GATE_CLOSED = 1.0;
+    final public static double SERVO_COLLECT_DELIVERY_GATE_OPEN = 0.5;
+
+    final public static double SERVO_MINERAL_ARM_UP = 0.8;
+    final public static double SERVO_MINERAL_ROTATE_IN = 0.1;
+
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
 
     DcMotor motorHangTower;
+    int hangTowerTargetPosition = 0;
+    int hangTowerTimer=0;
 
+    Servo servoMarkerDelivery;
+
+    Servo servoMineralArm;
+    Servo servoMineralRotate;
+
+    //KOMODO
     DcMotor motorDeployTower;
     Servo servoDeployPour;
     Servo servoDeployGateLeft;
     Servo servoDeployGateRight;
-
+    int deployTowerTargetPosition = 0;
+    int deployTowerTimer=0;
+    int deployGateLeftToggleTimer = 0;
+    int deployGateRightToggleTimer = 0;
+    boolean deployGateAutoclosed = false;
 
     DcMotor motorCollectSlide;
     DcMotor motorCollectRotate;
     Servo servoCollectSpin1;
     Servo servoCollectSpin2;
-
-    Servo servoMarkerDelivery;
-
-    int hangTowerTargetPosition = 0;
-    int hangTowerTimer=0;
-
-    int deployTowerTargetPosition = 0;
-    int deployTowerTimer=0;
-
-    int deployGateLeftToggleTimer = 0;
-    int deployGateRightToggleTimer = 0;
-
-    boolean deployGateAutoclosed = false;
-
     int collectSlideTargetPosition = 0;
     int collectSlideTimer=0;
 
+    //TABASCO
+    DcMotor motorCollectionDeliveryAngle;
+    DcMotor motorCollectionDeliverySlide;
+    DcMotor motorCollectionDeliverySpin;
+    Servo servoCollectionDeliveryGate;
+    double collectionDeliveryGatePosition = SERVO_COLLECT_DELIVERY_GATE_CLOSED;
 
 
     ElapsedTime matchTimer = new ElapsedTime();
@@ -160,13 +174,6 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void initializeHang()
     {
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
-//        motorHangTower.setDirection(DcMotorSimple.Direction.REVERSE);
-//        motorHangTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorHangTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-//        motorHangTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        motorHangTower.setPower(1.0);
-
     }
 
     public void initializeDeploy()
@@ -175,8 +182,6 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         motorDeployTower.setDirection(DcMotorSimple.Direction.FORWARD);
         motorDeployTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorDeployTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
         motorDeployTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorDeployTower.setPower(1);
 
@@ -193,13 +198,6 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     {
         motorCollectSlide = hardwareMap.dcMotor.get("motorCollectSlide");
         motorCollectSlide.setDirection(DcMotorSimple.Direction.REVERSE);
-//        motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-//        motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        motorCollectSlide.setPower(0.5);
-
-
 
         motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
         motorCollectRotate.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -212,14 +210,35 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     }
 
+    public void  initializeCollectionDelivery () {
+        motorCollectionDeliveryAngle = hardwareMap.dcMotor.get("motorCollectionDeliveryAngle");
+        motorCollectionDeliveryAngle.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorCollectionDeliverySlide = hardwareMap.dcMotor.get("motorCollectionDeliverySlide");
+        motorCollectionDeliverySpin = hardwareMap.dcMotor.get("motorCollectionDeliverySpin");
+        motorCollectionDeliverySlide.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorCollectionDeliverySpin.setDirection(DcMotorSimple.Direction.FORWARD);
+
+
+        servoCollectionDeliveryGate = hardwareMap.servo.get("servoCollectionDeliveryGate");
+        servoCollectionDeliveryGate.setPosition(SERVO_COLLECT_DELIVERY_GATE_CLOSED);
+    }
+
     public void initializeMarkerDelivery()
     {
         servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
-        servoMarkerDelivery.setPosition(0.0);
+        servoMarkerDelivery.setPosition(SERVO_MARKER_DELIVERY_UP_INIT);
+    }
+
+    public void initializeMineral()
+    {
+        servoMineralArm = hardwareMap.servo.get("servo_mineral_arm"); //todo FIX THE CONFIG. DAVID'S NAMES ARE TERRIBLE. WE USE CAMEL CASE, NOT UNDERSCORES
+        servoMineralRotate = hardwareMap.servo.get("servo_mineral_rotate");
+        servoMineralArm.setPosition(SERVO_MINERAL_ARM_UP);
+        servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_IN);
     }
     //END OF INITIALIZATION METHODS
 
-    public void initializePracticeBot(HardwareMap hwMap){
+    public void initializeJalepeño(HardwareMap hwMap){
         this.hardwareMap = hwMap;
         try {
             initializeMecanum();
@@ -256,15 +275,45 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING MARKER DELIVERY");
         }
+
+        try {
+            initializePhoneGyro();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING PHONE GYRO");
+        }
+
+        try {
+            initializeMineral();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MINERAL");
+        }
     }
 
-    public void controlMarkerDelivery(boolean j)
-    {
+    public void initializeKomodo(HardwareMap hwMap){
+        this.hardwareMap = hwMap;
+        try {
+            initializeMecanum();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MECANUM");
+        }
+        try {
+            initializeCollectionDelivery();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING COLLECTION DELIVERY");
+        }
+        try {
+            initializeHang();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING HANG");
+        }
+    }
+
+        public void controlMarkerDelivery(boolean j) {
         if (j)
         {
-            setMarkerDeliveryPosition(0.6);
+            setMarkerDeliveryPosition(SERVO_MARKER_DELIVERY_DOWN);
         }
-        else setMarkerDeliveryPosition(0.1);
+        else setMarkerDeliveryPosition(SERVO_MARKER_DELIVERY_UP_TELE);
 
     }
 
@@ -431,8 +480,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowSpeed(boolean active, double speed)
     {
         if (active) {
-            speed=speed/1.4;
-            speed=speed/1.4;
+            speed=speed/ SLOW_SPEED_FACTOR;
+            speed=speed/ SLOW_SPEED_FACTOR;
         }
         return speed;
     }
@@ -440,7 +489,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public double slowStrafe(boolean active, double strafe)
     {
         if (active) {
-            strafe=strafe/1.4;
+            strafe=strafe/ SLOW_STRAFE_FACTOR;
         }
         return strafe;
     }
@@ -449,7 +498,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     {
         if (active)
         {
-            turn=turn/1.20;
+            turn=turn/ SLOW_TURN_FACTOR;
         }
         return turn;
     }
@@ -469,38 +518,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         holonomic(speed, turn, strafe, MECANUM_MAX_SPEED);
     }
 
-    public void controlHangTowerSimple(double speed) {
+    public void controlHangTower(double speed) {
         motorHangTower.setPower(speed);
-    }
-    public void controlHangTower(double vc, boolean d, boolean u)
-    {
-        if (Math.abs(vc) > 0.1) {
-            hangTowerTargetPosition -= vc * 8;
-        }
-
-        if (d) {
-            hangTowerTargetPosition = 11200;
-        }
-        if (u) {
-
-            hangTowerTargetPosition = 0; //test this first
-        }
-
-        if (hangTowerTimer>12) {
-            setHangTowerPosition(hangTowerTargetPosition);
-            hangTowerTimer=0;
-        }
-        hangTowerTimer++;
-    }
-
-    public void setHangTowerPosition(int v) {
-        if (motorHangTower != null) {
-            motorHangTower.setTargetPosition(v);
-        }
-        else
-        {
-            addErrors("MOTOR HANG TOWER IS NULL");
-        }
     }
 
     public void controlDeployTower(double vc) {
@@ -627,37 +646,61 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
     }
 
-    public void controlCollectSlideSimple(double power) {
+    public void controlCollectSlide(double power) {
         if (power > 0.0) {
             power = power * 0.75 ;
         }
         motorCollectSlide.setPower(power);
     }
 
-    public void controlCollectSlide(double vc) {
-        if (Math.abs(vc) > 0.1) {
-            collectSlideTargetPosition += vc * 10 ;
+    public void controlCollectionDeliveryAngle(double power)
+    {
+        if (power > 0.0) {
+            power = power * 0.75 ;
         }
-
-        if (collectSlideTargetPosition > 0)
-            collectSlideTargetPosition = 0;
-        if (collectSlideTargetPosition < -1200)
-            collectSlideTargetPosition = -1200;
-        if (collectSlideTimer>12) {
-            setCollectSlidePosition(collectSlideTargetPosition);
-            collectSlideTimer=0;
-        }
-        collectSlideTimer++;
+        motorCollectionDeliveryAngle.setPower(power);
     }
 
-    public void setCollectSlidePosition(int v) {
-        if (motorCollectSlide != null) {
-            motorCollectSlide.setTargetPosition(v);
+    public void controlCollectionDeliverySpin(boolean so, boolean si)
+    {
+        if (motorCollectionDeliverySpin != null) {
+            if (so)
+            {
+                motorCollectionDeliverySpin.setPower(0.8);
+            }
+            else
+            {
+                motorCollectionDeliverySpin.setPower(0);
+            }
+
+            if (si)
+            {
+                motorCollectionDeliverySpin.setPower(-0.8);
+            }
         }
         else
         {
-            addErrors("MOTOR COLLECT SLIDE IS NULL");
+            addErrors("MOTOR COLLECTION DELIVERY SPIN IS NULL");
         }
+    }
+
+    public void controlCollectionDeliverySlide(double power)
+    {
+        if (power > 0.0) {
+            power = power * 0.75 ;
+        }
+        motorCollectionDeliverySlide.setPower(power);
+    }
+
+    public void controlCollectionDeliveryGate(boolean go, boolean gc) {
+        if (go && collectionDeliveryGatePosition != SERVO_COLLECT_DELIVERY_GATE_OPEN) {
+            collectionDeliveryGatePosition -= 0.01;
+        }
+        if (gc && collectionDeliveryGatePosition != SERVO_COLLECT_DELIVERY_GATE_CLOSED) {
+            collectionDeliveryGatePosition += 0.01;
+        }
+        servoCollectionDeliveryGate.setPosition(collectionDeliveryGatePosition);
+
     }
 
     public int hangTowerPosition() {

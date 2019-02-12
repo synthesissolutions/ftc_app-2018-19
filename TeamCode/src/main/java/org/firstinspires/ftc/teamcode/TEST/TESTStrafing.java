@@ -9,8 +9,8 @@ public class TESTStrafing extends AUTOMecanumAbstractPracticeBot{
     @Override
     public void runOpMode() throws InterruptedException {
         startAutoOp();
+        driveStraightAndColor(1220, 0.25);
         //drive0(1220, .5);
-        holonomic(0, 0, -0.8, MECANUM_MAX_SPEED);
-        sleep(2000);
+        sleep(30000);
     }
 }

@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.TELE;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREPracticeBot;
+import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREJalepeño;
 
-@TeleOp(name="Jalepeno Teleop", group="TELE")
-public class TELEMecanumPracticeBotNew extends OpMode  {
+@TeleOp(name="Jalepeño Teleop", group="TELE")
+public class TELEJalepeño extends OpMode  {
 
-    HARDWAREPracticeBot robot = new HARDWAREPracticeBot();
+    HARDWAREJalepeño robot = new HARDWAREJalepeño();
     int heldSpinTimer = 0;
 
     @Override
     public void init() {
-        robot.initializePracticeBot(hardwareMap);
+        robot.initializeJalepeño(hardwareMap);
 
         // TELEMETRY
         robot.displayErrors(telemetry);
@@ -75,7 +75,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
 
         //HANG TOWER
 //        robot.controlHangTower(hangTowerControl,hangTowerDown,hangTowerUp);
-        robot.controlHangTowerSimple(hangTowerControl);
+        robot.controlHangTower(hangTowerControl);
 
         // DEPLOY TOWER
         robot.controlDeployTower(deployTowerControl);
@@ -88,7 +88,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
 
         // COLLECT SLIDE
 //        robot.controlCollectSlide(collectSlideControl);
-        robot.controlCollectSlideSimple(collectSlideControl);
+        robot.controlCollectSlide(collectSlideControl);
 
         // COLECT SPIN
         robot.controlCollectSpin(collectSpinSpeed);
@@ -100,6 +100,7 @@ public class TELEMecanumPracticeBotNew extends OpMode  {
         //robot.displayErrors(telemetry);
         telemetry.addData("TOWER POS:", robot.deployTowerPosition());
         telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
+        telemetry.addData("HANG TOWER POS: ", robot.hangTowerPosition());
         telemetry.update();
     }
 

@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{
         startAutoOp();
-        if (opModeIsActive()) {
-            tfodActivate();
-        }waitForStart();
+        //if (opModeIsActive()) {
+//            tfodActivate();
+//        }waitForStart();
 
         //shutdownTfod();
         //double angle = 0;
-        setHangTowerPosition(-11222);
+        setHangTowerPosition(-7500);
         sleep(5555);
         driveStraight(610, 0.3);
         setHangTowerPosition(0);
@@ -106,6 +106,7 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
             hitMineralBlueDepot(false, false, true);
         }
         sleep(6000);
+
     }
 
 }
