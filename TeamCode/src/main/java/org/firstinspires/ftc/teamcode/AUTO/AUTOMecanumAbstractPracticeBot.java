@@ -61,6 +61,9 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     Servo cameraWiper;
     Servo servoMineralArm;
     Servo servoMineralRotate;
+    Servo servoMarkerShoulder;
+    Servo servoMarkerElbow;
+    Servo servoMarkerWrist;
     ColorSensor sensorColor;
     ColorSensor sensorColor2;
     ColorSensor sensorColor3;
@@ -150,7 +153,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sensorColorSample.enableLed(true);*/
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
         sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color2");
-        sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
+        //sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
 
     }
 
@@ -291,7 +294,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(-speed);
 
-        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+        while (opModeIsActive() && checkDistance(motorFrontLeft.getCurrentPosition(), encoderAtStart, moveAmount) && !isColorYellow(sensorColor, "sensor_mineral_color", motorFrontLeft.getCurrentPosition()) && !isColorYellow(sensorColor2, "sensor_mineral_color2", motorFrontLeft.getCurrentPosition())) { //&& !isColorYellow(sensorColor3)) {
 
             telemetry.addData("Left encoders:", motorFrontLeft.getCurrentPosition());
             telemetry.update();
@@ -328,14 +331,22 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
 
     protected void initializeServos() {//initialization of servo positions
-        servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
+        /*servoMarkerDelivery = hardwareMap.servo.get("servoMarkerDelivery");
         servoMarkerDelivery.setPosition(0.05);
         cameraWiper = hardwareMap.servo.get("cameraWiper");
         cameraWiper.setPosition(0.0);
         servoMineralArm = hardwareMap.get(Servo.class, "servo_mineral_arm");
         servoMineralRotate = hardwareMap.get(Servo.class, "servo_mineral_rotate");
         servoMineralArm.setPosition(0.8);
-        servoMineralRotate.setPosition(0.1);
+        servoMineralRotate.setPosition(0.1);*/
+        servoMarkerShoulder = hardwareMap.get(Servo.class, "servoMarkerShoulder");
+        servoMarkerElbow = hardwareMap.get(Servo.class, "servoMarkerElbow");
+        servoMarkerWrist = hardwareMap.get(Servo.class, "servoMarkerWrist");
+
+        servoMarkerShoulder.setPosition(0.05);
+        servoMarkerElbow.setPosition(1.0);
+        servoMarkerWrist.setPosition(0.0);
+
     }
     public void wipeCamera() {
 
@@ -455,13 +466,14 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         motorHangTower = hardwareMap.dcMotor.get("motorHangTower");
+
+
         //motorCollectRotate = hardwareMap.dcMotor.get("motorCollectRotate");
-        //setHangTowerPosition(1300);
         Log.d("RHTP","initializing");
         initializeColor();
         Log.d("RHTP","initialized colors");
 
-        //initializeServos();
+        initializeServos();
         Log.d("RHTP","initialized servos");
 
         initializeTouch();
@@ -1207,10 +1219,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
         all of these values are with the mineral just sitting motionless under a sensor */
 
-    public boolean isColorYellow(ColorSensor sC) {
+    public boolean isColorYellow(ColorSensor sC, String sensorName, int encoder) {
         int red = sC.red();
         int blue = sC.blue();
         int green = sC.green();
+
+        Log.i("isColorYellow", "Sensor:" + sensorName + ", Encoder:" + encoder + ", Red: " + red + ", Green: " + green + ", Blue: " + blue);
 
         if (red >= 150 && red <= 500 && green >= 80 && green <= 390 && blue >= 40 && blue <= 80 && red > green && green > blue) {
             return true;
@@ -1233,11 +1247,30 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         //this does nothing but i'm too lazy to remove it from the other programs so we keep it for now
     }
     public void deployMineralArm() {
-        servoMineralArm.setPosition(0.3);
-        servoMineralRotate.setPosition(0.5);
+        servoMarkerShoulder.setPosition(0.5);
     }
     public void retractMineralArm() {
-        servoMineralArm.setPosition(0.8);
-        servoMineralRotate.setPosition(0.1);
+        servoMarkerShoulder.setPosition(0.05);
+    }
+    public void deployMarker(int x) {
+        if (x < 1600) {
+            servoMarkerShoulder.setPosition(0.57);
+        }
+        else if (x < 2800) {
+            servoMarkerShoulder.setPosition(0.5);
+        }
+        else if (x < 3900) {
+            servoMarkerShoulder.setPosition(0.43);
+        }
+        else {
+            servoMarkerShoulder.setPosition(0.33);
+        }
+        servoMarkerElbow.setPosition(0.0);
+        sleep(1000);
+        servoMarkerWrist.setPosition(0.9);
+        sleep(3000);
+        servoMarkerWrist.setPosition(0.0);
+        servoMarkerElbow.setPosition(1.0);
+        sleep(3000);
     }
 }

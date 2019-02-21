@@ -56,8 +56,8 @@ public class TESTMarkerDeploy extends LinearOpMode {
     Servo servoMarkerElbow;
     Servo servoMarkerWrist;
 
-    double  SERVO_MARKER_SHOULDER_START_POS = 0.0;
-    double  SERVO_MARKER_SHOULDER_DEPLOY_POS = 0.5;
+    double  SERVO_MARKER_SHOULDER_START_POS = 0.1;
+    double  SERVO_MARKER_SHOULDER_DEPLOY_POS = 0.43;
     double  SERVO_MARKER_ELBOW_DEPLOY_POS = 0.0;
     double  SERVO_MARKER_ELBOW_START_POS = 1.0;
     double  SERVO_MARKER_WRIST_DEPLOY_POS = 0.9;
@@ -81,7 +81,7 @@ public class TESTMarkerDeploy extends LinearOpMode {
         servoMarkerElbow.setPosition(SERVO_MARKER_ELBOW_DEPLOY_POS);
         sleep(1000);
         servoMarkerWrist.setPosition(SERVO_MARKER_WRIST_DEPLOY_POS);
-        sleep(1000);
+        sleep(3000);
         servoMarkerWrist.setPosition(SERVO_MARKER_WRIST_START_POS);
         servoMarkerElbow.setPosition(SERVO_MARKER_ELBOW_START_POS);
         sleep(5000);
