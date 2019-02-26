@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREKomodo;
 
 @TeleOp(name="Komodo Teleop", group="TELE")
 public class TELEKomodo extends OpMode  {
+    int collectionDeliverySlidePosition = 0;
 
     HARDWAREKomodo robot = new HARDWAREKomodo();
     int heldSpinTimer = 0;
@@ -15,12 +16,16 @@ public class TELEKomodo extends OpMode  {
     public void init() {
         robot.initializeKomodo(hardwareMap);
 
+
         // TELEMETRY
         robot.displayErrors(telemetry);
     }
 
     @Override
     public void loop() {
+
+        boolean collectionDeliverySlideMoving = false;
+
         //BUTTONS
         double mecanumSpeed = -gamepad1.left_stick_y;
         double mecanumTurn = gamepad1.right_stick_x;
@@ -40,6 +45,17 @@ public class TELEKomodo extends OpMode  {
 
         double collectionDeliveryAnglePower = gamepad2.left_stick_y;
 
+        /*if (gamepad2.right_stick_y > 0) {
+            collectionDeliverySlideMoving = true;
+            collectionDeliverySlidePosition += (gamepad2.right_stick_y * 20);
+        } else if (gamepad2.right_stick_y < 0) {
+            collectionDeliverySlideMoving = true;
+            collectionDeliverySlidePosition += (gamepad2.right_stick_y * 20);
+        } else if (collectionDeliverySlideMoving) {
+            // Hold the current position and stop moving someone just released the button
+            collectionDeliverySlideMoving = false;
+            collectionDeliverySlidePosition = robot.motorCollectionDeliverySlideGetPosition();
+        }*/
         double collectionDeliverySlidePower = gamepad2.right_stick_y;
 
         boolean collectionDeliverySpinOut = gamepad2.left_trigger>.7;
@@ -54,6 +70,7 @@ public class TELEKomodo extends OpMode  {
         //COLLECTION DELIVERY
         robot.controlCollectionDeliveryAngle(collectionDeliveryAnglePower);
 
+        //robot.controlCollectionDeliverySlidePosition(collectionDeliverySlidePosition);
         robot.controlCollectionDeliverySlide(collectionDeliverySlidePower);
 
         robot.controlCollectionDeliverySpin(collectionDeliverySpinOut, collectionDeliverySpinIn);

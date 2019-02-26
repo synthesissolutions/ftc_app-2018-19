@@ -13,7 +13,7 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
 
         //shutdownTfod();
         //double angle = 0;
-        setHangTowerPosition(-11222);
+        setHangTowerPosition(-7500);
         sleep(5555);
         driveStraight(610, 0.3);
         setHangTowerPosition(0);

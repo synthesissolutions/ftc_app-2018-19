@@ -126,7 +126,7 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                 motorBackRight.setPower(speed);
                 motorFrontRight.setPower(speed);
                 motorFrontLeft.setPower(-speed);
-                while (opModeIsActive() && gamepad1.b == false && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+                while (opModeIsActive() && gamepad1.b == false && !isColorYellow(sensorColor, "sensor_mineral_color", motorFrontLeft.getCurrentPosition()) && !isColorYellow(sensorColor2, "sensor_mineral_color2", motorFrontLeft.getCurrentPosition()) && !isColorYellow(sensorColor3, "sensor_mineral_color3", motorFrontLeft.getCurrentPosition())) {
                 }
                 motorBackLeft.setPower(speed/2 * (speed / Math.abs(speed)));
                 motorBackRight.setPower(speed/2 * -(speed / Math.abs(speed)));

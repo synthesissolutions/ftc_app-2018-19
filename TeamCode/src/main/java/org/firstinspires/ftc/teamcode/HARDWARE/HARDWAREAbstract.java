@@ -73,6 +73,10 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     final public static double SERVO_MINERAL_ARM_UP = 0.8;
     final public static double SERVO_MINERAL_ROTATE_IN = 0.1;
 
+    final public static double  SERVO_MARKER_SHOULDER_START_POS = 0.05;
+    final public static double  SERVO_MARKER_ELBOW_START_POS = 1.0;
+    final public static double  SERVO_MARKER_WRIST_START_POS = 0.0;
+
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
@@ -86,6 +90,10 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     Servo servoMineralArm;
     Servo servoMineralRotate;
+
+    Servo servoMarkerShoulder;
+    Servo servoMarkerElbow;
+    Servo servoMarkerWrist;
 
     //KOMODO
     DcMotor motorDeployTower;
@@ -229,6 +237,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoMarkerDelivery.setPosition(SERVO_MARKER_DELIVERY_UP_INIT);
     }
 
+    public void initializeMarkerDeliveryKomodo() {
+        servoMarkerShoulder = hardwareMap.get(Servo.class, "servoMarkerShoulder");
+        servoMarkerElbow = hardwareMap.get(Servo.class, "servoMarkerElbow");
+        servoMarkerWrist = hardwareMap.get(Servo.class, "servoMarkerWrist");
+
+        servoMarkerShoulder.setPosition(SERVO_MARKER_SHOULDER_START_POS);
+        servoMarkerElbow.setPosition(SERVO_MARKER_ELBOW_START_POS);
+        servoMarkerWrist.setPosition(SERVO_MARKER_WRIST_START_POS);
+    }
+
     public void initializeMineral()
     {
         servoMineralArm = hardwareMap.servo.get("servo_mineral_arm"); //todo FIX THE CONFIG. DAVID'S NAMES ARE TERRIBLE. WE USE CAMEL CASE, NOT UNDERSCORES
@@ -306,6 +324,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING HANG");
         }
+        try {
+            initializeMarkerDeliveryKomodo();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MARKER DELIVERY");
+        }
+
+//        motorCollectionDeliverySlide.setTargetPosition(0);
+//        motorCollectionDeliverySlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        motorCollectionDeliverySlide.setPower(0.65);
+
     }
 
         public void controlMarkerDelivery(boolean j) {
@@ -682,6 +710,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         {
             addErrors("MOTOR COLLECTION DELIVERY SPIN IS NULL");
         }
+    }
+
+    public int motorCollectionDeliverySlideGetPosition() {
+        return motorCollectionDeliverySlide.getCurrentPosition();
+    }
+
+
+
+    public void controlCollectionDeliverySlidePosition(int position) {
+        motorCollectionDeliverySlide.setTargetPosition(position);
     }
 
     public void controlCollectionDeliverySlide(double power)
