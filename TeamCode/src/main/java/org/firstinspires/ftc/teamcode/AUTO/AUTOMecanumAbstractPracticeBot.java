@@ -1212,7 +1212,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         int blue = sC.blue();
         int green = sC.green();
 
-        if (red >= 150 && red <= 500 && green >= 80 && green <= 390 && blue >= 40 && blue <= 80 && red > green && green > blue) {
+        if (red >= 150 && red <= 300 && green >= 100 && green <= 180 && blue >= 40 && blue <= 90 && red > green && green > blue) {
             return true;
         }
         else {
