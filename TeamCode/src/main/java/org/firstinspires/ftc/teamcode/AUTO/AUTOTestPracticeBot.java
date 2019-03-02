@@ -83,7 +83,7 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                     Log.i("isColorYellow", "Red1: " + red1 + " Green1: " + green1 + " Blue1: " + blue1);
 
                     */
-                    boolean isYellow = isColorYellow(sensorColor);
+                    boolean isYellow = isColorYellow(sensorColor, "sensorColor", 0);
                     if (!onBlock && isYellow)
                     {
                         numBlocks++;
