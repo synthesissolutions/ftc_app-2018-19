@@ -5,64 +5,72 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
-        //setHangTowerPosition(-6350); //deploy from lander
-        //sleep(3000);
+        setHangTowerPosition(-6350); //deploy from lander
+         sleep(3000);
 
         //move away from lander
-        driveStraight(420, 0.3);
+        driveStraight(420, 0.5);
         sleep(500);
-        drive0(2222, -1.0);
+        drive0(2050, -1.0);
         stopMotors();
-        sleep(1000);
+        sleep(666);
         if(getGyroCurrentHeading() < 0) {
-            turnDegrees(0.25, (-1 * getGyroCurrentHeading()));
+            turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
         }
         else {
-            turnDegrees(-0.25, getGyroCurrentHeading());
+            turnDegrees(-0.3, getGyroCurrentHeading());
         }
         sleep(500);
 
         //align for mineral detection
-        driveStraight(750, 1.0);
+        driveStraight(400, 1.0);
         deployMineralArm();
         sleep(1000);
 
 
         //read mineral
         int moveAmount = this.motorFrontLeft.getCurrentPosition();
-        driveStraightAndColor(4700, -0.25);
+        driveStraightAndColor(4350, -0.3);
         moveAmount = (this.motorFrontLeft.getCurrentPosition() - moveAmount);
+        driveStraight(50, -1.0);
         sleep(1000);
 
         //knock off mineral and deploy marker
-        drive0(1000, -0.8);
+        drive0(800, -1.0);
         deployMarker(moveAmount);
         retractMineralArm();
-        drive0(1000, 0.8);
-        sleep(1000);
+        drive0(800, 1.0);
+        sleep(666);
+        if(getGyroCurrentHeading() < 0) {
+            turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
+        }
+        else {
+            turnDegrees(-0.3, getGyroCurrentHeading());
+        }
+        sleep(500);
 
         //drive to end and turn toward crater side
-        driveStraight(4700 - moveAmount, -1.0);
-        turnDegrees(0.4, 105);
+        driveStraight(4300 - moveAmount, -1.0);
+        turnDegrees(1.0, 97);
         sleep(500);
-        drive0(350, -0.8);
+        //drive0(350, -1.0);
 
         //drive to mineral and park on crater
         if (moveAmount < 1600) {
             driveStraight(1500, -1.0);
-            turnDegrees(-0.4, 110);
+            turnDegrees(-1.0, 110);
             driveStraight(400, -1.0);
         } else if (moveAmount < 2800) {
             driveStraight(3200, -1.0);
-            turnDegrees(-0.4, 110);
+            turnDegrees(-1.0, 110);
             driveStraight(400, -1.0);
         } else if (moveAmount < 3900) {
             driveStraight(4500, -1.0);
-            turnDegrees(-0.4, 110);
+            turnDegrees(-1.0, 110);
             driveStraight(400, -1.0);
         } else {
             driveStraight(1500, -1.0);
-            turnDegrees(-0.4, 110);
+            turnDegrees(-1.0, 110);
             driveStraight(400, -1.0);
         }
     }
