@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.telecom.TelecomManager;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -120,7 +121,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     Servo servoCollectionDeliveryGate;
     double collectionDeliveryGatePosition = SERVO_COLLECT_DELIVERY_GATE_CLOSED;
 
+    //TEST BOT
+    DcMotor motorSingleWheelEncoderTest;
 
+
+    //GENERIC
     ElapsedTime matchTimer = new ElapsedTime();
 
     String errors ="";
@@ -254,7 +259,18 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoMineralArm.setPosition(SERVO_MINERAL_ARM_UP);
         servoMineralRotate.setPosition(SERVO_MINERAL_ROTATE_IN);
     }
-    //END OF INITIALIZATION METHODS
+
+    public void initializeSingleWheelEncoderTest()
+    {
+        motorSingleWheelEncoderTest = hardwareMap.dcMotor.get("motorSingleWheelEncoderTest");
+        motorSingleWheelEncoderTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorSingleWheelEncoderTest.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorSingleWheelEncoderTest.setPower(1);
+        int pos = (motorSingleWheelEncoderTest.getCurrentPosition())%1220;
+
+    }
+
+    //END OF ASSEMBLY INITIALIZATION METHODS
 
     public void initializeJalepeño(HardwareMap hwMap){
         this.hardwareMap = hwMap;
@@ -336,6 +352,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     }
 
+    public void initializeSingleWheelEncoderTestBot(HardwareMap hwMap){
+        this.hardwareMap = hwMap;
+        initializeSingleWheelEncoderTest();
+    }
+
         public void controlMarkerDelivery(boolean j) {
         if (j)
         {
@@ -344,6 +365,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         else setMarkerDeliveryPosition(SERVO_MARKER_DELIVERY_UP_TELE);
 
     }
+
+
 
     public double getGyroPos0360()
     {
@@ -760,5 +783,21 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         {
             addErrors("SERVO MARKER DELIVERY IS NULL");
         }
+    }
+
+    public void controlSingleWheelEncoderTest(Telemetry telemetry) {
+        double loopval=1220.0;
+        double position1k = (double) motorSingleWheelEncoderTest.getCurrentPosition()%loopval;
+        if (position1k>loopval-loopval*.2 || position1k < loopval*.2)
+        {
+            motorSingleWheelEncoderTest.setPower(0.5);
+        }
+        else
+        {
+            motorSingleWheelEncoderTest.setPower(((double) Math.abs(position1k-loopval/2)/((loopval-loopval*.4)/2))*.5+.05);
+        }
+        telemetry.addData("actual / reduced", motorSingleWheelEncoderTest.getCurrentPosition() +" / "+position1k);
+        telemetry.update();
+
     }
 }
