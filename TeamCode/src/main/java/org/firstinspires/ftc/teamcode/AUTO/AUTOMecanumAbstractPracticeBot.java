@@ -349,7 +349,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerWrist.setPosition(0.0);
 
         servoPinRelease = hardwareMap.get(Servo.class, "servoPinRelease");
-        servoPinRelease.setPosition(0.0);
+        servoPinRelease.setPosition(1.0);
 
     }
     public void wipeCamera() {
@@ -1278,5 +1278,5 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sleep(3000);
         servoMarkerWrist.setPosition(0.0);
     }
-    public void releasePin() { servoPinRelease.setPosition(0.6); }
+    public void releasePin() { servoPinRelease.setPosition(0.3); }
 }

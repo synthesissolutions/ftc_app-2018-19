@@ -6,7 +6,7 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
         setHangTowerPosition(-6350); //deploy from lander
-         sleep(3000);
+        sleep(3000);
 
         //move away from lander
         driveStraight(420, 0.5);
@@ -41,14 +41,14 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         retractMineralArm();
         drive0(800, 1.0);
         sleep(666);
-        if(getGyroCurrentHeading() < 0) {
+        /*if(getGyroCurrentHeading() < 0) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
         }
         else {
             turnDegrees(-0.3, getGyroCurrentHeading());
         }
         sleep(500);
-
+*/
         //drive to end and turn toward crater side
         driveStraight(4300 - moveAmount, -1.0);
         turnDegrees(1.0, 97);
@@ -59,20 +59,24 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         if (moveAmount < 1600) {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
+            releasePin();
             driveStraight(400, -1.0);
         } else if (moveAmount < 2800) {
             driveStraight(3200, -1.0);
             turnDegrees(-1.0, 110);
+            releasePin();
             driveStraight(400, -1.0);
         } else if (moveAmount < 3900) {
             driveStraight(4500, -1.0);
             turnDegrees(-1.0, 110);
+            releasePin();
             driveStraight(400, -1.0);
         } else {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
+            releasePin();
             driveStraight(400, -1.0);
         }
-        releasePin();
+        sleep(1000);
     }
 }
