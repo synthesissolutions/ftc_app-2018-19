@@ -68,7 +68,7 @@ public class TELEKomodo extends OpMode  {
         robot.controlMecanumWheels(mecanumSpeed,mecanumTurn,mecanumStrafe,mecanumSlowStrafe,mecanumSlowSpeed,mecanumSlowTurn);
 
         //COLLECTION DELIVERY
-        robot.controlCollectionDeliveryAngle(collectionDeliveryAnglePower);
+        robot.controlCollectionDeliveryAngle(collectionDeliveryAnglePower, telemetry);
 
         //robot.controlCollectionDeliverySlidePosition(collectionDeliverySlidePosition);
         robot.controlCollectionDeliverySlide(collectionDeliverySlidePower);
@@ -84,9 +84,7 @@ public class TELEKomodo extends OpMode  {
         //telemetry.addData("TOWER POS:", robot.deployTowerPosition());
         //telemetry.addData("SLIDE POS:", robot.collectSlidePosition());
         //telemetry.update();
-        robot.displayErrors(telemetry);
-        telemetry.addData("Hang Tower Pos: ", robot.hangTowerPosition());
-        telemetry.update();
+
     }
 
     @Override

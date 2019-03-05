@@ -120,6 +120,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     DcMotor motorCollectionDeliverySpin;
     Servo servoCollectionDeliveryGate;
     double collectionDeliveryGatePosition = SERVO_COLLECT_DELIVERY_GATE_CLOSED;
+    int collectionDeliveryAngleState = 0;
 
     //TEST BOT
     DcMotor motorSingleWheelEncoderTest;
@@ -226,6 +227,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void  initializeCollectionDelivery () {
         motorCollectionDeliveryAngle = hardwareMap.dcMotor.get("motorCollectionDeliveryAngle");
         motorCollectionDeliveryAngle.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorCollectionDeliveryAngle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorCollectionDeliveryAngle.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         motorCollectionDeliverySlide = hardwareMap.dcMotor.get("motorCollectionDeliverySlide");
         motorCollectionDeliverySpin = hardwareMap.dcMotor.get("motorCollectionDeliverySpin");
         motorCollectionDeliverySlide.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -704,12 +708,24 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         motorCollectSlide.setPower(power);
     }
 
-    public void controlCollectionDeliveryAngle(double power)
+    public void controlCollectionDeliveryAngle(double power, Telemetry telemetry)
     {
         if (power > 0.0) {
-            power = power * 0.75 ;
+            power = power * 0.75;
         }
+        /*
+        set collectionDeliveryAngleState to 0
+        Using encoders, determine once the robot has angled the delivery thing past a certain threshold.
+        If they are, flag collectionDeliveryAngleState as -1
+        When coming back down, once the arm has reached past a certain threshold and state is less than 0,
+        change encoder state to 30 and set the motor speed to go up at an extremely small speed,
+        such that it stops moving completely instead of slowly angling back up.
+        Every loop tick encoder state down by 1
+        When encoder state reaches 0 give control of angle back to driver and stop ticking state down
+        */
         motorCollectionDeliveryAngle.setPower(power);
+        telemetry.addData("Collection Delivery Angle Position", motorCollectionDeliveryAngle.getCurrentPosition());
+        telemetry.update();
     }
 
     public void controlCollectionDeliverySpin(boolean so, boolean si)
@@ -787,17 +803,16 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     public void controlSingleWheelEncoderTest(Telemetry telemetry) {
         double loopval=1220.0;
-        double position1k = (double) motorSingleWheelEncoderTest.getCurrentPosition()%loopval;
+        double position1k = (double) motorSingleWheelEncoderTest.getCurrentPosition()%(loopval+1);
         if (position1k>loopval-loopval*.2 || position1k < loopval*.2)
         {
             motorSingleWheelEncoderTest.setPower(0.5);
         }
         else
         {
-            motorSingleWheelEncoderTest.setPower(((double) Math.abs(position1k-loopval/2)/((loopval-loopval*.4)/2))*.5+.05);
+            motorSingleWheelEncoderTest.setPower(((double) Math.abs(position1k-loopval/2.0)/((loopval-loopval*.4)/2.0))*.5+.05);
         }
         telemetry.addData("actual / reduced", motorSingleWheelEncoderTest.getCurrentPosition() +" / "+position1k);
         telemetry.update();
-
     }
 }

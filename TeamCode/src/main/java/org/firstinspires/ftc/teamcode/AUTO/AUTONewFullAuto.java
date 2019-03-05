@@ -65,5 +65,6 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
             turnDegrees(-0.4, 110);
             driveStraight(400, -1.0);
         }
+        releasePin();
     }
 }
