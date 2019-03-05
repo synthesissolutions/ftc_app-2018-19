@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AUTOMarkerDropCrater extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
-        //setHangTowerPosition(-6350);
-        //sleep(3000);
+        setHangTowerPosition(-6350);
+        sleep(3000);
         driveStraight(420, 0.3);
         sleep(500);
         drive0(1700, -1.0);

@@ -1255,6 +1255,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     }
     public void retractMineralArm() {
         servoMarkerShoulder.setPosition(0.05);
+        sleep(500);
+        servoMarkerElbow.setPosition(1.0);
     }
     public void deployMarker(int x) {
         if (x < 1600) {
@@ -1264,7 +1266,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             servoMarkerShoulder.setPosition(0.5);
         }
         else if (x < 3900) {
-            servoMarkerShoulder.setPosition(0.43);
+            servoMarkerShoulder.setPosition(0.33);
+            sleep(1000);
         }
         else {
             servoMarkerShoulder.setPosition(0.33);
@@ -1274,8 +1277,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerWrist.setPosition(0.9);
         sleep(3000);
         servoMarkerWrist.setPosition(0.0);
-        servoMarkerElbow.setPosition(1.0);
-        sleep(3000);
     }
     public void releasePin() { servoPinRelease.setPosition(0.6); }
 }
