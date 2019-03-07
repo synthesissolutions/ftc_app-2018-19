@@ -64,7 +64,6 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     Servo servoMarkerShoulder;
     Servo servoMarkerElbow;
     Servo servoMarkerWrist;
-    Servo servoPinRelease;
     ColorSensor sensorColor;
     ColorSensor sensorColor2;
     ColorSensor sensorColor3;
@@ -348,8 +347,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerElbow.setPosition(1.0);
         servoMarkerWrist.setPosition(0.0);
 
-        servoPinRelease = hardwareMap.get(Servo.class, "servoPinRelease");
-        servoPinRelease.setPosition(1.0);
+
 
     }
     public void wipeCamera() {
@@ -1263,7 +1261,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             servoMarkerShoulder.setPosition(0.57);
         }
         else if (x < 2800) {
-            servoMarkerShoulder.setPosition(0.5);
+            servoMarkerShoulder.setPosition(0.45);
         }
         else if (x < 3900) {
             servoMarkerShoulder.setPosition(0.33);
@@ -1278,5 +1276,5 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sleep(3000);
         servoMarkerWrist.setPosition(0.0);
     }
-    public void releasePin() { servoPinRelease.setPosition(0.3); }
+
 }

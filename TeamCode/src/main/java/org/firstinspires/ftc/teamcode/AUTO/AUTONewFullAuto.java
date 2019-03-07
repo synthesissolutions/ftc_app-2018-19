@@ -36,10 +36,10 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         sleep(1000);
 
         //knock off mineral and deploy marker
-        drive0(800, -1.0);
+        drive0(1000, -1.0);
         deployMarker(moveAmount);
         retractMineralArm();
-        drive0(800, 1.0);
+        drive0(1000, 1.0);
         sleep(666);
         /*if(getGyroCurrentHeading() < 0) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
@@ -59,22 +59,18 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         if (moveAmount < 1600) {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
-            releasePin();
             driveStraight(400, -1.0);
         } else if (moveAmount < 2800) {
             driveStraight(3200, -1.0);
             turnDegrees(-1.0, 110);
-            releasePin();
             driveStraight(400, -1.0);
         } else if (moveAmount < 3900) {
             driveStraight(4500, -1.0);
             turnDegrees(-1.0, 110);
-            releasePin();
             driveStraight(400, -1.0);
         } else {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
-            releasePin();
             driveStraight(400, -1.0);
         }
         sleep(1000);

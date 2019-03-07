@@ -780,6 +780,13 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     }
 
+    public void closeCollectionGate() {
+        servoCollectionDeliveryGate.setPosition(0.42);
+    }
+    public void openCollectionGate() {
+        servoCollectionDeliveryGate.setPosition(SERVO_COLLECT_DELIVERY_GATE_CLOSED);
+    }
+
     public int hangTowerPosition() {
         return motorHangTower.getCurrentPosition();
     }

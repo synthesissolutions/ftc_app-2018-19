@@ -61,8 +61,15 @@ public class TELEKomodo extends OpMode  {
         boolean collectionDeliverySpinOut = gamepad2.left_trigger>.7;
         boolean collectionDeliverySpinIn = gamepad2.right_trigger>.7;
 
-        boolean collectionDeliveryGateOut = gamepad2.x;
-        boolean collectionDeliveryGateIn = gamepad2.y;
+        //boolean collectionDeliveryGateOut = gamepad2.x;
+        //boolean collectionDeliveryGateIn = gamepad2.y;
+
+        if (gamepad2.x) {
+            robot.closeCollectionGate();
+        }
+        else if (gamepad2.y) {
+            robot.openCollectionGate();
+        }
 
         //MAIN DRIVE
         robot.controlMecanumWheels(mecanumSpeed,mecanumTurn,mecanumStrafe,mecanumSlowStrafe,mecanumSlowSpeed,mecanumSlowTurn);
@@ -75,7 +82,7 @@ public class TELEKomodo extends OpMode  {
 
         robot.controlCollectionDeliverySpin(collectionDeliverySpinOut, collectionDeliverySpinIn);
 
-        robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
+        //robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
 
         robot.controlHangTower(hangTowerControl);
 
