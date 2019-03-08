@@ -17,6 +17,7 @@ public class TELEKomodo extends OpMode  {
         robot.initializeKomodo(hardwareMap);
 
 
+
         // TELEMETRY
         robot.displayErrors(telemetry);
     }
@@ -85,7 +86,7 @@ public class TELEKomodo extends OpMode  {
         //robot.controlCollectionDeliveryGate(collectionDeliveryGateOut,collectionDeliveryGateIn);
 
         robot.controlHangTower(hangTowerControl);
-
+        robot.retractMineralElbow();
         // TELEMETRY
         //robot.displayErrors(telemetry);
         //telemetry.addData("TOWER POS:", robot.deployTowerPosition());

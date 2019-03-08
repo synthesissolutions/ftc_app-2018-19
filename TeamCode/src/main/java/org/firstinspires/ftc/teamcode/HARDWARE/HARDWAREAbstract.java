@@ -252,8 +252,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         servoMarkerWrist = hardwareMap.get(Servo.class, "servoMarkerWrist");
 
         servoMarkerShoulder.setPosition(SERVO_MARKER_SHOULDER_START_POS);
-        servoMarkerElbow.setPosition(SERVO_MARKER_ELBOW_START_POS);
         servoMarkerWrist.setPosition(SERVO_MARKER_WRIST_START_POS);
+
     }
 
     public void initializeMineral()
@@ -821,5 +821,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         }
         telemetry.addData("actual / reduced", motorSingleWheelEncoderTest.getCurrentPosition() +" / "+position1k);
         telemetry.update();
+    }
+
+    public void retractMineralElbow() {
+        servoMarkerElbow.setPosition(1.0);
     }
 }

@@ -14,12 +14,13 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         drive0(2050, -1.0);
         stopMotors();
         sleep(666);
-        if(getGyroCurrentHeading() < 0) {
+        if(getGyroCurrentHeading() < -6) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
         }
-        else {
+        else if(getGyroCurrentHeading() > 6) {
             turnDegrees(-0.3, getGyroCurrentHeading());
         }
+        else {}
         sleep(500);
 
         //align for mineral detection
@@ -36,19 +37,22 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         sleep(1000);
 
         //knock off mineral and deploy marker
-        drive0(1000, -1.0);
+        drive0(1200, -1.0);
+        sleep(666);
+        drive0(400, 1.0);
         deployMarker(moveAmount);
         retractMineralArm();
-        drive0(1000, 1.0);
+        drive0(800, 1.0);
         sleep(666);
-        /*if(getGyroCurrentHeading() < 0) {
+        if(getGyroCurrentHeading() < -6) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
         }
-        else {
+        else if(getGyroCurrentHeading() > 6) {
             turnDegrees(-0.3, getGyroCurrentHeading());
         }
+        else {}
         sleep(500);
-*/
+
         //drive to end and turn toward crater side
         driveStraight(4300 - moveAmount, -1.0);
         turnDegrees(1.0, 97);
@@ -59,19 +63,19 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         if (moveAmount < 1600) {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
-            driveStraight(400, -1.0);
+            driveStraight(800, -1.0);
         } else if (moveAmount < 2800) {
             driveStraight(3200, -1.0);
             turnDegrees(-1.0, 110);
-            driveStraight(400, -1.0);
+            driveStraight(800, -1.0);
         } else if (moveAmount < 3900) {
             driveStraight(4500, -1.0);
             turnDegrees(-1.0, 110);
-            driveStraight(400, -1.0);
+            driveStraight(800, -1.0);
         } else {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
-            driveStraight(400, -1.0);
+            driveStraight(800, -1.0);
         }
         sleep(1000);
     }

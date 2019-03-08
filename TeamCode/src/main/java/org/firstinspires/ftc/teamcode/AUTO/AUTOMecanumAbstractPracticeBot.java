@@ -1261,7 +1261,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             servoMarkerShoulder.setPosition(0.57);
         }
         else if (x < 2800) {
-            servoMarkerShoulder.setPosition(0.45);
+            servoMarkerShoulder.setPosition(0.42);
         }
         else if (x < 3900) {
             servoMarkerShoulder.setPosition(0.33);
