@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name = "AUTO Red Depot Start", group = "AUTO")
-
+@Disabled
 public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{
         startAutoOp();

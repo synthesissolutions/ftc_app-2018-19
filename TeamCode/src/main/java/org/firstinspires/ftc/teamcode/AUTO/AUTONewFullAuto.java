@@ -11,7 +11,7 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         //move away from lander
         driveStraight(420, 0.5);
         sleep(500);
-        drive0(2050, -1.0);
+        drive0(2100, -1.0);
         stopMotors();
         sleep(666);
         if(getGyroCurrentHeading() < -6) {
@@ -55,21 +55,21 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
 
         //drive to end and turn toward crater side
         driveStraight(4300 - moveAmount, -1.0);
-        turnDegrees(1.0, 97);
+        turnDegrees(1.0, 100);
         sleep(500);
         //drive0(350, -1.0);
 
         //drive to mineral and park on crater
-        if (moveAmount < 1600) {
+        if (moveAmount < 1400) {
             driveStraight(1500, -1.0);
             turnDegrees(-1.0, 110);
             driveStraight(800, -1.0);
-        } else if (moveAmount < 2800) {
-            driveStraight(3200, -1.0);
+        } else if (moveAmount < 2700) {
+            driveStraight(3000, -1.0);
             turnDegrees(-1.0, 110);
             driveStraight(800, -1.0);
         } else if (moveAmount < 3900) {
-            driveStraight(4500, -1.0);
+            driveStraight(4200, -1.0);
             turnDegrees(-1.0, 110);
             driveStraight(800, -1.0);
         } else {

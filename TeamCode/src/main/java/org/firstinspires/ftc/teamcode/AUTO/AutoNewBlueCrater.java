@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "AUTO NEWNEWNEW Blue Crater Start", group = "AUTO")
-
+@Disabled
 public class AutoNewBlueCrater extends AUTOMecanumAbstractPracticeBot{
     public void runOpMode() throws InterruptedException {
         startAutoOp();

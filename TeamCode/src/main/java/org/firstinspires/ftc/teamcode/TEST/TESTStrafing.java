@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.AUTO.AUTOMecanumAbstractPracticeBot;
 @Autonomous(name = "Test Strafing", group = "AUTO")
+@Disabled
 
 public class TESTStrafing extends AUTOMecanumAbstractPracticeBot{
     @Override

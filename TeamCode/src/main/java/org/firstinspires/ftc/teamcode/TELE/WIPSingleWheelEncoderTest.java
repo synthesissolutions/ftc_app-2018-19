@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREPracticeBot;
 import static com.qualcomm.robotcore.util.Range.scale;
 
 @TeleOp(name="SINGLE WHEEL ENCODER TEST", group="WIP")
+@Disabled
 public class WIPSingleWheelEncoderTest extends OpMode {
     HARDWAREPracticeBot robot = new HARDWAREPracticeBot();
     @Override

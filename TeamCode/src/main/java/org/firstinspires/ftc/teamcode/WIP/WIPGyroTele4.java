@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name="WIP Gyro Tele TEST RESET GYRO", group="WIP")
-
+@Disabled
 public class WIPGyroTele4 extends OpMode implements SensorEventListener{
     List<Float> gyroEventValues = new ArrayList<>();
     public float currentHeading = 0.0f;

@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.TELE;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREJalepeño;
 
 @TeleOp(name="Jalepeño Teleop", group="TELE")
+@Disabled
 public class TELEJalepeño extends OpMode  {
 
     HARDWAREJalepeño robot = new HARDWAREJalepeño();

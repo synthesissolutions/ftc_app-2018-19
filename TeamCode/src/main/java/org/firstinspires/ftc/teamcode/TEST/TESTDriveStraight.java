@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.AUTO.AUTOMecanumAbstractPracticeBot;
 
 @Autonomous(name = "Drive Straight Test", group = "AUTO")
 
+@Disabled
 
 public class TESTDriveStraight extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException{
