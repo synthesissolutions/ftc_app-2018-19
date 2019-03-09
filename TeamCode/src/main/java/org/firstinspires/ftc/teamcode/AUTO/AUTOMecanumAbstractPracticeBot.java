@@ -1273,7 +1273,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerElbow.setPosition(0.0);
         sleep(1000);
         servoMarkerWrist.setPosition(0.9);
-        sleep(3000);
+        sleep(1500);
         servoMarkerWrist.setPosition(0.0);
     }
 

@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "AUTO Full Auto", group = "AUTO")
-public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
+@Autonomous(name = "AUTO Depot Only", group = "AUTO")
+public class AUTODepotSideOnly extends AUTOMecanumAbstractPracticeBot{
     public void runOpMode() throws InterruptedException {
         startAutoOp();
         setHangTowerPosition(-6350); //deploy from lander
@@ -14,13 +14,12 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         drive0(1900, -1.0);
         stopMotors();
         sleep(666);
-        if(getGyroCurrentHeading() < -4) {
+        if (getGyroCurrentHeading() < -4) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
-        }
-        else if(getGyroCurrentHeading() > 4) {
+        } else if (getGyroCurrentHeading() > 4) {
             turnDegrees(-0.3, getGyroCurrentHeading());
+        } else {
         }
-        else {}
         sleep(500);
 
         //align for mineral detection
@@ -44,39 +43,18 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         retractMineralArm();
         drive0(800, 1.0);
         sleep(666);
-        if(getGyroCurrentHeading() < -4) {
+        if (getGyroCurrentHeading() < -4) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
-        }
-        else if(getGyroCurrentHeading() > 4) {
+        } else if (getGyroCurrentHeading() > 4) {
             turnDegrees(-0.3, getGyroCurrentHeading());
-        }
-        else {}
-        sleep(500);
-
-        //drive to end and turn toward crater side
-        driveStraight(4300 - moveAmount, -1.0);
-        turnDegrees(1.0, 100);
-        sleep(500);
-        //drive0(350, -1.0);
-
-        //drive to mineral and park on crater
-        if (moveAmount < 1400) {
-            driveStraight(1650, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(800, -1.0);
-        } else if (moveAmount < 2700) {
-            driveStraight(3000, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(800, -1.0);
-        } else if (moveAmount < 3900) {
-            driveStraight(4200, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(800, -1.0);
         } else {
-            driveStraight(1500, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(800, -1.0);
         }
-        sleep(1000);
+        sleep(500);
+
+        //drive to opposite crater and park
+        driveStraight(moveAmount + 1500, 1.0);
+        turnDegrees(-1.0, 48);
+        drive0(420, -1.0);
+        driveStraight(700, 1.0);
     }
 }
