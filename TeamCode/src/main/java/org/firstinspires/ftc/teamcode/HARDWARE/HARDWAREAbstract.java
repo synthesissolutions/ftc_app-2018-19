@@ -733,7 +733,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
         if (motorCollectionDeliverySpin != null) {
             if (so)
             {
-                motorCollectionDeliverySpin.setPower(0.8);
+                motorCollectionDeliverySpin.setPower(1);
             }
             else
             {
@@ -742,7 +742,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
             if (si)
             {
-                motorCollectionDeliverySpin.setPower(-0.8);
+                motorCollectionDeliverySpin.setPower(-1);
             }
         }
         else

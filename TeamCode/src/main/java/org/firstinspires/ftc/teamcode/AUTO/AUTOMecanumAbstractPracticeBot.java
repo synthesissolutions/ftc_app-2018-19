@@ -1257,7 +1257,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerElbow.setPosition(1.0);
     }
     public void deployMarker(int x) {
-        if (x < 1400) {
+        if (x == -5) {
+            servoMarkerShoulder.setPosition(0.42);
+        }
+        else if (x < 1400) {
             servoMarkerShoulder.setPosition(0.57);
         }
         else if (x < 2700) {
@@ -1268,7 +1271,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             sleep(1000);
         }
         else {
-            servoMarkerShoulder.setPosition(0.33);
+            servoMarkerShoulder.setPosition(0.25);
         }
         servoMarkerElbow.setPosition(0.0);
         sleep(1000);

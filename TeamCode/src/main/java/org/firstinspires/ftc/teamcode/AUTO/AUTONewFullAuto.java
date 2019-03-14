@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
-        setHangTowerPosition(-6350); //deploy from lander
+        setHangTowerPosition(-7000); //deploy from lander
         sleep(3000);
 
         //move away from lander
