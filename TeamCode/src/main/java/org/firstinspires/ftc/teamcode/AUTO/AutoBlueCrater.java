@@ -129,13 +129,13 @@ public class AutoBlueCrater extends AUTOMecanumAbstractPracticeBot{
             return;
         }
         if (z == 0) {
-            hitMineralBlueCrater(true, false, false);
+//            hitMineralBlueCrater(true, false, false);
         }
         else if (z == 1) {
-            hitMineralBlueCrater(false, true, false);
+//            hitMineralBlueCrater(false, true, false);
         }
         else {
-            hitMineralBlueCrater(false, false, true);
+//            hitMineralBlueCrater(false, false, true);
         }
         motorCollectRotate.setPower(-1);
         sleep(500);

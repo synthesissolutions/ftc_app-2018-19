@@ -98,13 +98,13 @@ public class AUTOBlueDepot extends AUTOMecanumAbstractPracticeBot {
         //int z = 2;
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
-            hitMineralBlueDepot(true, false, false);
+//            hitMineralBlueDepot(true, false, false);
         }
         else if (z == 1) {
-            hitMineralBlueDepot(false, true, false);
+//            hitMineralBlueDepot(false, true, false);
         }
         else {
-            hitMineralBlueDepot(false, false, true);
+//            hitMineralBlueDepot(false, false, true);
         }
         sleep(6000);
 

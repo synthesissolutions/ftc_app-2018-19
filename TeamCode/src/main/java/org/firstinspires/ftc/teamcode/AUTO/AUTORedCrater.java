@@ -126,13 +126,13 @@ public class AUTORedCrater extends AUTOMecanumAbstractPracticeBot {
             return;
         }
         if (z == 0) {
-            hitMineralRedCrater(true, false, false);
+//            hitMineralRedCrater(true, false, false);
         }
         else if (z == 1) {
-            hitMineralRedCrater(false, true, false);
+//            hitMineralRedCrater(false, true, false);
         }
         else {
-            hitMineralRedCrater(false, false, true);
+//            hitMineralRedCrater(false, false, true);
         }
         motorCollectRotate.setPower(-1);
         sleep(500);

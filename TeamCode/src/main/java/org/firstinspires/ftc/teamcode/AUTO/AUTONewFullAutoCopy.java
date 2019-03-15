@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name = "AUTO Full Auto", group = "AUTO")
-@Disabled
-public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
+@Autonomous(name = "AUTO Full Auto Copy", group = "AUTO")
+public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
         setHangTowerPosition(-7000); //deploy from lander
@@ -13,7 +11,7 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         //move away from lander
         driveStraight(420, 0.5);
         sleep(500);
-        drive0(1900, -1.0);
+        drive0(2200, -1.0);
         stopMotors();
         sleep(666);
         if(getGyroCurrentHeading() < -4) {
@@ -28,7 +26,7 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         //align for mineral detection
         driveStraight(400, 1.0);
         deployMineralArm();
-        sleep(1000);
+        sleep(2000);
 
 
         //read mineral
@@ -41,10 +39,10 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         //knock off mineral and deploy marker
         drive0(1200, -1.0);
         sleep(666);
-        drive0(400, 1.0);
+        drive0(600, 1.0);
         deployMarker(moveAmount);
         retractMineralArm();
-        drive0(800, 1.0);
+        drive0(600, 1.0);
         sleep(666);
         if(getGyroCurrentHeading() < -4) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
@@ -56,7 +54,7 @@ public class AUTONewFullAuto extends AUTOMecanumAbstractPracticeBot {
         sleep(500);
 
         //drive to end and turn toward crater side
-        driveStraight(4300 - moveAmount, -1.0);
+        driveStraight(4350 - moveAmount, -1.0);
         turnDegrees(1.0, 100);
         sleep(500);
         //drive0(350, -1.0);

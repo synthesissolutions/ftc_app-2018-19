@@ -111,13 +111,13 @@ public class AutoRedDepot extends AUTOMecanumAbstractPracticeBot {
         //int z = 2;
         //turnDegrees(-0.2, 45 - vuforiaGetDataWIP());
         if (z == 0) {
-            hitMineralRedDepot(true, false, false);
+//            hitMineralRedDepot(true, false, false);
         }
         else if (z == 1) {
-            hitMineralRedDepot(false, true, false);
+//            hitMineralRedDepot(false, true, false);
         }
         else {
-            hitMineralRedDepot(false, false, true);
+//            hitMineralRedDepot(false, false, true);
         }
         sleep(6000);
     }
