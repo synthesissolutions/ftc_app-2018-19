@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.TEST;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,19 +15,15 @@ import org.firstinspires.ftc.teamcode.AUTO.AUTOMecanumAbstractPracticeBot;
 //@Disabled
 
 public class TESTMotorPower extends LinearOpMode {
-    public void runOpMode() throws InterruptedException{
-        DcMotor  testMotor   = null ;
-
-        this.hardwareMap = null; {
-        testMotor  = this.hardwareMap.get(DcMotor.class, "test_motor");
-
-        testMotor.setPower(0);
+    public void runOpMode() throws InterruptedException {
+        DcMotor testMotor = null;
+        testMotor = this.hardwareMap.get(DcMotor.class, "test_motor");
+        //testMotor.setPower(0);
+        //testMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
-            //testMotor = this.hardwareMap.get(Servo.class, "left_hand");
-                testMotor.setPower(1);
-                sleep(20000);
-                testMotor.setPower(0);
-        }
+            testMotor.setPower(1);
+            sleep(20000);
+            testMotor.setPower(0);
     }
 }
