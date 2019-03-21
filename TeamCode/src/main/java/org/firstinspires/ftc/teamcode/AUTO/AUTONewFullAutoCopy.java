@@ -11,7 +11,7 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         //move away from lander
         driveStraight(420, 0.5);
         sleep(500);
-        drive0(2200, -1.0);
+        drive0(2270, -1.0);
         stopMotors();
         sleep(666);
         if(getGyroCurrentHeading() < -4) {
@@ -24,14 +24,14 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         sleep(500);
 
         //align for mineral detection
-        driveStraight(400, 1.0);
+        driveStraight(700, 1.0);
         deployMineralArm();
         sleep(2000);
 
 
         //read mineral
         int moveAmount = this.motorFrontLeft.getCurrentPosition();
-        driveStraightAndColor(4350, -0.3);
+        driveStraightAndColor(4650, -0.3);
         moveAmount = (this.motorFrontLeft.getCurrentPosition() - moveAmount);
         driveStraight(50, -1.0);
         sleep(1000);
@@ -40,7 +40,7 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         drive0(1200, -1.0);
         sleep(666);
         drive0(600, 1.0);
-        deployMarker(moveAmount);
+        deployMarkerCopy(moveAmount);
         retractMineralArm();
         drive0(600, 1.0);
         sleep(666);
@@ -54,7 +54,7 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         sleep(500);
 
         //drive to end and turn toward crater side
-        driveStraight(4350 - moveAmount, -1.0);
+        driveStraight(4650 - moveAmount, -1.0);
         turnDegrees(1.0, 100);
         sleep(500);
         //drive0(350, -1.0);

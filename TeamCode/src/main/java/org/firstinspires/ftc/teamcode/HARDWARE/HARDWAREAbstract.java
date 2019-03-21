@@ -275,7 +275,14 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
 
     //END OF ASSEMBLY INITIALIZATION METHODS
-
+    public void initializeGhost(HardwareMap hwMap) {
+        this.hardwareMap = hwMap;
+        try {
+            initializeMecanum();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MECANUM");
+        }
+    }
     public void initializeJalepeño(HardwareMap hwMap){
         this.hardwareMap = hwMap;
         try {

@@ -460,6 +460,29 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         //sleep(5000);
     }
 
+    protected void startBasicAutoOp() throws InterruptedException {
+        telemetry.addData("INIT STATUS:","NOT READY!");
+        telemetry.update();
+        motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
+        Log.d("RHTP", "initializing");
+        initializeEncoders();
+        Log.d("RHTP", "initialized encoders");
+        initializePhoneGyro();
+        Log.d("RHTP", "initialized gyro");
+        telemetry.addData("Staring Phone Gyro Angle", getGyroCurrentHeading());
+        telemetry.update();
+        Log.d("RHTP", "Starting Phone Gyro Angle: " + getGyroCurrentHeading());
+        waitForStart();
+
+        Log.d("RHTP","started");
+        eTime.reset();
+        eTime.startTime();
+        Log.d("RHTP","etime reset");
+    }
+
     protected void startAutoOp() throws InterruptedException {
         telemetry.addData("INIT STATUS:","NOT READY!");
         telemetry.update();
@@ -956,13 +979,36 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         if (x == -5) {
             servoMarkerShoulder.setPosition(0.42);
         }
-        else if (x < 1400) {
+        else if (x < 1300) {
             servoMarkerShoulder.setPosition(0.57);
         }
         else if (x < 2700) {
             servoMarkerShoulder.setPosition(0.38);
         }
         else if (x < 3900) {
+            servoMarkerShoulder.setPosition(0.33);
+            sleep(1000);
+        }
+        else {
+            servoMarkerShoulder.setPosition(0.25);
+        }
+        servoMarkerElbow.setPosition(0.0);
+        sleep(1000);
+        servoMarkerWrist.setPosition(0.9);
+        sleep(1000);
+        servoMarkerWrist.setPosition(0.0);
+    }
+    public void deployMarkerCopy(int x) {
+        if (x == -5) {
+            servoMarkerShoulder.setPosition(0.42);
+        }
+        else if (x < 1600) {
+            servoMarkerShoulder.setPosition(0.57);
+        }
+        else if (x < 3000) {
+            servoMarkerShoulder.setPosition(0.38);
+        }
+        else if (x < 4200) {
             servoMarkerShoulder.setPosition(0.33);
             sleep(1000);
         }
