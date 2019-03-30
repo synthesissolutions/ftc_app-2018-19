@@ -6,13 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.PreviousYear.AUTOMecanumAbstractCayenne;
 
 
 
-@Autonomous(name="AUTO Test", group="AUTO")
+@Autonomous(name="AUTO Alex's Scanning Test", group="AUTO")
 @Disabled
 public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
     @Override
@@ -21,6 +22,9 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
         motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
+        servoMarkerShoulder = hardwareMap.get(Servo.class, "servoMarkerShoulder");
+        servoMarkerShoulder.setPosition(0.5);
+
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
         sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color2");
         sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
@@ -43,23 +47,48 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
         double startTime = 0.0;
         double endTime = 0.0;
 
-        boolean twoSensors = false;
+
+        boolean ballMode = false;
 
         waitForStart();
 
         while (opModeIsActive()) {
+            int redHighest = 0;
+            int blueAtRedHighest = 0;
+            int greenAtRedHighest = 0;
+
+            int blueHighest = 0;
+            int redAtBlueHighest = 0;
+            int greenAtBlueHighest = 0;
+
+            int greenHighest = 0;
+            int redAtGreenHighest = 0;
+            int blueAtGreenHighest = 0;
+
+            int redLowestBlock = 0;
+            int blueAtRedLowest = 0;
+            int greenAtRedLowest = 0;
+
+            int blueLowestBlock = 0;
+            int redAtBlueLowest = 0;
+            int greenAtBlueLowest = 0;
+
+            int greenLowestBlock = 0;
+            int redAtGreenLowest = 0;
+            int blueAtGrenLowest = 0;
+
             while (opModeIsActive() && gamepad1.start == false)
             {
                 if (gamepad1.a) speed -= 0.00001;
                 if (gamepad1.b) speed += 0.00001;
                 if (gamepad1.x) logValues = true;
                 if (gamepad1.y) logValues = false;
-                if (gamepad1.right_bumper) twoSensors = true;
-                if (gamepad1.left_bumper) twoSensors = false;
+                if (gamepad1.right_bumper) ballMode = true;
+                if (gamepad1.left_bumper) ballMode = false;
 
                 telemetry.addData("speed: ", speed);
-                telemetry.addData("Log Values? ", logValues);
-                telemetry.addData("Two Sensors? ", twoSensors);
+                telemetry.addData("Log Values with Alex's Method? ", logValues);
+                telemetry.addData("Two Sensors? ", ballMode);
                 telemetry.addData("Press Start to run test.", "");
                 telemetry.update();
             }
@@ -73,16 +102,34 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                 startTime = eTime.milliseconds();
                 numBlocks = 0;
                 onBlock=false;
-                if (!twoSensors) while (opModeIsActive() && gamepad1.b == false){// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
-/*                    int red1 = sensorColor.red();
+                if (!ballMode) while (opModeIsActive() && gamepad1.b == false){// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+                    int red1 = sensorColor.red();
                     int green1 = sensorColor.green();
                     int blue1 = sensorColor.blue();
-                    encoder = motorBackLeft.getCurrentPosition();
-                    reading++;
-                    Log.i("isColorYellow", "Reading: " + reading + " Encoder: " + encoder + " Time(ms): " + eTime.milliseconds());
-                    Log.i("isColorYellow", "Red1: " + red1 + " Green1: " + green1 + " Blue1: " + blue1);
 
-                    */
+                    if (red1>redHighest)
+                    {
+                        redHighest=red1;
+                        blueAtRedHighest=blue1;
+                        greenAtRedHighest=green1;
+                    }
+
+                    if (green1>greenHighest)
+                    {
+                        greenHighest=green1;
+                        redAtGreenHighest=red1;
+                        blueAtGreenHighest=blue1;
+                    }
+
+                    if (blue1>blueHighest)
+                    {
+                        blueHighest=blue1;
+                        redAtBlueHighest=red1;
+                        greenAtBlueHighest=blue1;
+                    }
+
+
+
                     boolean isYellow = isColorYellow(sensorColor, "sensorColor", 0);
                     if (!onBlock && isYellow)
                     {
@@ -93,21 +140,39 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                     {
                         onBlock = false;
                     }
-
                 }
-                if (twoSensors) while (opModeIsActive() && gamepad1.b == false){
+
+                if (ballMode) while (opModeIsActive() && gamepad1.b == false){
                     int red1 = sensorColor.red();
                     int green1 = sensorColor.green();
                     int blue1 = sensorColor.blue();
-                    encoder = motorBackLeft.getCurrentPosition();
-                    reading++;
-                    int red2 = sensorColor2.red();
-                    int green2 = sensorColor2.green();
-                    int blue2 = sensorColor2.blue();
 
-                    Log.i("isColorYellow", "Reading: " + reading + " Encoder: " + encoder + " Time(ms): " + eTime.milliseconds());
-                    Log.i("isColorYellow", "Red1: " + red1 + " Green1: " + green1 + " Blue1: " + blue1);
-                    Log.i("isColorYellow", "Red2: " + red2 + " Green2: " + green2 + " Blue2: " + blue2);
+                    if (red1>redHighest)
+                    {
+                        redHighest=red1;
+                        blueAtRedHighest=blue1;
+                        greenAtRedHighest=green1;
+                    }
+
+                    if (green1>greenHighest)
+                    {
+                        greenHighest=green1;
+                        redAtGreenHighest=red1;
+                        blueAtGreenHighest=blue1;
+                    }
+
+                    if (blue1>blueHighest)
+                    {
+                        blueHighest=blue1;
+                        redAtBlueHighest=red1;
+                        greenAtBlueHighest=blue1;
+                    }
+
+                    if (red1>90)
+                    {
+
+                    }
+
                 }
 
 
@@ -127,6 +192,14 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                 motorFrontRight.setPower(speed);
                 motorFrontLeft.setPower(-speed);
                 while (opModeIsActive() && gamepad1.b == false && !isColorYellow(sensorColor, "sensor_mineral_color", motorFrontLeft.getCurrentPosition()) && !isColorYellow(sensorColor2, "sensor_mineral_color2", motorFrontLeft.getCurrentPosition()) && !isColorYellow(sensorColor3, "sensor_mineral_color3", motorFrontLeft.getCurrentPosition())) {
+                    int red1 = sensorColor.red();
+                    int green1 = sensorColor.green();
+                    int blue1 = sensorColor.blue();
+                    encoder = motorBackLeft.getCurrentPosition();
+                    reading++;
+
+                    Log.i("isColorYellow", "Reading: " + reading + " Encoder: " + encoder + " Time(ms): " + eTime.milliseconds());
+                    Log.i("isColorYellow", "Red1: " + red1 + " Green1: " + green1 + " Blue1: " + blue1);
                 }
                 motorBackLeft.setPower(speed/2 * (speed / Math.abs(speed)));
                 motorBackRight.setPower(speed/2 * -(speed / Math.abs(speed)));
@@ -143,6 +216,21 @@ public class AUTOTestPracticeBot extends AUTOMecanumAbstractPracticeBot {
                 telemetry.addData("Encoder units per reading", "" + encoder / reading);
                 telemetry.addData("Milliseconds per reading", (endTime - startTime) / reading);*/
                 telemetry.addData("Number of Blocks", numBlocks);
+                if (logValues) {
+                    telemetry.addData("Red Highest", redHighest);
+                    telemetry.addData("Blue At Red Highest", blueAtRedHighest);
+                    telemetry.addData("Green At Red Highest", greenAtRedHighest);
+                    telemetry.addData("Blue Highest", blueHighest);
+                    telemetry.addData("Red At Blue Highest", redAtBlueHighest);
+                    telemetry.addData("Green At Blue Highest", greenAtBlueHighest);
+                    telemetry.addData("Green Highest", greenHighest);
+                    telemetry.addData("Red At Green Highest", redAtGreenHighest);
+                    telemetry.addData("Blue At Green Highest", blueAtGreenHighest);
+                    if (ballMode)
+                    {
+
+                    }
+                }
                 telemetry.update();
             }
         }
