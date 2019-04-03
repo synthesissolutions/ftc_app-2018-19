@@ -36,11 +36,12 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
         //int reading = 1;
         //int encoder = 1;
         int numBlocks = 0;
+        int numReadings = 0;
         /*ElapsedTime eTime = new ElapsedTime();
         double startTime = 0.0;
         double endTime = 0.0;*/
 
-        boolean autoStop = true;
+        boolean trisensor = false;
 
         waitForStart();
 
@@ -48,11 +49,11 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
             while (opModeIsActive() && gamepad1.start == false) {
                 if (gamepad1.a) speed -= 0.00001;
                 if (gamepad1.b) speed += 0.00001;
-                if (gamepad1.x) autoStop = false;
-                if (gamepad1.y) autoStop = true;
+                if (gamepad1.x) trisensor = false;
+                if (gamepad1.y) trisensor = true;
 
                 telemetry.addData("speed: ", speed);
-                telemetry.addData("autostop: ", autoStop);
+                telemetry.addData("trisensor: ", trisensor);
                 telemetry.addData("Press Start to run test.", "");
                 telemetry.update();
             }
@@ -61,12 +62,13 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
             boolean definitivelyYellow = false;
             boolean scannedWhite = false;
             boolean scannedYellow = false;
-            int red = 0;
-            int green = 0;
-            int blue = 0;
             numBlocks = 0;
+            numReadings = 0;
 
-            if (autoStop) {
+            if (!trisensor) {
+                int red = 0;
+                int green = 0;
+                int blue = 0;
                 motorBackLeft.setPower(-speed);
                 motorBackRight.setPower(speed);
                 motorFrontRight.setPower(speed);
@@ -90,6 +92,7 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                         if (!scannedWhite) scannedWhite = onWhite(red, blue, green);
                         if (!scannedYellow) scannedYellow = onYellow(red,blue,green);
                     }
+                    numReadings++;
                 }
 
                 motorBackLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
@@ -100,34 +103,51 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                 stopMotors();
                 if (definitivelyYellow) numBlocks = 1;
             } else {
+                int red1 = 0;
+                int green1 = 0;
+                int blue1 = 0;
+
+                int red2 = 0;
+                int green2 = 0;
+                int blue2 = 0;
+
+                int red3 = 0;
+                int green3 = 0;
+                int blue3 = 0;
+
                 motorBackLeft.setPower(-speed);
                 motorBackRight.setPower(speed);
                 motorFrontRight.setPower(speed);
                 motorFrontLeft.setPower(-speed);
 
-                while (opModeIsActive() && gamepad1.b == false) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
-                    red = sensorColor.red();
-                    blue = sensorColor.blue();
-                    green = sensorColor.green();
+                while (opModeIsActive() && !definitivelyYellow && gamepad1.b == false) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
 
-                    if (definitivelyYellow)
-                    {
-                        //todo this, caue its not done
-                    }
+                    red1 = sensorColor.red();
+                    blue1 = sensorColor.blue();
+                    green1 = sensorColor.green();
 
-                    if (onMineral && onMat(red,blue,green)) {
+                    red2 = sensorColor2.red();
+                    blue2 = sensorColor2.blue();
+                    green2 = sensorColor2.green();
+
+                    red2 = sensorColor3.red();
+                    blue2 = sensorColor3.blue();
+                    green2 = sensorColor3.green();
+
+                    if (onMineral && (onMat(red1,blue1,green1) && onMat(red2,blue2,green2) && onMat(red3,blue3,green3))) {
                         onMineral = false;
                         definitivelyYellow = !scannedWhite && scannedYellow;
                     }
-                    else if (!onMineral && !onMat(red,blue,green)) {
+                    else if (!onMineral && !(onMat(red1,blue1,green1) && onMat(red2,blue2,green2) && onMat(red3,blue3,green3))) {
                         onMineral = true;
                         scannedWhite = false;
                         scannedYellow = false;
                     }
                     if (onMineral) {
-                        if (!scannedWhite) scannedWhite = onWhite(red, blue, green);
-                        if (!scannedYellow) scannedYellow = onYellow(red,blue,green);
+                        if (!scannedWhite) scannedWhite = onWhite(red1, blue1, green1) || onWhite(red2, blue2, green2) || onWhite(red3, blue3, green3);
+                        if (!scannedYellow) scannedYellow = onYellow(red1,blue1,green1) || onYellow(red2,blue2,green2) || onYellow(red3,blue3,green3);
                     }
+                    numReadings++;
                 }
 
                 motorBackLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
@@ -141,6 +161,7 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
             }
             while (opModeIsActive() && gamepad1.a == false) {
                 telemetry.addData("Number of Blocks", numBlocks);
+                telemetry.addData("Number of Readings", numReadings);
 
             telemetry.update();
             }

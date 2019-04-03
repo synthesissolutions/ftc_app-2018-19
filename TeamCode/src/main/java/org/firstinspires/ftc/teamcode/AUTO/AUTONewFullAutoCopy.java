@@ -9,9 +9,9 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         sleep(3000);
 
         //move away from lander
-        driveStraight(420, 0.5);
+        driveStraight(420, -0.5);
         sleep(500);
-        drive0(2270, -1.0);
+        drive0(2710, -1.0);
         stopMotors();
         sleep(666);
         if(getGyroCurrentHeading() < -4) {

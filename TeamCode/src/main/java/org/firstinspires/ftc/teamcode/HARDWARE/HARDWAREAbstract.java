@@ -757,6 +757,28 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             addErrors("MOTOR COLLECTION DELIVERY SPIN IS NULL");
         }
     }
+    public void controlCollectionDeliverySpinGhost(boolean so, boolean si)
+    {
+        if (motorCollectionDeliverySpin != null) {
+            if (so)
+            {
+                motorCollectionDeliverySpin.setPower(-1);
+            }
+            else
+            {
+                motorCollectionDeliverySpin.setPower(0);
+            }
+
+            if (si)
+            {
+                motorCollectionDeliverySpin.setPower(1);
+            }
+        }
+        else
+        {
+            addErrors("MOTOR COLLECTION DELIVERY SPIN IS NULL");
+        }
+    }
 
     public int motorCollectionDeliverySlideGetPosition() {
         return motorCollectionDeliverySlide.getCurrentPosition();
@@ -792,6 +814,9 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
     public void openCollectionGate() {
         servoCollectionDeliveryGate.setPosition(SERVO_COLLECT_DELIVERY_GATE_CLOSED);
+    }
+    public void openCollectionGateGhost() {
+        servoCollectionDeliveryGate.setPosition(0.11);
     }
 
     public int hangTowerPosition() {
