@@ -37,11 +37,12 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
         //int encoder = 1;
         int numBlocks = 0;
         int numReadings = 0;
+
         /*ElapsedTime eTime = new ElapsedTime();
         double startTime = 0.0;
         double endTime = 0.0;*/
 
-        boolean trisensor = false;
+        int numSensors = 1;
 
         waitForStart();
 
@@ -49,11 +50,12 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
             while (opModeIsActive() && gamepad1.start == false) {
                 if (gamepad1.a) speed -= 0.00001;
                 if (gamepad1.b) speed += 0.00001;
-                if (gamepad1.x) trisensor = false;
-                if (gamepad1.y) trisensor = true;
+                if (gamepad1.x) numSensors = 1;
+                if (gamepad1.y) numSensors = 2;
+                if (gamepad1.dpad_down) numSensors = 3;
 
                 telemetry.addData("speed: ", speed);
-                telemetry.addData("trisensor: ", trisensor);
+                telemetry.addData("num sensors: ", numSensors);
                 telemetry.addData("Press Start to run test.", "");
                 telemetry.update();
             }
@@ -62,13 +64,17 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
             boolean definitivelyYellow = false;
             boolean scannedWhite = false;
             boolean scannedYellow = false;
+
+            int unitsTraveled = 0;
+
             numBlocks = 0;
             numReadings = 0;
 
-            if (!trisensor) {
+            if (numSensors == 1) {
                 int red = 0;
                 int green = 0;
                 int blue = 0;
+                unitsTraveled = motorBackLeft.getCurrentPosition();
                 motorBackLeft.setPower(-speed);
                 motorBackRight.setPower(speed);
                 motorFrontRight.setPower(speed);
@@ -101,8 +107,9 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                 motorFrontLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
                 sleep(300);
                 stopMotors();
+                unitsTraveled = Math.max(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()));
                 if (definitivelyYellow) numBlocks = 1;
-            } else {
+            } else if (numSensors == 3) {
                 int red1 = 0;
                 int green1 = 0;
                 int blue1 = 0;
@@ -114,6 +121,8 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                 int red3 = 0;
                 int green3 = 0;
                 int blue3 = 0;
+
+                unitsTraveled = motorBackLeft.getCurrentPosition();
 
                 motorBackLeft.setPower(-speed);
                 motorBackRight.setPower(speed);
@@ -130,9 +139,9 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                     blue2 = sensorColor2.blue();
                     green2 = sensorColor2.green();
 
-                    red2 = sensorColor3.red();
-                    blue2 = sensorColor3.blue();
-                    green2 = sensorColor3.green();
+                    red3 = sensorColor3.red();
+                    blue3 = sensorColor3.blue();
+                    green3 = sensorColor3.green();
 
                     if (onMineral && (onMat(red1,blue1,green1) && onMat(red2,blue2,green2) && onMat(red3,blue3,green3))) {
                         onMineral = false;
@@ -156,14 +165,69 @@ public class TESTNewMineralScanning extends AUTOMecanumAbstractPracticeBot {
                 motorFrontLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
                 sleep(300);
                 stopMotors();
+                unitsTraveled = Math.max(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()));
                 if (definitivelyYellow) numBlocks = 1;
 
-            }
-            while (opModeIsActive() && gamepad1.a == false) {
-                telemetry.addData("Number of Blocks", numBlocks);
-                telemetry.addData("Number of Readings", numReadings);
+            } else {
+                int red1 = 0;
+                int green1 = 0;
+                int blue1 = 0;
 
-            telemetry.update();
+                int red2 = 0;
+                int green2 = 0;
+                int blue2 = 0;
+
+                unitsTraveled = motorBackLeft.getCurrentPosition();
+
+                motorBackLeft.setPower(-speed);
+                motorBackRight.setPower(speed);
+                motorFrontRight.setPower(speed);
+                motorFrontLeft.setPower(-speed);
+
+                while (opModeIsActive() && !definitivelyYellow && gamepad1.b == false) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+
+                    red1 = sensorColor.red();
+                    blue1 = sensorColor.blue();
+                    green1 = sensorColor.green();
+
+                    red2 = sensorColor2.red();
+                    blue2 = sensorColor2.blue();
+                    green2 = sensorColor2.green();
+
+                    if (onMineral && (onMat(red1,blue1,green1) && onMat(red2,blue2,green2))) {
+                        onMineral = false;
+                        definitivelyYellow = !scannedWhite && scannedYellow;
+                    }
+                    else if (!onMineral && !(onMat(red1,blue1,green1) && onMat(red2,blue2,green2))) {
+                        onMineral = true;
+                        scannedWhite = false;
+                        scannedYellow = false;
+                    }
+                    if (onMineral) {
+                        if (!scannedWhite) scannedWhite = onWhite(red1, blue1, green1) || onWhite(red2, blue2, green2);
+                        if (!scannedYellow) scannedYellow = onYellow(red1,blue1,green1) || onYellow(red2,blue2,green2);
+                    }
+                    numReadings++;
+                }
+
+                motorBackLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
+                motorBackRight.setPower(speed / 2 * -(speed / Math.abs(speed)));
+                motorFrontRight.setPower(speed / 2 * -(speed / Math.abs(speed)));
+                motorFrontLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
+                sleep(300);
+                stopMotors();
+                unitsTraveled = Math.max(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()));
+                if (definitivelyYellow) numBlocks = 1;
+            }
+
+
+            while (opModeIsActive() && gamepad1.dpad_up == false) {
+                telemetry.addData("Number of Blocks", numBlocks);
+                telemetry.addData("Number of Sensors", numSensors);
+                telemetry.addData("Number of Readings", numReadings);
+                telemetry.addData("Speed", speed);
+                telemetry.addData("Units Traveled", unitsTraveled);
+                telemetry.update();
             }
         }
     }
