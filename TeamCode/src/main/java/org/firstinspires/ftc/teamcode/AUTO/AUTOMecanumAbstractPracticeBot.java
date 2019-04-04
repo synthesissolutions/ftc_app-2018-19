@@ -77,6 +77,11 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     double turnAmount;
     boolean inStrafe;
 
+    boolean onMineral = false;
+    boolean definitivelyYellow = false;
+    boolean scannedWhite = false;
+    boolean scannedYellow = false;
+
     public static final String TAG = "Mecanum Abstract";
 
     SensorManager sensorManager;
@@ -658,6 +663,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorHangTower.setTargetPosition(v);
 
     }
+    public void readHangTowerPosition() {
+        telemetry.addData("Current Position: ", motorHangTower.getCurrentPosition());
+        telemetry.update();
+    }
 
     public void vuforiaInitWIP() {
         /*
@@ -1020,6 +1029,96 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerWrist.setPosition(0.9);
         sleep(1000);
         servoMarkerWrist.setPosition(0.0);
+    }
+
+    public void deployMarkerCopyGhost(int x) {
+        if (x == -5) {
+            servoMarkerShoulder.setPosition(0.42);
+        }
+        else if (x < 500) {
+            servoMarkerShoulder.setPosition(0.57);
+        }
+        else if (x < 1000) {
+            servoMarkerShoulder.setPosition(0.38);
+        }
+        else if (x < 1500) {
+            servoMarkerShoulder.setPosition(0.33);
+            sleep(1000);
+        }
+        else {
+            servoMarkerShoulder.setPosition(0.25);
+        }
+        servoMarkerElbow.setPosition(0.0);
+        sleep(1000);
+        servoMarkerWrist.setPosition(0.9);
+        sleep(1000);
+        servoMarkerWrist.setPosition(0.0);
+    }
+
+    public int driveAndColor(int moveAmount, double speed) {
+        int red1 = 0;
+        int green1 = 0;
+        int blue1 = 0;
+
+        int red2 = 0;
+        int green2 = 0;
+        int blue2 = 0;
+
+        int unitsTraveled = motorBackLeft.getCurrentPosition();
+
+        motorBackLeft.setPower(-speed);
+        motorBackRight.setPower(speed);
+        motorFrontRight.setPower(speed);
+        motorFrontLeft.setPower(-speed);
+
+        while (opModeIsActive() && !definitivelyYellow && gamepad1.b == false) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+
+            red1 = sensorColor.red();
+            blue1 = sensorColor.blue();
+            green1 = sensorColor.green();
+
+            red2 = sensorColor2.red();
+            blue2 = sensorColor2.blue();
+            green2 = sensorColor2.green();
+
+            if (onMineral && (onMat(red1,blue1,green1) && onMat(red2,blue2,green2))) {
+                onMineral = false;
+                definitivelyYellow = !scannedWhite && scannedYellow;
+            }
+            else if (!onMineral && !(onMat(red1,blue1,green1) && onMat(red2,blue2,green2))) {
+                onMineral = true;
+                scannedWhite = false;
+                scannedYellow = false;
+            }
+            if (onMineral) {
+                if (!scannedWhite) scannedWhite = onWhite(red1, blue1, green1) || onWhite(red2, blue2, green2);
+                if (!scannedYellow) scannedYellow = onYellow(red1,blue1,green1) || onYellow(red2,blue2,green2);
+            }
+        }
+
+        motorBackLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
+        motorBackRight.setPower(speed / 2 * -(speed / Math.abs(speed)));
+        motorFrontRight.setPower(speed / 2 * -(speed / Math.abs(speed)));
+        motorFrontLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
+        sleep(300);
+        stopMotors();
+        unitsTraveled = Math.max(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()));
+        return unitsTraveled;
+    }
+
+    boolean onMat(int r, int b, int g)
+    {
+        return r+b+g < 140;
+    }
+
+    boolean onWhite(int r, int b, int g)
+    {
+        return r > 300 || b > 300 || g > 300;
+    }
+
+    boolean onYellow(int r, int b, int g)
+    {
+        return 90 < r && r < 170 && 35 < b && b < 75 && 80 < g && g < 125 && r > g && g > b;
     }
 
 }

@@ -90,6 +90,8 @@ public class TELEGhostBot extends OpMode {
 
         robot.controlHangTower(hangTowerControl);
         robot.retractMineralElbow();
+        telemetry.addData("Tower Pos: ", robot.readHangTowerPosition());
+        telemetry.update();
         // TELEMETRY
         //robot.displayErrors(telemetry);
         //telemetry.addData("TOWER POS:", robot.deployTowerPosition());

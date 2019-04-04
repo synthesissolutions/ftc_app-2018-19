@@ -858,4 +858,7 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     public void retractMineralElbow() {
         servoMarkerElbow.setPosition(1.0);
     }
+    public int readHangTowerPosition() {
+        return motorHangTower.getCurrentPosition();
+    }
 }
