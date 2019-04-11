@@ -137,8 +137,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorHangTower.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorHangTower.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorHangTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorHangTower.setPower(1.0);
+        //motorHangTower.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //motorHangTower.setPower(1.0);
 
 
 
@@ -158,7 +158,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         sensorColorSample.enableLed(true);*/
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_mineral_color");
         sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color2");
-        //sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
+        sensorColor3 = hardwareMap.get(ColorSensor.class, "sensor_mineral_color3");
 
     }
 
@@ -663,9 +663,16 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorHangTower.setTargetPosition(v);
 
     }
-    public void readHangTowerPosition() {
-        telemetry.addData("Current Position: ", motorHangTower.getCurrentPosition());
-        telemetry.update();
+    public void runToHangTowerPosition(int pos) {
+        this.motorHangTower.setPower(-1.0);
+        while (opModeIsActive() && this.motorHangTower.getCurrentPosition() < pos) {
+            if (this.motorHangTower.getCurrentPosition() % 40 == 0) {
+                //telemetry.addData("Tower Pos", "" + this.motorHangTower.getCurrentPosition());
+                //telemetry.update();
+            }
+            sleep(5);
+        }
+        this.motorHangTower.setPower(0.0);
     }
 
     public void vuforiaInitWIP() {
@@ -1035,18 +1042,18 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         if (x == -5) {
             servoMarkerShoulder.setPosition(0.42);
         }
-        else if (x < 500) {
-            servoMarkerShoulder.setPosition(0.57);
-        }
         else if (x < 1000) {
-            servoMarkerShoulder.setPosition(0.38);
+            servoMarkerShoulder.setPosition(0.61);
         }
-        else if (x < 1500) {
-            servoMarkerShoulder.setPosition(0.33);
+        else if (x < 1600) {
+            servoMarkerShoulder.setPosition(0.5);
+        }
+        else if (x < 2000) {
+            servoMarkerShoulder.setPosition(0.46);
             sleep(1000);
         }
         else {
-            servoMarkerShoulder.setPosition(0.25);
+            servoMarkerShoulder.setPosition(0.42);
         }
         servoMarkerElbow.setPosition(0.0);
         sleep(1000);
@@ -1064,18 +1071,18 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         int green2 = 0;
         int blue2 = 0;
 
-        int unitsTraveled = motorBackLeft.getCurrentPosition();
+        int startingPos = motorBackLeft.getCurrentPosition();
 
         motorBackLeft.setPower(-speed);
-        motorBackRight.setPower(speed);
-        motorFrontRight.setPower(speed);
+        motorBackRight.setPower(-speed);
+        motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(-speed);
 
-        while (opModeIsActive() && !definitivelyYellow && gamepad1.b == false) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
+        while (opModeIsActive() && !definitivelyYellow && Math.abs((startingPos - motorBackLeft.getCurrentPosition())) < moveAmount) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
 
-            red1 = sensorColor.red();
-            blue1 = sensorColor.blue();
-            green1 = sensorColor.green();
+            red1 = sensorColor3.red();
+            blue1 = sensorColor3.blue();
+            green1 = sensorColor3.green();
 
             red2 = sensorColor2.red();
             blue2 = sensorColor2.blue();
@@ -1094,7 +1101,15 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
                 if (!scannedWhite) scannedWhite = onWhite(red1, blue1, green1) || onWhite(red2, blue2, green2);
                 if (!scannedYellow) scannedYellow = onYellow(red1,blue1,green1) || onYellow(red2,blue2,green2);
             }
+            telemetry.addData("sensor 3 red", red1);
+            telemetry.addData("sensor 3 blue", blue1);
+            telemetry.addData("sensor 3 green", green1);
+            telemetry.addData("sensor 2 red", red2);
+            telemetry.addData("sensor 2 blue", blue2);
+            telemetry.addData("sensor 2 green", green2);
+            telemetry.update();
         }
+
 
         motorBackLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
         motorBackRight.setPower(speed / 2 * -(speed / Math.abs(speed)));
@@ -1102,8 +1117,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorFrontLeft.setPower(speed / 2 * (speed / Math.abs(speed)));
         sleep(300);
         stopMotors();
-        unitsTraveled = Math.max(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(unitsTraveled),Math.abs(motorBackLeft.getCurrentPosition()));
-        return unitsTraveled;
+        return Math.max(Math.abs(startingPos),Math.abs(motorBackLeft.getCurrentPosition()))-Math.min(Math.abs(startingPos),Math.abs(motorBackLeft.getCurrentPosition()));
     }
 
     boolean onMat(int r, int b, int g)
@@ -1113,12 +1127,12 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
     boolean onWhite(int r, int b, int g)
     {
-        return r > 300 || b > 300 || g > 300;
+        return r > 300 && (b > 300 || g > 300);
     }
 
     boolean onYellow(int r, int b, int g)
     {
-        return 90 < r && r < 170 && 35 < b && b < 75 && 80 < g && g < 125 && r > g && g > b;
+        return 150 < r && r < 300 && 35 < b && b < 100 && 100 < g && g < 180 && r > g && g > b;
     }
 
 }
