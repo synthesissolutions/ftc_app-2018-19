@@ -96,6 +96,8 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     Servo servoMarkerElbow;
     Servo servoMarkerWrist;
 
+    Servo servoSlidePin;
+
     //KOMODO
     DcMotor motorDeployTower;
     Servo servoDeployPour;
@@ -256,6 +258,11 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
 
     }
 
+    public void initializeCollectionPin() {
+        servoSlidePin = hardwareMap.get(Servo.class, "servoSlidePin");
+        servoSlidePin.setPosition(0.6);
+    }
+
     public void initializeMineral()
     {
         servoMineralArm = hardwareMap.servo.get("servo_mineral_arm"); //todo FIX THE CONFIG. DAVID'S NAMES ARE TERRIBLE. WE USE CAMEL CASE, NOT UNDERSCORES
@@ -281,6 +288,26 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
             initializeMecanum();
         } catch (IllegalArgumentException e) {
             addErrors("ERROR INITIALIZING MECANUM");
+        }
+        try {
+            initializeCollectionDelivery();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING COLLECTION DELIVERY");
+        }
+        try {
+            initializeHang();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING HANG");
+        }
+        try {
+            initializeMarkerDeliveryKomodo();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING MARKER DELIVERY");
+        }
+        try {
+            initializeCollectionPin();
+        } catch (IllegalArgumentException e) {
+            addErrors("ERROR INITIALIZING COLLECTION PIN");
         }
     }
     public void initializeJalepeño(HardwareMap hwMap){
@@ -860,5 +887,12 @@ public abstract class HARDWAREAbstract implements SensorEventListener{
     }
     public int readHangTowerPosition() {
         return motorHangTower.getCurrentPosition();
+    }
+
+    public void engageCollectionPin() {
+        servoSlidePin.setPosition(0.825);
+    }
+    public void disengageCollectionPin() {
+        servoSlidePin.setPosition(0.6);
     }
 }

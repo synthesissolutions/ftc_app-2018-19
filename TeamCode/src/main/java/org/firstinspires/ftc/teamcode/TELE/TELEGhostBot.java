@@ -12,12 +12,12 @@ import org.firstinspires.ftc.teamcode.HARDWARE.HARDWAREKomodo;
 public class TELEGhostBot extends OpMode {
     int collectionDeliverySlidePosition = 0;
 
-    HARDWAREKomodo robot = new HARDWAREKomodo();
+    HARDWAREGhostBot robot = new HARDWAREGhostBot();
     int heldSpinTimer = 0;
 
     @Override
     public void init() {
-        robot.initializeKomodo(hardwareMap);
+        robot.initializeGhost(hardwareMap);
 
 
 
@@ -73,6 +73,13 @@ public class TELEGhostBot extends OpMode {
         }
         else if (gamepad2.y) {
             robot.openCollectionGateGhost();
+        }
+
+        if (gamepad2.a) {
+            robot.engageCollectionPin();
+        }
+        if (gamepad2.b) {
+            robot.disengageCollectionPin();
         }
 
         //MAIN DRIVE

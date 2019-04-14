@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.AUTO;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "AUTO Full Auto Ghost", group = "AUTO")
-public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
+@Autonomous(name = "AUTO Depot Side Only Ghost", group = "AUTO")
+public class AUTODepotSideOnlyGhost extends AUTOMecanumAbstractPracticeBot {
     public void runOpMode() throws InterruptedException {
         startAutoOp();
 
@@ -11,7 +11,7 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         //move away from lander
         driveStraight(180, -0.5);
         sleep(500);
-        drive0(1575, -0.8);
+        drive0(1550, -0.8);
         stopMotors();
         sleep(666);
         if(getGyroCurrentHeading() < -4) {
@@ -54,7 +54,7 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         sleep(500);
         deployMarkerCopyGhost(moveAmount);
         retractMineralArm();
-        drive0(350, 1.0);
+        drive0(400, 1.0);
         sleep(300);
         if(getGyroCurrentHeading() < -4) {
             turnDegrees(0.3, (-1 * getGyroCurrentHeading()));
@@ -67,40 +67,11 @@ public class AUTONewFullAutoCopy extends AUTOMecanumAbstractPracticeBot {
         }
         sleep(500);
 
-        //drive to end and turn toward crater side
-        driveStraight(2350 - moveAmount, -1.0);
-        //drive0(350, -1.0);
+        //drive to other crater and park
+        driveStraight(moveAmount + 750, 1.0);
+        turnDegrees(-1.0, 42);
+        drive0(250, -1.0);
+        driveStraight(500, 0.7);
 
-        //drive to mineral and park on crater
-        if (moveAmount < 1000) {
-            driveStraight(500, -1.0);
-            turnDegrees(1.0, 90);
-            sleep(500);
-            driveStraight(800, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(500, -1.0);
-        } else if (moveAmount < 1750) {
-            driveStraight(400, -1.0);
-            turnDegrees(1.0, 90);
-            sleep(500);
-            driveStraight(1440, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(500, -1.0);
-        } else if (moveAmount < 2000) {
-            driveStraight(900, -1.0);
-            turnDegrees(1.0, 90);
-            sleep(500);
-            driveStraight(2600, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(500, -1.0);
-        } else {
-            driveStraight(400, -1.0);
-            turnDegrees(1.0, 90);
-            sleep(500);
-            driveStraight(2600, -1.0);
-            turnDegrees(-1.0, 110);
-            driveStraight(500, -1.0);
-        }
-        sleep(1000);
     }
 }

@@ -64,6 +64,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     Servo servoMarkerShoulder;
     Servo servoMarkerElbow;
     Servo servoMarkerWrist;
+    Servo servoSlidePin;
     ColorSensor sensorColor;
     ColorSensor sensorColor2;
     ColorSensor sensorColor3;
@@ -351,6 +352,9 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         servoMarkerShoulder.setPosition(0.05);
         servoMarkerElbow.setPosition(1.0);
         servoMarkerWrist.setPosition(0.0);
+
+        servoSlidePin = hardwareMap.get(Servo.class, "servoSlidePin");
+        servoSlidePin.setPosition(0.825);
 
 
 
@@ -984,6 +988,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         //this does nothing but i'm too lazy to remove it from the other programs so we keep it for now
     }
     public void deployMineralArm() {
+        servoMarkerElbow.setPosition(0.6);
+        sleep(1000);
         servoMarkerShoulder.setPosition(0.5);
     }
     public void retractMineralArm() {
@@ -993,7 +999,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
     }
     public void deployMarker(int x) {
         if (x == -5) {
-            servoMarkerShoulder.setPosition(0.42);
+            servoMarkerShoulder.setPosition(0.55);
         }
         else if (x < 1300) {
             servoMarkerShoulder.setPosition(0.57);
@@ -1077,6 +1083,10 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
         motorBackRight.setPower(-speed);
         motorFrontRight.setPower(-speed);
         motorFrontLeft.setPower(-speed);
+        /*motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);*/
 
         while (opModeIsActive() && !definitivelyYellow && Math.abs((startingPos - motorBackLeft.getCurrentPosition())) < moveAmount) {// && !isColorYellow(sensorColor) && !isColorYellow(sensorColor2) && !isColorYellow(sensorColor3)) {
 
@@ -1107,6 +1117,8 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
             telemetry.addData("sensor 2 red", red2);
             telemetry.addData("sensor 2 blue", blue2);
             telemetry.addData("sensor 2 green", green2);
+            telemetry.addData("isWhite", scannedWhite);
+            telemetry.addData("onMineral", onMineral);
             telemetry.update();
         }
 
@@ -1122,7 +1134,7 @@ public abstract class AUTOMecanumAbstractPracticeBot extends LinearOpMode implem
 
     boolean onMat(int r, int b, int g)
     {
-        return r+b+g < 140;
+        return r+b+g < 200;
     }
 
     boolean onWhite(int r, int b, int g)
